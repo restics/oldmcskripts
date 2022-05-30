@@ -1,0 +1,15 @@
+every 1 second:
+ loop all players:
+  if "%region at loop-player%" is "home in world wworld":
+   #stop any song from being played to loop-player
+   play song file "plugins/FunkySk/wddw.nbs" to loop-player
+  if "%region at loop-player%" is "nothome in world wworld":
+   #stop any song from being played to loop-player
+   #send "%region at loop-player%" to loop-player
+   play song file "seaside village.nbs" to loop-player
+
+
+command /dwad:
+ trigger:
+  set {_song} to song from file "seaside village.nbs"
+  play song {_song} to player

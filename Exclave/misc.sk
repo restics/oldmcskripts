@@ -1,0 +1,29 @@
+command /sethealth <player> <number>:
+ permission: op
+ trigger:
+  set {health.%uuid of arg 1%} to arg 2
+command /setmaxhealth <player> <number>:
+ permission: op
+ trigger:
+  set {maxhealth.%uuid of arg 1%} to arg 2
+command /heal [<player>]:
+ permission: op
+ trigger:
+  if arg 1 is not set:
+   set {health.%uuid of player%} to {maxhealth.%uuid of player%}
+  else:
+   set {health.%uuid of arg 1%} to {maxhealth.%uuid of arg 1%}
+   message "&2(&aTerabyte&2) &7You have been healed!" to arg 1
+   message "&2(&aTerabyte&2) &7You have healed &a%arg 1%&7!"
+on death of a player:
+ cancel event
+
+command /setspawnlocation:
+ permission: op
+ trigger:
+  set {spawnloc} to location of player
+
+command /spawn:
+ trigger:
+  message "&2(&aTerabyte&2) &7Teleporting to spawn..."
+  teleport player to {spawnloc}

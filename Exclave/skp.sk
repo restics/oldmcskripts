@@ -1,0 +1,76 @@
+command /profile:
+ trigger: 
+  wait 1 tick
+  open virtual chest inventory with 6 rows named "&3Profile" to player
+  format gui slot 0 of player with gray glass pane named "&7"
+  format gui slot 9 of player with gray glass pane named "&7"
+  format gui slot 18 of player with gray glass pane named "&7"
+  format gui slot 27 of player with gray glass pane named "&7"
+  format gui slot 36 of player with gray glass pane named "&7"
+  format gui slot 45 of player with gray glass pane named "&7"
+
+
+  format gui slot 4 of player with orange glass named "&6Skill Points" with lore "&eYou have %{skp.%uuid of player%}% skillpoints!" 
+  set {_t} to {level.%uuid of player%}*100
+  format gui slot 6 of player with yellow glass named "&6Reset Skill Points" with lore "&cCost: %{_t}% g" to close:
+   resetskp(player,{_t})
+   send "&eYour skillpoints have been reset!"
+
+  format gui slot 20 of player with light blue glass named "&9Spell Power" with lore "&b%{manap.%uuid of player%}%"
+  format gui slot 22 of player with red glass named "&4Physical Power" with lore "&c%{dmgp.%uuid of player%}%"
+  format gui slot 24 of player with lime glass named "&2Health" with lore "&a%{hpp.%uuid of player%}%"
+  format gui slot 29 of player with orange glass pane named "&6&lUPGRADE" with lore "&eUpgrade spell power" to run:
+   addpoint(player,"mana")
+  format gui slot 31 of player with orange glass pane named "&6&lUPGRADE" with lore "&eUpgrade physical power" to run: 
+   addpoint(player,"dmg")
+  format gui slot 33 of player with orange glass pane named "&6&lUPGRADE" with lore "&eUpgrade vitality" to run:
+   addpoint(player,"hp")
+  format gui slot 8 of player with gray glass pane named "&7"
+  format gui slot 17 of player with gray glass pane named "&7"
+  format gui slot 26 of player with gray glass pane named "&7"
+  format gui slot 35 of player with gray glass pane named "&7"
+  format gui slot 44 of player with gray glass pane named "&7"
+  format gui slot 53 of player with gray glass pane named "&7"
+
+
+function resetskp(p: player, n: number):
+ set {_t} to uuid of {_p}
+ add {manap.%{_t}%} + {dmgp.%{_t}%} + {hpp.%{_t}%} to {skp.%{_t}%}
+ set {manap.%{_t}%} to 0
+ set {dmgp.%{_t}%} to 0
+ set {hpp.%{_t}%} to 0
+ remove {_n} from {_p}'s balance
+ reset({_p})
+
+ 
+
+function addpoint(p: player, t: text):
+ set {_e} to uuid of {_p}
+ if {skp.%{_e}%} is less than or equal to 0:
+  send "&cYou do not have enough skill points!" to {_p}
+  stop
+ if {_t} is "mana":
+  add 1 to {manap.%{_e}%}
+  remove 1 from {skp.%{_e}%}
+ if {_t} is "dmg":
+  add 1 to {dmgp.%{_e}%}
+  remove 1 from {skp.%{_e}%}
+ if {_t} is "hp":
+  add 1 to {hpp.%{_e}%}
+  remove 1 from {skp.%{_e}%}
+ reset({_p})
+  
+command /arraytest <text> <number> <number> [<text>]:
+ aliases: at
+ trigger:
+  if arg 1 is "set":
+   add arg2 to {a::gayass.%uuid of player%::*} 
+   add arg3 to {a::gayass.%uuid of player%::*} 
+
+
+function reset(p: player):
+  set {_t} to uuid of {_p} 
+  format gui slot 4 of {_p} with orange glass named "&6Skill Points" with lore "&eYou have %{skp.%{_t}%}% skillpoints!" 
+  format gui slot 20 of  {_p} with light blue glass named "&9Spell Power" with lore "&b%{manap.%{_t}%}%"
+  format gui slot 22 of {_p} with red glass named "&4Physical Power" with lore "&c%{dmgp.%{_t}%}%"
+  format gui slot 24 of {_p} with lime glass named "&2Health" with lore "&a%{hpp.%{_t}%}%"

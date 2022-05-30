@@ -1,0 +1,383 @@
+every 5 ticks:
+ loop all players:
+  if gamemode of loop-player is not spectator:
+  
+   if {xp.%uuid of loop-player%} is greater than or equal to {maxxp.%uuid of loop-player%}: # level up skript
+    set {_carry.%uuid of loop-player%} to {xp.%uuid of loop-player%} - {maxxp.%uuid of loop-player%}
+    set {xp.%uuid of loop-player%} to {_carry.%uuid of loop-player%}
+    add 1 to {level.%uuid of loop-player%}
+    add 1 to {skp.%uuid of loop-player%}
+   set {maxxp.%uuid of loop-player%} to rounded 87 * (1.14^({level.%uuid of loop-player%}-1))
+
+# ({level.%loop-player%} mod 10) * (2^(2 + (({level.%loop-player%} - ({level.%loop-player%} mod 10)) / 10))) (old leveling algorithm)
+   
+   set {_health} to notate({health.%uuid of loop-player%})
+   set {_maxhealth} to notate({maxhealth.%uuid of loop-player%})   
+   set {_xp} to notate({xp.%uuid of loop-player%})   
+   set {_maxxp} to notate({maxxp.%uuid of loop-player%})
+
+   send action bar "&c❤ %{_health}%/%{_maxhealth}%        &9 ✪ %{_xp}%/%{_maxxp}%" to loop-player
+   set loop-player's level to {level.%uuid of loop-player%}
+   set loop-player's level progress to {xp.%uuid of loop-player%} / {maxxp.%uuid of loop-player%}
+   
+   
+   set health of loop-player to {health.%uuid of loop-player%}/{maxhealth.%uuid of loop-player%}*10
+ 
+
+   if {health.%loop-player%} is less than or equal to 0: # death code
+    teleport loop-player to {spawnloc}
+    set {health.%loop-player%} to {maxhealth.%uuid of loop-player%}
+    message "&cYou died. Teleporting to spawn..." to loop-player
+   set the loop-player's food level to 10
+  # if loop-player does not have permission "op":
+   if {health.%loop-player%} is equal to {maxhealth.%uuid of loop-player%}: # if ur max health, stya max health when switching armor pieces
+    set {_temphealth.%uuid of loop-player%} to true
+
+
+   #insert code here to calculate health from lore instead of variables done that
+
+
+    # shove this code into a function you reatard
+   set {_h.%uuid of loop-player%} to length of 1st line of the lore of the loop-player's helmet
+   set {_sh.%uuid of loop-player%} to {_h.%uuid of loop-player%} - 12
+   set {_hh.%uuid of loop-player%} to the last {_sh.%uuid of loop-player%} characters of 1st line of the lore of the loop-player's helmet parsed as an integer
+   set {_c.%uuid of loop-player%} to length of 1st line of the lore of the loop-player's chestplate
+   set {_sc.%uuid of loop-player%} to {_c.%uuid of loop-player%} - 12
+   set {_hc.%uuid of loop-player%} to the last {_sc.%uuid of loop-player%} characters of 1st line of the lore of the loop-player's chestplate parsed as an integer
+   set {_l.%uuid of loop-player%} to length of 1st line of the lore of the loop-player's leggings
+   set {_s.%uuid of loop-player%} to {_l.%uuid of loop-player%} - 12
+   set {_h.%uuid of loop-player%} to the last {_s.%uuid of loop-player%} characters of 1st line of the lore of the loop-player's leggings parsed as an integer
+   set {_hb.%uuid of loop-player%} to length of 1st line of the lore of the loop-player's boots
+   set {_sb.%uuid of loop-player%} to {_hb.%uuid of loop-player%} - 12
+   set {_hb.%uuid of loop-player%} to the last {_sb.%uuid of loop-player%} characters of 1st line of the lore of the loop-player's boots parsed as an integer
+
+   set {maxhealth.%uuid of loop-player%} to (100 + {_hh.%uuid of loop-player%} + {_hc.%uuid of loop-player%} + {_h.%uuid of loop-player%} + {_hb.%uuid of loop-player%})*(1 + (0.05*{hpp.%uuid of loop-player%})) # this code sucks
+   if {_temphealth.%uuid of loop-player%} is true:
+    #broadcast "dwdw"
+    set {health.%uuid of loop-player%} to {maxhealth.%uuid of loop-player%}
+    set { _temphealth.%uuid of loop-player%} to false
+   if {health.%uuid of loop-player%} is greater than {maxhealth.%uuid of loop-player%}:
+    set {health.%uuid of loop-player%} to {maxhealth.%uuid of loop-player%}
+   #send "yeeeee" to loop-player
+ loop all monsters:
+  if {health.%uuid of loop-monster%} is less than or equal to 0:
+   kill loop-monster
+  set name of loop-monster to colored "&a%{name.%uuid of loop-monster%}%&c &a%{health.%uuid of loop-monster%}%&f/&a%{maxhealth.%uuid of loop-monster%}%"
+on damage:
+ if damage cause is fall:
+  cancel event
+ set {_random1} to a random integer between 1 and 100
+ set {_random2} to a random integer between 1 and 100
+ set {_random3} to a random integer between 1 and 100
+
+ if attacker's tool is air:
+ #cancel event
+ if victim is a player:
+  if attacker is not a player:
+   if attacker's name contains "zombie": # preoblem
+    #broadcast "zombies be like bruhhhh"
+    remove 10 from {health.%uuid of victim%}
+    set {combattimer.%uuid of victim%} to 10
+
+  attacker's tool is not air
+
+  attacker is a player
+  attacker's tool's lore does not contain "Magic MIssile"
+  if damage cause is attack:
+   
+   if 1st line of the lore of attacker's tool contains "Damage":
+    set {_l} to length of 1st line of the lore of the attacker's tool
+  # broadcast "%{_l}%"
+    set {_s} to {_l} - 12
+    set {_po} to the last {_s} characters of 1st line of the lore of the attacker's tool parsed as an integer
+  # broadcast "%{_po}%"
+    #remove {_po} from {health.%uuid of victim%}
+    #bind hologram "&e%{damage.%attacker's tool%}%" to victim for 0.5 second offset by {_random1}/50-1, {_random1}/50, {_random1}/50-1  have to fix holos
+  set {combattimer.%uuid of victim%} to 10
+  
+  
+  if damage cause is not attack:
+   
+   if {spell.%attacker%} is "fireball":
+    cancel event
+    #broadcast "%{spell.%attacker%}%"
+    #remove 25 from {health.%victim%}
+    #bind hologram "&e25" to victim for 0.5 second offset by {_random1}/50-1, {_random1}/50, {_random1}/50-1
+    #set {spell.%attacker%} to "none"
+  #message "&a%victim% has %{health.%victim%}% health left." to attacker
+  #set victim's nametag to "&c%{health.%victim%}%❤/%{maxhealth.%victim%}%❤"
+  
+ if victim is a monster:
+  heal victim
+  attacker's tool is not air
+  attacker is a player
+  if {health.%uuid of victim%} is less than or equal to 0:
+   add 10 to {xp.%uuid of attacker%}
+   #broadcast "%{xp.%attacker%}% %uuid of attacker%"
+
+  attacker's tool's lore does not contain "Magic MIssile"
+
+
+  if 1st line of the lore of attacker's tool contains "Damage":
+   set {_l} to length of 1st line of the lore of the attacker's tool
+   broadcast "%{_l}%"
+   set {_s} to {_l} - 12
+   set {_po} to the last {_s} characters of 1st line of the lore of the attacker's tool parsed as an integer
+   broadcast "%{_po}%"
+   remove {_po} from {health.%uuid of victim%}
+  
+
+  if attacker's tool is air:
+   cancel event
+  #broadcast "dwaewda"
+  if damage cause is not attack:
+   if {spell.%uuid of attacker%} is "fireball":
+    #broadcast "{spell.%uuid of attacker%}"
+    remove 25 from {health.%uuid of victim%}
+    bind hologram "&e25" to victim for 0.5 second offset by {_random1}/50-1, {_random1}/50, {_random1}/50-1
+    if {health.%uuid of victim%} is less than or equal to 0: # drop table function here
+     add 10 to {xp.%uuid of attacker%}
+    set {spell.%uuid of attacker%} to "none"
+
+
+
+
+command /additemattribute <text> [<text>] [<text>]: #weapo/armor/name, damage, rarity
+ aliases: aia
+ usage: &cUsage: /aia (weapon,armor,name)
+ permission: op
+ trigger:
+  loop all players:
+   #if loop-player's inventory contains {
+  if arg 1 is "weapon":
+   set {_num} to arg 2 parsed as an integer
+   
+   #set {damage.%player's tool%} to {_num}
+   #broadcast "%{damage.%player's tool%}%"
+   #set {textitem} to player's tool
+   if arg 2 is not set:
+    send "&cUsage: /aia weapon (physical damage) (spell damage) (rarity)"
+   #if line 2 of the lore of the player's tool contains "Spell":
+   #if arg 4 is set:
+    #resetlorewand({_num},arg 3,arg 4,player)
+   else:
+    resetlore({_num},arg 3,player)
+
+  if arg 1 is "armor":
+   set {_num} to arg 2 parsed as an integer
+   #set {health.%player's tool%} to {_num}
+
+   resetlorearmor({_num},arg 3,player)
+ # if arg 1 is "name":
+  # set name of player's tool to colored arg 2
+  
+  
+
+
+command /rename <text>:
+ permission: op
+ trigger:
+  set name of player's tool to colored arg 1
+
+
+
+function resetlore(a: number, b: text, p: player):
+ #broadcast "%{_a}% is too %{_c}% "
+ #set lore of {_p}'s tool to "&6Damage:&c %{_a}%"
+ #if {_a} is set:
+  
+ set the 1st line of {_p}'s tool's lore to "&6Damage:&c %{_a}%"
+ set the 2nd line of {_p}'s tool's lore to "&f"
+ set the 3rd line of {_p}'s tool's lore to colored "%{_b}%"
+
+
+function resetlorearmor(a: number, b: text, p: player):
+ set the 1st line of {_p}'s tool's lore to "&6Health:&c %{_a}%"
+ set the 2nd line of {_p}'s tool's lore to "&f"
+ set the 3rd line of {_p}'s tool's lore to colored "%{_b}%"
+
+function resetlorewand(a: number, b: text,c: text, p: player):
+ #broadcast "%{_a}% is too %{_c}% "
+ #set lore of {_p}'s tool to "&6Damage:&c %{_a}%"
+ #if {_a} is set:
+  
+ set the 1st line of {_p}'s tool's lore to "&6Damage:&c %{_a}%"
+ set the 2nd line of {_p}'s tool's lore to "&6Spell:&c %{_c}%"
+ set the 3rd line of {_p}'s tool's lore to "&f"
+ set the 4th line of {_p}'s tool's lore to colored "%{_b}%"
+
+
+
+on join: 
+ if {f.%uuid of player%} is not set: 
+  set {maxhealth.%uuid of player%} to 100
+  set {health.%uuid of player%} to 100
+  set {level.%uuid of player%} to 1
+  set {f.%uuid of player%} to 0 
+  set {xp.%uuid of player%} to 0
+  set {skp.%uuid of player%} to 0
+  set {manap.%uuid of player%} to 0
+  set {dmgp.%uuid of player%} to 0
+  set {hpp.%uuid of player%} to 0
+  set player's 
+  teleport player to {spawnloc}
+  broadcast "&e&lNEW! &7[&a+&7] %player%"
+ else:
+  broadcast "&7[&a+&7] %player%"
+ if player is not opped:
+ set {combattimer.%uuid of player%} to 0
+ set {spellcooldown.%uuid of player%} to 0
+  #set player's nametag to "&c %{health.%uuid of player%}% / %{maxhealth.%uuid of player%}%"
+every 3 seconds:
+ loop all players:
+  if {combattimer.%uuid of loop-player%} is less than or equal to 0:
+   if {health.%uuid of loop-player%} is not greater than or equal to {maxhealth.%uuid of loop-player%}:
+    add {maxhealth.%uuid of loop-player%}/50 to {health.%uuid of loop-player%}
+ # if {spell.%loop-player's tool%} is set:
+  # resetlorewand({damage.%loop-player's tool%},{rarity.%loop-player's tool%},{spell.%loop-player's tool%},player)
+   #stop
+#
+ # if {spell.%loop-player's tool%} is not set:
+  # if {damage.%loop-player's tool%} is set:
+   # resetlore({damage.%loop-player's tool%},{rarity.%loop-player's tool%},player)
+    #stop
+   #if {health.%loop-player's tool%} is set:
+ #   resetlorearmor({health.%loop-player's tool%},{rarity.%loop-player's tool%},player)
+  #  stop
+every 1 second:
+ loop all players:
+  if {combattimer.%uuid of loop-player%} is greater than 0:
+   remove 1 from {combattimer.%uuid of loop-player%}
+  if {spellcooldown.%uuid of loop-player%} is greater than 0:
+   remove 1 from {spellcooldown.%uuid of loop-player%}
+  wipe loop-player's sidebar
+  set name of sidebar of loop-player to "&e&lEXCLAVE"
+  #set score "&f" in sidebar of loop-player to 16
+  set score "&7 -------------------------" in sidebar of loop-player to 15
+  set score "&6&l   Gold ⛃ : &e%loop-player's balance%" in sidebar of loop-player to 13
+  set score "&9&l   Spell Power ⦿ : &b%{manap.%uuid of loop-player%}%" in sidebar of loop-player to 12
+  set score "&4&l   Physical Power ⚔ : &c%{dmgp.%uuid of loop-player%}%" in sidebar of loop-player to 11
+  set score "&2&l   Vitality ❤ : &a%{hpp.%uuid of loop-player%}%" in sidebar of loop-player to 10
+
+  set score "&7 -------------------&7------" in sidebar of loop-player to 9
+  set score "&e&o          exclave.minehut.gg" in sidebar of loop-player to 8
+  #set score "&c&lOBJECTIVES:" in sidebar of loop-player to 9
+  #set score "&e&l - %{%loop-player%::objectives}%" in sidebar of loop-player to 8
+
+command /spell <text>: #spells
+ permission: op
+ trigger:
+  if arg 1 is "fireball":
+   make player shoot a fireball at speed 1
+   
+
+
+
+on death of a monster:
+ clear drops
+ if monster's name contains "Creeper": # droptable here --------------------------------------------------
+ give attacker apple named "&7test apple"
+ add 10 to {xp.%attacker%}
+
+
+
+
+
+function damageplayer(d: number, a: player, v: entity):
+ broadcast "%{_d}% %{_a}% %{_v}% "
+ set {_random1} to a random integer between 1 and 100
+ set {_random2} to a random integer between 1 and 100
+ set {_random3} to a random integer between 1 and 100
+ if {_a}'s tool is air:
+  stop
+ #if {_v} is a player:
+ {_a}'s tool is not air
+ {_a} is a player
+ #heal {_v}
+ make {_a} damage {_v} by 0.01
+ remove {_d} from {health.%{_v}%}
+ if {health.%{_v}%} is less than or equal to 0:
+  add 10 to {xp.%{_a}%}
+  broadcast "%{xp.%{_a}%}% %{_a}%"
+ 
+# create hologram "&e%{_d" at location {_random1}/50-1 meters above and {_random1}/50-1 meters above {_v} for 0.5 second offset by {_random1}/50-1, {_random1}/50, {_random1}/50-1
+ if {_v} is a player:
+  set {combattimer.%{_v}%} to 10
+ if name of {_v} contains "Creeper":
+  #set name of {_v} to colored "&aCreeper:&c %{health.%{_v}%}% / 200"
+  #broadcast "%{health.%uuid of {_v}%}%"
+ 
+command /setlevel <player> <number> [<number>]:
+ permission: op
+ trigger:
+  if arg 3 is not set:
+   loop all players:
+    add arg 2 - {manap.%uuid of player%} - {dmgp.%uuid of player%} - {hpp.%uuid of player%} to {skp.%uuid of player%}
+    set {level.%uuid of arg 1%} to arg 2
+    set {xp.%uuid of arg 1%} to 0
+    set {_num} to 10^(2 + (({level.%uuid of player%} - {level.%uuid of player%} mod 10) / 10))
+    broadcast "%{_num}%"
+  if arg 3 is set:
+   loop all players:
+   
+    set {level.%uuid of arg 1%} to arg 2
+    set {xp.%uuid of arg 1%} to arg 3
+    set {_num} to 10^(2 + (({level.%uuid of player%} - {level.%uuid of player%} mod 10) / 10))
+    broadcast "%{_num}%"
+
+
+
+command /mod <number> <number>:
+ trigger:
+  set {_num1} to arg 1
+  set {_num2} to arg 2
+  set {_thing} to {_num1} mod {_num2}
+  broadcast "%{_thing}%"
+											
+function notate(n : number) :: text:
+ set {_m} to {_n} #parsed as an integer
+ #broadcast "%{m}%"
+ if {_m} /1000000000000 is greater than or equal to 1:
+  set {_thing} to {_m} /1000000000000 #parsed as text
+  return "%{_thing}%T"
+  stop
+ else:
+  if {_m} /1000000000 is greater than or equal to 1:
+   set {_thing} to {_m} /1000000000 #parsed as text
+   return "%{_thing}%B"
+   stop
+  else:  
+   if {_m} /1000000 is greater than or equal to 1:
+    set {_thing} to {_m} /1000000 #parsed as text
+    return "%{_thing}%M"
+    stop
+   else:
+    if {_m} /1000 is greater than or equal to 1:
+     set {_thing} to {_m} /1000# parsed as text
+     return "%{_thing}%K"
+     stop
+    else:
+
+     return "%{_m}%"
+     stop
+
+
+command /location <player> <player>:
+ trigger:
+  set {_x1} to x coordinate of arg 1
+  set {_x2} to x coordinate of arg 2
+  set {_xdiff} to {_x2} - {_x1}
+  send "%{_xdiff}%"
+
+
+on combust:
+ if event-entity is a monster:
+  cancel event
+
+command /reset:
+ permission: op
+ trigger:
+  set {f.%uuid of player%) to 
+
+on first join:
+ broadcast "gayass"

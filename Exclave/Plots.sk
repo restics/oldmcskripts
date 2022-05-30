@@ -1,0 +1,86 @@
+
+
+command /azureplots [<text>] [<text>]:
+ usage: &cDo /azureplots help for help information
+ aliases: ap
+ trigger:
+  if arg 1 is "help":
+   send ""
+   send "               &7-----&6&lAzure&9&lPlots&7----- "
+   send ""
+   send "&e/azureplots help &7 - Displays the help menu."
+   send "&e/azureplots create &7- Creates a plot."
+   if player has permission "op":
+    send "&e/azureplots setpos (1 or 2)&7 - Sets corners for the model plot."
+    send "&e/azureplots createmp &7- Creates the model plot."
+    send "&e/azureplots setspawn &7- Sets the spawn (the place where the first plot will go)"
+   send ""
+  else if arg 1 is "setpos":
+   if player is not op:
+    send ""
+    send "               &7-----&6&lAzure&9&lPlots&7----- "
+    send ""
+    send "&e/azureplots help &7 - Displays the help menu."
+    send "&e/azureplots create &7- Creates a plot."
+    send ""
+    stop
+   if arg 2 is "1":
+    set {pos1} to location at player
+    send "&eSet position of position 1!"
+   else if arg 2 is "2":
+    set {pos2} to location at player
+    send "&eSet position of position 2!"
+   else:
+    send "&cUsage: /azureplots setpos (1 or 2)"
+  else if arg 1 is "createmp":
+   if player is not op:
+    send ""
+    send "               &7-----&6&lAzure&9&lPlots&7----- "
+    send ""
+    send "&e/azureplots help &7 - Displays the help menu."
+    send "&e/azureplots create &7- Creates a plot."
+    send ""
+    stop
+   if {pos1} is not set:
+    send "&cYou need to set pos 1!"
+   else if {pos2} is not set:
+    send "&cYou need to set pos 2!"
+    stop
+   else:
+    save structure between {pos1} and {pos2} as "plot"
+    send "&eModel plot saved!"
+  else if arg 1 is "setspawn":
+   if player is not op:
+    send ""
+    send "               &7-----&6&lAzure&9&lPlots&7----- "
+    send ""
+    send "&e/azureplots help &7 - Displays the help menu."
+    send "&e/azureplots create &7- Creates a plot."
+    send ""
+    stop
+   set {plotspawn} to location at player
+   set {pos} to 0
+   send "&eOrigin point set!"
+
+  else if arg 1 is "create":
+   if {plotspawn} is not set:
+    send "&cIt appears the dumb owner has not configured this plugin correctly. Go to his discord and bully him or PixelizedGaming until this gets fixed."
+   else:
+    load "plot" at location {pos} south of {plotspawn}
+    teleport player to location {pos} south and 5 above {plotspawn}
+    add 50 to {pos}
+    send "&ePlot created!"
+  else:
+   send ""
+   send "               &7-----&6&lAzure&9&lPlots&7----- "
+   send ""
+   send "&e/azureplots help &7 - Displays the help menu."
+   send "&e/azureplots create &7- Creates a plot."
+   if player has permission "op":
+    send "&e/azureplots setpos (1 or 2)&7 - Sets corners for the model plot."
+    send "&e/azureplots createmp &7- Creates the model plot."
+    send "&e/azureplots setspawn &7- Sets the spawn (the place where the first plot will go)"
+   send ""  
+   
+
+ 

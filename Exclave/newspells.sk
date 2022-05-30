@@ -1,0 +1,123 @@
+command /lightt:
+ permission: op
+ trigger:
+  set {block.%player%} to target block
+   #spawn 5 of "fireworks_spark":0.01 offset by 0.2, 0.2, 0.2 at location 1 meter above loop-block
+  drawComplexCircle particle "redstone", RGB 245, 245, 105, center location of {block.%player%}, id "%player%.lightning", rainbowMode false, randomRotation false, radius 3, density 10, start 100, visibleRange 30
+  wait 1 second
+  loop 3 times:
+   play sound "entity.experience_orb.pickup" with volume 0.5 to the player
+   wait 1 second
+  strike lightning effect at {block.%player%}
+  loop entities in radius 3 around {block.%player%}:
+   remove 500 from {health.%loop-entity%}
+  stopeffect id "%player%.lightning"
+
+
+
+
+on right click:
+ if {spellcooldown.%player%} is less than or equal to 0:
+  if the 2nd line of the lore of the player's tool is "&6Spell:&c Fireball":
+   make player shoot a fireball at speed 0.5
+   set {spell.%player%} to "fireball"
+   #broadcast "%{spell.%player%}%"
+   if player does not have permission "op":
+    set {spellcooldown.%player%} to 2
+  if the 2nd line of the lore of the player's tool is "&6Spell:&c 3 Fireballs":
+   {alreadyshot.%player%} is false
+   set {spell.%player%} to "fireball"
+   set {alreadyshot.%player%} to true
+   make player shoot a fireball at speed 1
+   wait 7 ticks
+   make player shoot a fireball at speed 1
+   wait 7 ticks
+   make player shoot a fireball at speed 1
+   
+   if player does not have permission "op":
+    set {spellcooldown.%player%} to 5
+   set {alreadyshot.%player%} to false
+  if the 2nd line of the lore of the player's tool is "&6Spell:&c Double Jump":
+   set {_l} to length of 1st line of the lore of the player's tool
+   #broadcast "%{_l}%"
+   set {_s} to {_l} - 12
+   set {_po} to the last {_s} characters of 1st line of the lore of the player's tool parsed as an integer
+   #broadcast "%{_po}%"
+
+   #make player shoot a fireball at speed 0.5
+   push player upwards at speed 0.8
+   push player forwards at speed 0.8
+   if player does not have permission "op":
+    set {spellcooldown.%player%} to 4
+   loop 3 times:
+    play sound "ENTITY_ENDER_DRAGON_FLAP" at location of player with pitch 2.0 and volume 1.0 for player 
+  if the 2nd line of the lore of the player's tool contains "Magic Missile":
+   if player does not have permission "op":
+    set {spellcooldown.%player%} to 3
+   if target monster is not set:
+    drawLine particle redstone, RGB 255, 255, 255, center location 1 meter above player, target location at target block, id "%player%.missile", rainbowMode true, solid true, density 70, length 0, zigZag count 0, height 0, visibleRange 32, displacementXYZ 0, 1.2, 0, pulseDelay 1
+   #drawRings particle "redstone", RGB 80, 255, 255, center player, id "%player%", rainbowMode true, randomRotation true, animated false, #radius 1, ringCount 4, ringDensity 10, visibleRange 32, pulseDelay 2
+    loop 2 times:
+     play sound "ENTITY_WITHER_SHOOT" at location of player with pitch 1.0 and volume 0.5 for player   
+     play sound "ENTITY_GENERIC_EXPLODE" at location of player with pitch 1.0 and volume 0.5 for player   
+    wait 1 tick
+    stopEffect id "%player%.missile"
+    wait 5 seconds
+    stopEffect id "%player%"
+    stop
+   else:
+    drawLine particle redstone, RGB 255, 255, 255, center location 1 meter above player, target location 1 meter above target monster, id "%player%.missile", rainbowMode true, solid true, density 70, length 0, zigZag count 0, height 0, visibleRange 32, displacementXYZ 0, 1.2, 0, pulseDelay 1
+    loop 2 times:
+     play sound "ENTITY_WITHER_SHOOT" at location of player with pitch 1.0 and volume 0.5 for player   
+     play sound "ENTITY_GENERIC_EXPLODE" at location of player with pitch 1.0 and volume 0.5 for player   
+    wait 1 tick
+    stopEffect id "%player%.missile"
+    damageplayer(10,player,target monster)
+  if the 2nd line of the lore of the player's tool contains "Lightning":
+   if player does not have permission "op":
+    set {spellcooldown.%player%} to 7
+   set {block.%player%} to target block
+   #spawn 5 of "fireworks_spark":0.01 offset by 0.2, 0.2, 0.2 at location 1 meter above loop-block
+   drawComplexCircle particle "redstone", RGB 245, 245, 105, center location of {block.%player%}, id "%player%.lightning", rainbowMode false, randomRotation false, radius 3, density 20, start 100, visibleRange 30
+   wait 1 second
+   loop 3 times:
+    play sound "entity.experience_orb.pickup" with volume 0.5 to the player
+    wait 1 second
+   strike lightning effect at {block.%player%}
+   loop monsters in radius 3 around {block.%player%}:
+    remove 500 from {health.%loop-monster%}
+   stopeffect id "%player%.lightning"
+  if the 2nd line of the lore of the player's tool contains "Nature's Revenge":
+   if player does not have permission "op":
+    set {spellcooldown.%player%} to 5
+   set {block.%player%} to target block
+   #spawn 5 of "fireworks_spark":0.01 offset by 0.2, 0.2, 0.2 at location 1 meter above loop-block
+   drawComplexCircle particle "redstone", RGB 154, 235, 101, center location of {block.%player%}, id "%player%.nrr", rainbowMode false, randomRotation false, radius 5, density 20, start 100, visibleRange 30
+   wait 1 second
+   #strike lightning effect at {block.%player%}
+  
+   loop 3 times:
+
+    wait 1 second
+    loop monsters in radius 5 around {block.%player%}:
+     drawArc particle "redstone", RGB 154, 235, 101, center player, target location of loop-monster, id "%player%.nr", rainbowMode false, density 50, height 3, pitchMultiplier 4, visibleRange 30  
+     remove 50 from {health.%loop-monster%}
+     play sound "BLOCK_BAMBOO_SAPLING_BREAK" at location of player with pitch 1.0 and volume 2.0 for player   
+     wait 1 tick
+     stopeffect id "%player%.nr"
+   stopeffect id "%player%.nrr"
+ else:
+  if the 2nd line of the lore of the player's tool contains "&6Spell:&c":
+   message "&cYou need to wait %{spellcooldown.%player%}% &cseconds before your next spell!" to player
+
+command /testmob <number> <text> <entity type>:
+ trigger:
+  set {_ent} to arg 3
+  spawn {_ent} at location of player
+  broadcast "%{_ent}%"
+  set {health.%last spawned monster%} to arg 1
+  set {maxhealth.%last spawned monster%} to arg 1
+  set {name.%last spawned monster%} to arg 2
+  set name of last spawned monster to colored "&a%{name.%last spawned monster%}%:&c &a%{health.%last spawned monster%}%&f/&a%{maxhealth.%last spawned monster%}%"
+  add "{CustomNameVisible:1}" to last spawned monster's nbt
+ # bind hologram "&aTest:&c %{health.%last spawned entity%}% / 20" to last spawned monster

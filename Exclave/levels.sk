@@ -1,0 +1,51 @@
+on chat:
+    {suffix::%uuid of player%} is set
+    set {_l::*} to split chat format at "[player]"
+    set {_l2::*} to split {_l::1} at ""
+    set {_c} to "&r"
+    loop {_l2::*}:
+        set {_i} to loop-index parsed as a integer
+        set {_i2} to {_i} + 1
+        loop-value is "&" or "§"
+        set {_c} to colored "&%{_l2::%{_i2}%}%"
+    replace every "[player]" in chat format with "[player] %{suffix::%uuid of player%}%%{_c}%"
+    if player has permission "heaven.colorchat":
+        replace every "[message]" in chat format with "&f[message]"
+    
+every 2 seconds:
+ loop all players:
+
+  
+
+  if loop-player's level is greater than or equal to 20:
+   set {suffix::%uuid of loop-player%} to colored "&7[&a%loop-player's level%&7]" 
+  if loop-player's level is greater than or equal to 40:
+   set {suffix::%uuid of loop-player%} to colored "&7[&b%loop-player's level%&7]"
+
+   if loop-player's level is greater than or equal to 60:
+    set {suffix::%uuid of loop-player%} to colored "&7[&c%loop-player's level%&7]"
+    if loop-player's level is greater than or equal to 80:
+     set {suffix::%uuid of loop-player%} to colored "&7[&d%loop-player's level%&7]"
+     if loop-player's level is greater than or equal to 100:
+      set {suffix::%uuid of loop-player%} to colored "&8[&9%loop-player's level%&8]"
+  else:
+   set {suffix::%uuid of loop-player%} to colored "&7[&e%loop-player's level%&7]"
+
+
+command /plugins:
+ aliases: pl
+ trigger:
+
+  message "&cAn internal error occurred while attempting to perform this command"
+
+command /pl:
+ trigger:
+  if player is not op:
+   message "&cAn internal error occurred while attempting to perform this command"
+
+
+command /killholos:
+ permission: op
+ trigger:
+  loop all holograms:
+   delete loop-hologram

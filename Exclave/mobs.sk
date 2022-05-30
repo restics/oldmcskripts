@@ -1,0 +1,9 @@
+function spawnmob(e: entity, h: number, m: number, n: text, p: number, x: number, y: number, z: number, w: world): 
+#e : mob to be spawned, h : health, m: maxhealth, n: name, p: dropped xp, xyz: cords
+ set {_loc} to the location at {_x}, {_y}, {_z} of the world {_w}
+ spawn {_e} at {_loc}
+
+
+command /spawnmobs <entity> <number> <number> <text> <number> <number> <number> <number> <world>: 
+ trigger:
+  spawnmob(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
