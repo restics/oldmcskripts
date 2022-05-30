@@ -1,0 +1,11 @@
+#This command is to fix any possible future bugs involving swords or gens.
+#These aren't permanent solutions, just failsafes so players can progress with the game.
+#will work on this as beta
+
+command fixswords:
+ trigger:
+  loop items in player's inventory:
+   if loop-item is sword:
+    remove loop-item from player's inventory
+  set slot 0 of player's inventory to wooden sword with name "&5&lSword &7[Lv%{slevel.%uuid of player%}%] " with lore "&dProgress to next level: &e[%percentbar({sxp.%uuid of player%}/{maxsxp.%uuid of player%})%&e] [%{sxp.%uuid of player%}%&e/%{maxsxp.%uuid of player%}%&e] " and "&dKill mobs with your sword to level it up!" and "&dShift-right-click to open the Swords Menu." with nbt "{HideFlags:3}"
+  swordUpdate(player)

@@ -1,0 +1,732 @@
+command /farm [<text>] [<text>]:
+ usage: &cDo /farms help for help information
+ aliases: f, farms
+ trigger:
+  if arg 1 is "help":
+   help(player)
+  else if arg 1 is "setpos":
+   if player is not op:
+    help(player)
+    stop
+   if arg 2 is "1":
+    set {pos1} to location at player
+    send "&eSet position of position 1!"
+   else if arg 2 is "2":
+    set {pos2} to location at player
+    send "&eSet position of position 2!"
+   else:
+    send "&cUsage: /farms setpos (1 or 2)"
+  else if arg 1 is "createmp":
+   if player is not op:
+    help(player)  
+    stop
+   if {pos1} is not set:
+    send "&cYou need to set pos 1!"
+   else if {pos2} is not set:
+    send "&cYou need to set pos 2!"
+    stop
+   else:
+    save structure between {pos1} and {pos2} as "plot"
+    send "&eModel plot saved!"
+  else if arg 1 is "setspawn":
+   if player is not op:
+    help(player)
+    stop
+   set {plotspawn} to location at player
+   set {pos} to 0
+   send "&eOrigin point set!"
+   
+
+  else if arg 1 is "create":
+   if {plotspawn} is not set:
+    send "&cIt appears the dumb owner has not configured this plugin correctly."
+   else:
+    if arg 2 is set:
+     loop {farms::*}:
+      if {farm.%uuid of player%} is not 0:
+       send "&8&l(&6&lPixelized&8&l) &7» &cYou are already in a farm! Do /farm leave to leave your farm!" #tells if they are in a farm
+       stop
+      if arg-2 contains "nigg":
+       send "&8&l(&6&lPixelized&8&l) &7» &cThat name is not allowed!"
+       stop       
+      if arg-2 contains "fuck":
+       send "&8&l(&6&lPixelized&8&l) &7» &cThat name is not allowed!"
+       stop    
+      if arg-2 contains "ass":
+       send "&8&l(&6&lPixelized&8&l) &7» &cThat name is not allowed!"
+       stop    
+      if arg-2 contains "sex":
+       send "&8&l(&6&lPixelized&8&l) &7» &cThat name is not allowed!"
+       stop    
+      if arg-2 contains "hitler":
+       send "&8&l(&6&lPixelized&8&l) &7» &cThat name is not allowed!"
+       stop    
+      if arg-2 contains "nazi":
+       send "&8&l(&6&lPixelized&8&l) &7» &cThat name is not allowed!"
+       stop    
+      if arg-2 contains "hate":
+       send "&8&l(&6&lPixelized&8&l) &7» &cThat name is not allowed!"
+       stop    
+      if arg-2 contains "rape":
+       send "&8&l(&6&lPixelized&8&l) &7» &cThat name is not allowed!"
+       stop    
+      if arg-2 contains "rapist":
+       send "&8&l(&6&lPixelized&8&l) &7» &cThat name is not allowed!"
+       stop    
+      if arg-2 contains "fag":
+       send "&8&l(&6&lPixelized&8&l) &7» &cThat name is not allowed!"
+       stop    
+      if arg-2 contains "anal":
+       send "&8&l(&6&lPixelized&8&l) &7» &cThat name is not allowed!"
+       stop    
+      if arg-2 contains "porn":
+       send "&8&l(&6&lPixelized&8&l) &7» &cThat name is not allowed!"
+       stop    
+      if arg-2 contains "dildo":
+       send "&8&l(&6&lPixelized&8&l) &7» &cThat name is not allowed!"
+       stop    
+      if arg-2 contains "cuck":
+       send "&8&l(&6&lPixelized&8&l) &7» &cThat name is not allowed!"
+       stop    
+      if arg-2 contains "chink":
+       send "&8&l(&6&lPixelized&8&l) &7» &cThat name is not allowed!"
+       stop    
+      if arg-2 contains "cunt":
+       send "&8&l(&6&lPixelized&8&l) &7» &cThat name is not allowed!"
+       stop    
+      if arg-2 contains "bitch":
+       send "&8&l(&6&lPixelized&8&l) &7» &cThat name is not allowed!"
+       stop
+      if arg-2 contains "tit":
+       send "&8&l(&6&lPixelized&8&l) &7» &cThat name is not allowed!"
+       stop    
+      if arg-2 contains "slut":
+       send "&8&l(&6&lPixelized&8&l) &7» &cThat name is not allowed!"
+       stop     
+      if loop-value is equal to arg 2:
+       send "&8&l(&6&lPixelized&8&l) &7» &cThis name has already been taken!" #tells if the farm name is taken
+       stop
+
+     load "plot" at location {pos} south of and 40 above {plotspawn} #i notated this block because im a dumbass and i dont know what code is for
+     teleport player to location {pos} south and 10 east and 10 south and 50 above {plotspawn}
+     add arg 2 to {farms::*} #adds the farm to the farm list
+     set {farmcenter.%arg 2%} to location at player #sets the farm center, which is used so that the player doesnt venture too far out
+     set {home.%uuid of player%} to {farmcenter.%arg 2%}
+
+     set {farm.%uuid of player%} to arg 2 # this is what farm the player is in
+     add player to {players::%arg 2%::*} # adds them to the farm player list
+     add 50 to {pos}
+     set {tetherblock.%uuid of player%} to {farmcenter.%{farm.%uuid of player%}%}
+     set {locked.%{farm.%uuid of player%}%} to false
+     set {level.%{farm.%uuid of player%}%} to 1
+     set {xp.%{farm.%uuid of player%}%} to 0
+     set {maxps.%{farm.%uuid of player%}%} to 4
+     #set {maxxp.%{farm.%uuid of player%}%} to 0
+     send "&8&l(&6&lPixelized&8&l) &7» &ePlot created!"
+   
+     set {maxgens.%{farm.%uuid of player%}%} to 10
+    else:
+     send "&8&l(&6&lPixelized&8&l) &7» &cYou need to name your farm!"
+
+  else if arg 1 is "home":
+   if {farm.%uuid of player%} is 0:
+    send "&8&l(&6&lPixelized&8&l) &7» &cYou are not in a farm!"
+    stop
+   teleport player to {home.%uuid of player%}
+   set {tetherblock.%uuid of player%} to {farmcenter.%{farm.%uuid of player%}%}
+  else if arg 1 is "h":
+   if {farm.%uuid of player%} is 0:
+    send "&8&l(&6&lPixelized&8&l) &7» &cYou are not in a farm!"
+    stop
+   teleport player to {home.%uuid of player%}
+   set {tetherblock.%uuid of player%} to {farmcenter.%{farm.%uuid of player%}%}
+  else if arg 1 is "sethome":
+   if {farm.%uuid of player%} is 0:
+    send "&8&l(&6&lPixelized&8&l) &7» &cYou are not in a farm!"
+    stop
+   if distance between player and {farmcenter.%{farm.%uuid of player%}%} is greater than 30:
+    send "&cYou can't set your home here!"
+    stop
+   else:
+    if "%region at player%" does not contain "spawn":
+     set {home.%uuid of player%} to location at player
+     send "&eHome set!"
+     stop
+    send "&cYou can't set your home here!"
+    
+  else if arg 1 is "leave":
+   if {farm.%uuid of player%} is 0:
+    send "&8&l(&6&lPixelized&8&l) &7» &cYou are not in a farm!"
+    stop
+   teleport player to {spawn}
+   set {home.%uuid of player%} to {spawn}
+   send "&8&l(&6&lPixelized&8&l) &7» &eYou have left your farm!"
+   remove player from {players::%{farm.%uuid of player%}%::*}
+   if size of {players::%{farm.%uuid of player%}%::*} is 0:
+    loop {farms::*}:
+     if "%loop-value%" is equal to "%{farm.%uuid of player%}%":
+      send "&eThere was no one else left in your farm, so it has been deleted."   
+      remove loop-value from {farms::*}
+      loop {gens::%{farm.%uuid of player%}%::*}:
+       remove loop-value-2 from {gens::%{farm.%uuid of player%}%::*}
+   set {farm.%uuid of player%} to 0
+  else if arg 1 is "invite":
+   if {farm.%uuid of player%} is 0:
+    send "&8&l(&6&lPixelized&8&l) &7» &cYou are not in a farm!"
+    stop
+   if size of {players::%{farm.%uuid of player%}%::*} is greater than or equal to {maxps.%{farm.%uuid of player%}%}:
+    send "&8&l(&6&lPixelized&8&l) &7» &cYour farm is full!"
+    stop
+   loop all players:
+    if loop-player's name is arg 2:
+     set {_t} to arg 2 parsed as a player
+     set {_uuid} to uuid of {_t}
+     if {farm.%{_uuid}%} is {farm.%uuid of player%}:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou cannot send requests to people in your own farm!"
+      stop
+     loop {requests::%uuid of loop-player%::*}:
+      if loop-value-2 is {requests::%uuid of loop-player%::*}:
+       stop
+     add {farm.%uuid of player%} to {requests::%uuid of loop-player%::*}
+     send "&8&l(&6&lPixelized&8&l) &7» &eSent the farm request!"
+     send "&8&l(&6&lPixelized&8&l) &7» &e%player%&e has invited you to join %{farm.%uuid of player%}%&e. Do /farm join %{farm.%uuid of player%}% to accept." to loop-player
+     exit 3 sections
+    
+   send "&8&l(&6&lPixelized&8&l) &7» &eThat player is not online."
+  else if arg 1 is "join":
+   set {_t} to arg 2 parsed as a player
+   set {_uuid} to uuid of {_t}
+   if {farm.%uuid of player%} is not 0:
+    send "&8&l(&6&lPixelized&8&l) &7» &cYou are already in a farm! Do /farm leave to leave your farm!" #tells if they are in a farm
+    stop
+
+   loop {requests::%uuid of player%::*}:
+    if arg 2 is loop-value:
+     if size of {players::%arg 2%::*} is greater than or equal to {maxps.%arg 2%} :
+      send "&8&l(&6&lPixelized&8&l) &7» &cThat farm is full!"
+      exit 3 sections
+     set {home.%uuid of player%} to {farmcenter.%arg 2%}
+     set {farm.%uuid of player%} to arg 2 # this is what farm the player is in
+     add player to {players::%arg 2%::*} # adds them to the farm player list 
+     set {tetherblock.%uuid of player%} to {farmcenter.%{farm.%uuid of player%}%}
+     teleport player to {home.%uuid of player%}
+     remove loop-value from {requests::%uuid of player%::*}
+     send "&8&l(&6&lPixelized&8&l) &7» &eYou have joined %{farm.%uuid of player%}%"
+     loop {players::%arg 2%::*}:
+      send "&e%player% has joined your farm!" to loop-value-2
+     exit 3 sections
+
+   send "&8&l(&6&lPixelized&8&l) &7» &eThat farm has not sent invites to you!"
+  else if arg 1 is "invites":
+   send "&8&l(&6&lPixelized&8&l) &7» &eThese farms have sent you a request: %{requests::%uuid of player%::*}%"
+  else if arg 1 is "clearinvites":
+   send "&8&l(&6&lPixelized&8&l) &7» &eCleared all invites!"
+   loop {requests::%uuid of player%::*}:
+    remove loop-value from {requests::%uuid of player%::*}
+  else if arg 1 is "visit":
+   set {_t} to arg 2 parsed as a player
+   set {_uuid} to uuid of {_t}
+   if player does not have permission "pixelized.mod":
+
+    if {farm.%{_uuid}%} is 0:
+     send "&8&l(&6&lPixelized&8&l) &7» &cThey are not in a farm!"
+     stop
+    if {locked.%{farm.%{_uuid}%}%} is true:
+     send "&8&l(&6&lPixelized&8&l) &7» &eThat farm is locked!"
+     stop
+
+   if {farmcenter.%{farm.%{_uuid}%}%} is set:
+    teleport player to {farmcenter.%{farm.%{_uuid}%}%}
+    send "&8&l(&6&lPixelized&8&l) &7» &eVisiting %arg 2%!"
+    set {tetherblock.%uuid of player%} to {farmcenter.%{farm.%{_uuid}%}%}
+    exit 2 sections
+   send "&8&l(&6&lPixelized&8&l) &7» &eThat person doesn't exist!"
+  else if arg 1 is "lock":
+   if {farm.%uuid of player%} is 0:
+    send "&8&l(&6&lPixelized&8&l) &7» &cYou are not in a farm!"
+    stop
+   if {locked.%{farm.%uuid of player%}%} is true:
+    set {locked.%{farm.%uuid of player%}%} to false
+    send "&8&l(&6&lPixelized&8&l) &7» &eIsland Unlocked!"
+    stop
+   if {locked.%{farm.%uuid of player%}%} is false:
+    set {locked.%{farm.%uuid of player%}%} to true
+    send "&8&l(&6&lPixelized&8&l) &7» &eIsland Locked!"
+    stop
+   if {locked.%{farm.%uuid of player%}%} is not set:
+    set {locked.%{farm.%uuid of player%}%} to true
+    send "&8&l(&6&lPixelized&8&l) &7» &eIsland Locked!"
+    stop
+  else if arg 1 is "list":
+   if {farm.%uuid of player%} is 0:
+    send "&8&l(&6&lPixelized&8&l) &7» &cYou are not in a farm!"
+    stop
+
+   send "&8&l(&6&lPixelized&8&l) &7» &eThese people are in your farm: %{players::%{farm.%uuid of player%}%::*}%"
+  else if arg 1 is "perks":
+   if {farm.%uuid of player%} is 0:
+    send "&8&l(&6&lPixelized&8&l) &7» &cYou are not in a farm!"
+    stop
+   open virtual chest inventory with 3 rows named "&9&lPerks" to player
+   format gui slot 0 of player with gray glass pane named "&7"
+   format gui slot 1 of player with gray glass pane named "&7"
+   format gui slot 2 of player with gray glass pane named "&7"
+   format gui slot 3 of player with gray glass pane named "&7"
+   format gui slot 4 of player with gray glass pane named "&7"
+   format gui slot 5 of player with gray glass pane named "&7"
+   format gui slot 6 of player with gray glass pane named "&7"
+   format gui slot 7 of player with gray glass pane named "&7"
+   format gui slot 8 of player with gray glass pane named "&7" 
+   set {_temp} to {xp.%{farm.%uuid of player%}%}/{maxxp.%{farm.%uuid of player%}%}
+   format gui slot 10 of player with orange glass named "&6Level Road" with lore "&eClick me to view level unlocks!" to close:
+    leveling(player)
+   format gui slot 13 of player with player's head named "&9Stats" with lore "&6Farm: %{farm.%uuid of player%}%" and "&6Farm Level: %{level.%{farm.%uuid of player%}%}%" and "&6Progress to next level: %percentbar({_temp})% &6[%{xp.%{farm.%uuid of player%}%}%/%{maxxp.%{farm.%uuid of player%}%}%]" and "" and "&eLevel up your farm by killing mobs!" and "&eEvery time you level up, you can access more perks!" and "&eClick on Level Road to view your unlocked perks!"
+   format gui slot 16 of player with lime glass named "&aUpgrades" with lore "&eClick me to access the upgrades!" to close:
+    upgrades(player)
+   format gui slot 18 of player with gray glass pane named "&7"
+   format gui slot 19 of player with gray glass pane named "&7"
+   format gui slot 20 of player with gray glass pane named "&7"
+   format gui slot 21 of player with gray glass pane named "&7"
+   format gui slot 22 of player with gray glass pane named "&7"
+   format gui slot 23 of player with gray glass pane named "&7"
+   format gui slot 24 of player with gray glass pane named "&7"
+   format gui slot 25 of player with gray glass pane named "&7"
+   format gui slot 26 of player with gray glass pane named "&7"
+  else if arg 1 is "kick":
+   if {farm.%uuid of player%} is 0:
+    send "&8&l(&6&lPixelized&8&l) &7» &cYou are not in a farm!"
+    stop
+   set {_t} to arg 2 parsed as a player
+   set {_uuid} to uuid of {_t}
+   if {tetherblock.%{_uuid}%} is {farmcenter.%{farm.%uuid of player%}%}:
+    teleport {_t} to spawn
+    set {tetherblock.%{_uuid}%} to {spawn}
+    send "&aKicked %{_t}% off your farm!"
+    send "&cYou have been kicked from %player%'s farm." to {_t}
+
+
+  else if arg 1 is "ban":
+   set {_banned} to arg 2 parsed as offlineplayer
+   set {_uuid} to uuid of {_banned}
+   if {farm.%uuid of player%} is 0:
+    send "&8&l(&6&lPixelized&8&l) &7» &cYou are not in a farm!"
+    stop
+   if {_banned} is equal to player:
+    send "&8&l(&6&lPixelized&8&l) &7» &cWhy not just do /leave?"
+    stop
+   loop {players::%{farm.%uuid of player%}%::*}: #checks if they are in farm
+    if {_banned} is equal to loop-value-1:
+     if {players::%{farm.%uuid of player%}%::1} is equal to player:
+      teleport {_banned} to {spawn}
+      set {home.%{_uuid}%} to {spawn}
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have been banned from your farm!" to {_banned}
+      send "&8&l(&6&lPixelized&8&l) &7» &eRemoved %{_banned}%&e from your farm!"
+      remove {_banned} from {players::%{farm.%uuid of player%}%::*}
+      if size of {players::%{farm.%uuid of player%}%::*} is 0:
+       loop {farms::*}:
+        if "%loop-value-2%" is equal to "%{farm.%{_uuid}%}%":
+         send "&eThere was no one else left in your farm, so it has been deleted."   
+         remove loop-value-2 from {farms::*}
+         loop {gens::%{farm.%{_uuid}%}%::*}:
+          remove loop-value-3 from {gens::%{farm.%{_uuid}%}%::*}
+      set {farm.%{_uuid}%} to 0
+     else:
+      send "&cOnly the Farm Leader (oldest member) can ban people!"
+   
+  else:
+   help(player)
+
+command /testes <text> [<text>]:
+ trigger:
+  if arg 1 is "add":
+   add arg 2 to {testes::*}
+  if arg 1 is "print":
+   loop {testes::*}:
+    send "&a%loop-value%"
+  set {_i} to 0
+  if arg 1 is "sp":
+   clear {sp::*}
+   set {sp::*} to {testes::*}
+   loop size of {sp::*} times:
+    add 1 to {_i}
+    set {_j} to {_i}
+    loop (size of {sp::*}) times:
+     add 1 to {_j}
+     if {_j} is less than size of {sp::*}+ 1:
+      set {_d} to {sp::%{_i}%} parsed as an integer
+      set {_e} to {sp::%{_j}%} parsed as an integer
+      #send "%{_d}%, %{_e}%"
+      if {_d} < {_e}:
+       #send "%{sp::%{_i}%}%,%{sp::%{_j}%}%"
+       set {_temp} to {sp::%{_i}%}
+       set {sp::%{_i}%} to {sp::%{_j}%}
+       set {sp::%{_j}%} to {_temp}
+     else: 
+      exit 1 section 
+
+   send "%{sp::*}%"
+  if arg 1 is "clear":
+   loop {testes::*}:
+    remove loop-value from {testes::*}
+
+function help(p: player):
+ send "" to {_p}
+ send "               &7-----&6&lPixelized&9&lFarms&7----- " to {_p}
+ send "" to {_p}
+ send "&e/farms help &7 - Displays the help menu." to {_p}
+ send "&e/farms create (name)&7- Creates a farm." to {_p}
+ send "&e/farms home &7- Teleports to your farm." to {_p}
+ send "&e/farms sethome &7- Sets your personal home." to {_p}
+ send "&e/farms leave &7- Leave your farm. " to {_p}
+ send "&e/farms invite &7- Invite someone else into your farm!" to {_p}
+ send "&e/farms join (farm) &7- Join someone else's farm." to {_p}
+ send "&e/farms invites &7- Check your invites mailbox." to {_p}
+ send "&e/farms clearinvites &7- Clear your invites mailbox." to {_p}
+ send "&e/farms visit (player) &7- Visit someone else's farm." to {_p}
+ send "&e/farms lock &7- Lock your farm so no one can visit it." to {_p}
+ send "&e/farms list &7- Lists your farm members" to {_p}
+ send "&e/farms perks &7- Checks the perks of your farm " to {_p}
+ send "&e/farms kick (player) &7- Kicks visitors off your farm " to {_p}
+ send "&e/farms ban (player) &7- Removes a farm member from the farm " to {_p}
+ if {_p} has permission "op": 
+  send "&e/farms setpos (1 or 2)&7 - Sets corners for the model plot." to {_p}
+  send "&e/farms createmp &7- Creates the model plot." to {_p}
+  send "&e/farms setspawn &7- Sets the spawn (the place where the first plot will go)" to {_p}
+ send ""   to {_p}
+
+command /farmsadmin [<text>] [<text>] [<number>] [<number>]:
+ permission: op
+ aliases: fa
+ trigger:
+  if arg 1 is "list":
+   send "%{farms::*}%"
+  if arg 1 is "clear":
+   loop {farms::*}:
+    remove loop-value from {farms::*}
+   send "&eFarms cleared!"
+  if arg 1 is "testplot":
+   load "plot" at location of player
+  if arg 1 is "level":
+   if arg 4 is set:
+    set {level.%arg 2%} to arg 3
+    set {xp.%arg 2%} to arg 4
+   else:
+    set {level.%arg 2%} to arg 3
+  if arg 1 is "forcekick":
+   
+
+
+every 5 ticks:
+ loop all players:
+  loop-player is not op
+  set {_x} to x coordinate of loop-player - x coordinate of {tetherblock.%uuid of loop-player%}
+  set {_z} to z coordinate of loop-player - z coordinate of {tetherblock.%uuid of loop-player%}
+  #send "%{_x}% , %{_z}% " to loop-player
+  if absolute value of {_x} is greater than 11:
+   if region at loop-player is not set:
+    teleport loop-player to {tetherblock.%uuid of loop-player%}
+    if world of loop-player is "farms":
+     send "&cStay in spawn!" to loop-player
+     stop
+    send "&cStay on the farm!" to loop-player
+  if absolute value of {_z} is greater than 11:
+   if region at loop-player is not set:
+    teleport loop-player to {tetherblock.%uuid of loop-player%}
+    if world of loop-player is "farms":
+     send "&cStay in spawn!" to loop-player
+     stop
+
+    send "&cStay on the farm!" to loop-player
+
+on block break:
+ player is not op
+ if {tetherblock.%uuid of player%} is equal to spawn:
+  stop
+ if {tetherblock.%uuid of player%} is not equal to {farmcenter.%{farm.%uuid of player%}%}:
+  cancel event
+  send "&cYou can't break blocks here!"
+
+on block place:
+ player is not op
+ if {tetherblock.%uuid of player%} is equal to spawn:
+  stop
+ if {tetherblock.%uuid of player%} is not equal to {farmcenter.%{farm.%uuid of player%}%}:
+  cancel event
+  send "&cYou can't place blocks here!"
+on right click:
+ player is not op
+ if {tetherblock.%uuid of player%} is equal to spawn:
+  stop
+ if {tetherblock.%uuid of player%} is not equal to {farmcenter.%{farm.%uuid of player%}%}:
+  cancel event
+ # if player's tool is not a sword:
+   #send "&cYou dont have permission to do that!"
+
+
+every 1 minute: # remove all double entries in the player lists
+ loop all players:
+  loop {players::%{farm.%uuid of loop-player%}%::*}:
+   set {_loopcount} to 0
+   if loop-player is loop-value-2:
+    add 1 to {_loopcount}
+    if {_loopcount} is greater than or equal to 2:
+     remove loop-value-2 from {players::%{farm.%uuid of loop-player%}%::*}
+     exit 4 sections
+
+command percentbartest <number>:
+ trigger:
+  set {_n} to percentbar(arg 1)
+  send "%{_n}%"
+  
+
+function percentbar(n: number) :: text: #n is a percentage
+ if {_n} is less than or equal to 0:
+  return "&8&l||||||||||||||||||||"
+ else:
+  if {_n} is less than or equal to 0.05:
+   return "&e&l|&8&l|||||||||||||||||||"
+  else:
+   if {_n} is less than or equal to 0.1:
+    return "&e&l||&8&l||||||||||||||||||"
+   else:
+    if {_n} is less than or equal to 0.15:
+     return "&e&l|||&8&l|||||||||||||||||"
+    else:
+     if {_n} is less than or equal to 0.2:
+      return "&e&l||||&8&l||||||||||||||||"
+     else:
+      if {_n} is less than or equal to 0.25:
+       return "&e&l|||||&8&l|||||||||||||||"
+      else:
+       if {_n} is less than or equal to 0.3:
+        return "&e&l||||||&8&l||||||||||||||"
+       else:
+        if {_n} is less than or equal to 0.35:
+         return "&e&l|||||||&8&l|||||||||||||"
+        else:
+         if {_n} is less than or equal to 0.4:
+          return "&e&l||||||||&8&l||||||||||||"
+         else:
+          if {_n} is less than or equal to 0.45:
+           return "&e&l|||||||||||&8&l|||||||||"
+          else:
+           if {_n} is less than or equal to 0.5:
+            return "&e&l||||||||||&8&l||||||||||"
+           else:
+            if {_n} is less than or equal to 0.55:
+
+             return "&e&l|||||||||||&8&l|||||||||"
+            else:
+             if {_n} is less than or equal to 0.6:
+
+              return "&e&l||||||||||||&8&l||||||||"
+             else:
+              if {_n} is less than or equal to 0.65:
+               return "&e&l|||||||||||||&8&l|||||||"
+              else:
+               if {_n} is less than or equal to 0.70:
+                return "&e&l||||||||||||||&8&l||||||"
+               else:
+                if {_n} is less than or equal to 0.75:
+                 return "&e&l|||||||||||||||&8&l|||||"
+                else:
+                 if {_n} is less than or equal to 0.8:
+         
+                  return "&e&l||||||||||||||||&8&l||||"
+                 else:
+                  if {_n} is less than or equal to 0.85:
+                   return "&e&l|||||||||||||||||&8&l|||"
+                  else:
+                   if {_n} is less than or equal to 0.9:
+                    return "&e&l||||||||||||||||||&8&l||"
+                   else:
+                    if {_n} is less than or equal to 0.95:
+                     return "&e&l|||||||||||||||||||&8&l|"
+                    else:
+                     if {_n} is less than or equal to 1:
+                      return "&e&l||||||||||||||||||||"
+
+every 2 seconds:
+ loop all players:
+  rankup(loop-player)
+  set {maxxp.%{farm.%uuid of loop-player%}%} to rounded 500 * (1.12^({level.%{farm.%uuid of loop-player%}%}))
+  set {pmaxgens.%{farm.%uuid of loop-player%}%} to {level.%{farm.%uuid of loop-player%}%} + 10
+  
+  if {level.%{farm.%uuid of loop-player%}%} is greater than or equal to 15:
+   set {maxps.%{farm.%uuid of loop-player%}%} to 6
+   if {level.%{farm.%uuid of loop-player%}%} is greater than or equal to 30:
+    set {maxps.%{farm.%uuid of loop-player%}%} to 8
+
+command forcerankup:
+ permission: op
+ trigger:
+  loop all players:
+   rankup(loop-player) 
+
+
+
+function upgrades(p: player):
+ set {_t} to uuid of {_p} 
+ open virtual chest inventory with 3 rows named "&9&lUpgrades" to {_p} 
+ format gui slot 0 of {_p} with gray glass pane named "&7"
+ format gui slot 1 of {_p} with gray glass pane named "&7"
+ format gui slot 2 of {_p} with gray glass pane named "&7"
+ format gui slot 3 of {_p} with gray glass pane named "&7"
+ format gui slot 4 of {_p} with gray glass pane named "&7"
+ format gui slot 5 of {_p} with gray glass pane named "&7"
+ format gui slot 6 of {_p} with gray glass pane named "&7"
+ format gui slot 7 of {_p} with gray glass pane named "&7"
+ format gui slot 8 of {_p} with gray glass pane named "&7" 
+ if {maxgens.%{farm.%{_t}%}%} is less than 60:
+  format gui slot 9 of {_p} with yellow glass named "&6Maximum Gen Slots" with lore "&e[%{maxgens.%{farm.%{_t}%}%}%&e ⇨ %{maxgens.%{farm.%{_t}%}%}+1%]" and "&eCost: &e%rounded 500 * (1.21^({maxgens.%{farm.%{_t}%}%}-1))%" to run:
+   genslots({_p})
+ if {maxgens.%{farm.%{_t}%}%} is greater than or equal to 60:
+  format gui slot 9 of {_p} with yellow glass named "&6Maximum Gen Slots" with lore "&e[%{maxgens.%{farm.%{_t}%}%}%&e ⇨ MAXED]" and "&eYou already have this maxed!" 
+ set {_counter} to 0
+ loop {players::%{farm.%{_t}%}%::*}:
+  add 1 to {_counter}
+ format gui slot 10 of {_p} with player head named "&ePlayer Slots" with lore "&ePlayers in your farm: [%{_counter}%&e/%{maxps.%{farm.%{_t}%}%}%]" and "&eAutomatically upgrades at level 15 and 30!"
+ set {_count} to 10
+ loop 7 times:
+  add 1 to {_count}
+  format gui slot {_count} of {_p} with red glass pane named "&cCOMING SOON"
+ format gui slot 18 of {_p} with gray glass pane named "&7"
+ format gui slot 19 of {_p} with gray glass pane named "&7"
+ format gui slot 20 of {_p} with gray glass pane named "&7"
+ format gui slot 21 of {_p} with gray glass pane named "&7"
+ format gui slot 22 of {_p} with gray glass pane named "&7"
+ format gui slot 23 of {_p} with gray glass pane named "&7"
+ format gui slot 24 of {_p} with gray glass pane named "&7"
+ format gui slot 25 of {_p} with gray glass pane named "&7"
+ format gui slot 26 of {_p} with gray glass pane named "&7"
+
+function genslots(p: player):
+ set {_t} to uuid of {_p}
+ if {maxgens.%{farm.%{_t}%}%}  >=  {pmaxgens.%{farm.%{_t}%}%}:
+  format gui slot 9 of {_p} with barrier named "&cYou already have the maximum amount of gen upgrades for your level."
+  wait 2 seconds
+  format gui slot 9 of {_p} with yellow glass named "&6Maximum Gen Slots" with lore "&e[%{maxgens.%{farm.%{_t}%}%}%&e ⇨ &e%{maxgens.%{farm.%{_t}%}%}+1%]" and "&eCost: %rounded 1000 * (1.21^({maxgens.%{farm.%{_t}%}%}-1))%" to run:
+   genslots({_p})
+  stop
+ if {balance.%{_t}%} is less than rounded 500 * (1.21^({maxgens.%{farm.%{_t}%}%}-1)):
+  send "&cYou do not have enough money!" to {_p}
+  close {_p}'s inventory
+  stop
+ remove rounded 500 * (1.21^({maxgens.%{farm.%{_t}%}%}-1)) from {balance.%{_t}%}
+ add 1 to {maxgens.%{farm.%{_t}%}%}
+ format gui slot 9 of {_p} with yellow glass named "&6Maximum Gen Slots" with lore "&e[%{maxgens.%{farm.%{_t}%}%}%&e ⇨ &e%{maxgens.%{farm.%{_t}%}%}+1%]" and "&eCost: %rounded 1000 * (1.21^({maxgens.%{farm.%{_t}%}%}-1))%" to run:
+  genslots({_p})
+
+
+function leveling(p: player):
+ set {_t} to uuid of {_p}
+ open virtual chest inventory with 6 rows named "&6&lLevel Road" to {_p} 
+
+ set {_counter} to 0
+ loop 4 times:
+  add 1 to {_counter}
+  if {level.%{farm.%{_t}%}%} >= {_counter}:
+   format gui slot {_counter} of {_p} with lime glass pane named "&aLevel %{_counter}%" with lore "&e+1 Gen Slot!"
+  else:
+   format gui slot {_counter} of {_p} with red glass pane named "&cLevel %{_counter}%" with lore "&cLocked!"
+ if {level.%{farm.%{_t}%}%} >= 5:
+  format gui slot 5 of {_p} with lime glass pane named "&aLevel 5" with lore "&e+1 Gen Slot!" and "&eCow Unlocked!"
+ else:
+  format gui slot 5 of {_p} with red glass pane named "&cLevel 5" with lore "&cLocked!"
+ add 1 to {_counter}
+ loop 2 times:
+  add 1 to {_counter}
+  if {level.%{farm.%{_t}%}%} >= {_counter}:
+   format gui slot {_counter} of {_p} with lime glass pane named "&aLevel %{_counter}%" with lore "&e+1 Gen Slot!"
+  else:
+   format gui slot {_counter} of {_p} with red glass pane named "&cLevel %{_counter}%" with lore "&cLocked!"
+ add 1 to {_counter}
+ loop 2 times:
+  add 1 to {_counter}
+  if {level.%{farm.%{_t}%}%} >= {_counter} - 1:
+   format gui slot {_counter} of {_p} with lime glass pane named "&aLevel %{_counter}-1%" with lore "&e+1 Gen Slot!"
+  else:
+   format gui slot {_counter} of {_p} with red glass pane named "&aLevel %{_counter}-1%" with lore "&cLocked!"
+ if {level.%{farm.%{_t}%}%} >= 10:
+  format gui slot 11 of {_p} with lime glass pane named "&aLevel 10" with lore "&e+1 Gen Slot!" and "&eZombie Unlocked!"
+ else:
+  format gui slot 11 of {_p} with red glass pane named "&cLevel 10" with lore "&cLocked!"
+ add 1 to {_counter}
+ loop 4 times:
+  add 1 to {_counter}
+  if {level.%{farm.%{_t}%}%} >= {_counter} - 1:
+   format gui slot {_counter} of {_p} with lime glass pane named "&aLevel %{_counter}-1%" with lore "&e+1 Gen Slot!"
+  else:
+   format gui slot {_counter} of {_p} with red glass pane named "&cLevel %{_counter}-1%" with lore "&cLocked!"
+ if {level.%{farm.%{_t}%}%} >= 15:
+  format gui slot 16 of {_p} with lime glass pane named "&aLevel 15" with lore "&e+1 Gen Slot!" and "&eSkeleton Unlocked!"
+ else:
+  format gui slot 16 of {_p} with red glass pane named "&cLevel 15" with lore "&cLocked!"
+ add 1 to {_counter}
+ loop 4 times:
+  add 1 to {_counter}
+  if {level.%{farm.%{_t}%}%} >= {_counter}:
+   format gui slot {_counter} of {_p} with lime glass pane named "&aLevel %{_counter}-1%" with lore "&e+1 Gen Slot!"
+  else:
+   format gui slot {_counter} of {_p} with red glass pane named "&cLevel %{_counter}-1%" with lore "&cLocked!"
+
+ loop 24 times:
+  add 1 to {_counter}
+  if {level.%{farm.%{_t}%}%} >= {_counter}:
+   format gui slot {_counter} of {_p} with lime glass pane named "&aLevel %{_counter}-1%" with lore "&e+1 Gen Slot!"
+  else:
+   format gui slot {_counter} of {_p} with red glass pane named "&cLevel %{_counter}-1%" with lore "&cLocked!"
+ if {level.%{farm.%{_t}%}%} >= 20:
+  format gui slot 21 of {_p} with lime glass pane named "&aLevel 20" with lore "&e+1 Gen Slot!" and "&eCreeper Unlocked!"
+ else:
+  format gui slot 21 of {_p} with red glass pane named "&cLevel 20" with lore "&cLocked!"
+
+ if {level.%{farm.%{_t}%}%} >= 25:
+  format gui slot 26 of {_p} with lime glass pane named "&aLevel 25" with lore "&e+1 Gen Slot!" and "&ex1.5 Sword XP Multiplier!"
+ else:
+  format gui slot 26 of {_p} with red glass pane named "&cLevel 25" with lore "&cLocked!"
+ if {level.%{farm.%{_t}%}%} >= 30:
+  format gui slot 31 of {_p} with lime glass pane named "&aLevel 30" with lore "&e+1 Gen Slot!" and "&eBlaze Unlocked!"
+ else:
+  format gui slot 31 of {_p} with red glass pane named "&cLevel 30" with lore "&cLocked!"
+
+ add 1 to {_counter}
+ loop 8 times:
+
+  add 1 to {_counter}
+  if {level.%{farm.%{_t}%}%} >= {_counter}:
+   format gui slot {_counter} of {_p} with lime glass pane named "&aLevel %{_counter}-2%" with lore "&e+1 Gen Slot!"
+  else:
+   format gui slot {_counter} of {_p} with red glass pane named "&cLevel %{_counter}-2%" with lore "&cLocked!"
+ if {level.%{farm.%{_t}%}%} >= 50:
+  format gui slot 52 of {_p} with lime glass pane named "&aLevel 50" with lore "&e+1 Gen Slot!" and "&ex1.75 Sword XP Multiplier!" and "&eEndermen Unlocked!"
+ else:
+  format gui slot 52 of {_p} with red glass pane named "&cLevel 50" with lore "&cLocked!"
+
+ format gui slot 0 of {_p} with gray glass pane named "&7More will be added soon!"
+ format gui slot 8 of {_p} with gray glass pane named "&7More will be added soon!" 
+ format gui slot 45 of {_p} with gray glass pane named "&7More will be added soon!"
+ format gui slot 53 of {_p} with gray glass pane named "&7More will be added soon!"
+
+command fancyspawn:
+ trigger:
+  send formatted "<ttp:&7Click this to go to spawn!><cmd:/spawn>click me to go to spawn!<reset>"
+
+function rankup(p: player):
+ set {_t} to uuid of {_p}
+ if {xp.%{farm.%{_t}%}%} is greater than or equal to {maxxp.%{farm.%{_t}%}%}: # level up skript
+  #loop all players:
+   #if loop-player's name is "xDream":
+    #send "leveled up!" to loop-player
+  set {_carry.%{_t}%} to {xp.%{farm.%{_t}%}%} - {maxxp.%{farm.%{_t}%}%}
+  set {xp.%{farm.%{_t}%}%} to {_carry.%{_t}%}
+  add 1 to {level.%{farm.%{_t}%}%}
+  loop {players::%{farm.%{_t}%}%::*}:
+   send "&eYour farm has leveled up to level %{level.%{farm.%{_t}%}%}%!" to {_p}
+   send "&eDo /f perks to see what you've unlocked!" to {_p}
+
+
+
+
+on chat:
+ replace all ":item:" in message with formatted "<ttp:%player's tool's lore%>%player's tool's name% <reset>"

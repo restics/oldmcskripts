@@ -1,0 +1,68 @@
+command warn [<player>] [<text>]:
+ permission: pf.warn
+ trigger:
+  if arg 1 is set:
+   send "&aWarned %arg 1%&a for reason %arg 2%&a!"
+   send "" to arg 1
+   send "&8&m-------------&8[&cWARN&8]&8&m-------------" to arg 1
+   send "" to arg 1
+   send "%player% has warned you for reason: %arg 2%" to arg 1
+   send "" to arg 1
+   send "&8&m-------------&8[&cWARN&8]&8&m-------------" to arg 1
+   send "" to arg 1
+  else:
+   send "&cUsage: /warn (player) (reason)"
+
+on chat:
+ if message contains "/join":
+  cancel event
+  send "&cNo advertising!"
+
+command broadcast [<text>]:
+ permission: op
+ trigger:
+  if arg 1 is set:
+   #send "&aWarned %arg 1%&a for reason %arg 2%&a!"
+   broadcast "" 
+   broadcast "&e&m-------------&e[&6Broadcast&e]&e&m-------------" 
+   broadcast "" 
+   broadcast "%arg 1%"
+   broadcast "" 
+   broadcast "&e&m-------------&e[&6Broadcast&e]&e&m-------------" 
+   broadcast "" 
+
+
+command /report [<player>] [<text>]:
+    trigger:
+        if arg 1 is set:
+            if arg 2 is set:
+                loop all players:
+                    loop-player has permission "reports.see":
+                        send "&8[&6&lPixelized&8] &c%arg 1% &8has been reported by &a%player% &8for: &4%arg 2%" to loop-player
+                    send "&8[&6&lPixelized&8] &aThanks for reporting &c%arg 1%&a! Your report will be send to all Staff Members!"
+                    add 1 to {reports.%arg 1%}
+                    stop
+            else:
+                send "&8[&6&lPixelized&8] &8Please give a reason why you whant to report &c%arg 1%&8!"
+        else:
+            send "&8[&6&lPixelized&8] &8Please specify a player!"
+
+
+command /reports [<player>]:
+    permission: reports.see
+    permission message: &8[&6&lPixelized&8] &cYou don't have perms to use this command!
+    trigger:
+        if arg 1 is set:
+            send "&8[&6&lPixelized&8] &8Reports of &a%arg 1%&8: &c%{reports.%arg 1%}%"
+        if arg 1 is not set:
+            send "&8[&6&lPixelized&8] &8Please specify a player!"
+
+command /resetreports [<player>]:
+    permission: reports.see
+    permission message: &8[&6&lPixelized&8] &cYou don't have perms to use this command!
+    trigger:
+        if arg 1 is set:
+            set {reports.%arg 1%} to 0
+            send "&8[&6&lPixelized&8] &aReports of &b%arg 1% &ahas been reset! &8(&c0&8)"
+        if arg 1 is not set:
+            send "&8[&6&lPixelized] &8Please specify a player!"

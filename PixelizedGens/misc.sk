@@ -1,0 +1,412 @@
+command /setspawn:
+ permission: op
+ trigger:
+  set {spawn} to location at player
+
+command /spawn:
+ trigger:
+  teleport player to {spawn}
+  set {tetherblock.%uuid of player%} to {spawn}
+  send "&8&l(&6&lPixelized&8&l) &7» &eTeleporting to spawn..."
+
+every 1 seconds:
+ loop all players:
+  if the y coordinate of loop-player is less than or equal to 40:
+   teleport loop-player to {spawn}
+   send "&8&l(&6&lPixelized&8&l) &7» &eTeleporting to spawn..." to loop-player
+
+
+command resett [<text>] [<player>]:
+ permission: op
+ trigger:
+  if arg 1 is "joins":
+   set {joins} to 0
+   loop {player::*}:
+    remove loop-value from {player::*}
+  if arg 1 is "player":
+   set {_a} to arg 2
+   set {_b} to uuid of {_a}
+   set {reset.%{_b}%} to true
+   remove arg 2 from {player::*}
+   kick arg 2 due to "Your stats have been reset!"
+  if arg 1 is "addplayer": 
+   add arg 2 to {player::*}
+  if arg 1 is "removeplayer": 
+   remove arg 2 from {player::*}
+
+on first join:
+ send "test"
+
+on login:
+ if {balance.%uuid of player%} is not set:
+  set {balance.%uuid of player%} to 200
+ if {swordname.%uuid of player%} is not set:
+  set {swordname.%uuid of player%} to "Sword"
+ if slot 0 of player's inventory is not a sword:
+  set slot 0 of player's inventory to wooden sword with name "&5&lSword &7[Lv%{slevel.%uuid of player%}%] " with lore "&dProgress to next level: &e[%percentbar({sxp.%uuid of player%}/{maxsxp.%uuid of player%})%&e] [%{sxp.%uuid of player%}%&e/%{maxsxp.%uuid of player%}%&e] " and "&dKill mobs with your sword to level it up!" and "&dShift-right-click to open the Swords Menu." with nbt "{HideFlags:3}"
+  swordUpdate(player)
+ if {referralused.%uuid of player%} is not set:
+  set {referralused.%uuid of player%} to false
+ if {bits.%uuid of player%} is not set:
+  set {bits.%uuid of player%} to 0
+ wait 1 tick
+ teleport player to {spawn}
+ set {tetherblock.%uuid of player%} to {spawn}
+ if {reset.%uuid of player%} is true:
+  #broadcast "##3"
+  remove player from {players::%{farm.%uuid of player%}%::*}
+  if size of {players::%{farm.%uuid of player%}%::*} is 0:
+   loop {farms::*}:
+    #send "%loop-value%"
+    if "%loop-value%" is equal to "%{farm.%uuid of player%}%":
+     send "&eThere was no one else left in your farm, so it has been deleted."   
+     remove loop-value from {farms::*}
+     loop {gens::%{farm.%uuid of player%}%::*}:
+      remove loop-value-2 from {gens::%{farm.%uuid of player%}%::*}
+  clear player's inventory
+  add player to {players::*}
+  add 1 to {joins}
+  broadcast "&e&lWelcome %player% to &6PixelizedFarms&e! &7&o(##%{joins}%)"
+  wait 1 tick
+  teleport player to {spawn}
+  set {reset.%uuid of player%} to false
+  set {tetherblock.%uuid of player%} to {spawn}
+  set {referralused.%uuid of player%} to false
+  set {bits.%uuid of player%} to 0
+  set {balance.%uuid of player%} to 200
+  set {tetherblock.%uuid of player%} to {spawn}
+  set {farm.%uuid of player%} to 0
+  set {slevel.%uuid of player%} to 1
+  set {sxp.%uuid of player%} to 0
+  set {sloot.%uuid of player%} to 0
+  set {ssharp.%uuid of player%} to 0
+  set {strader.%uuid of player%} to false
+  set {slucky.%uuid of player%} to 0
+  set {seconomist.%uuid of player%} to 0
+  set {sgrinder.%uuid of player%} to 0
+  set {maxsxp.%uuid of player%} to 118
+
+  add player to {player::*}
+
+ if {reset.%uuid of player%} is not set:
+  #broadcast "##2"
+  remove player from {players::%{farm.%uuid of player%}%::*}
+  if size of {players::%{farm.%uuid of player%}%::*} is 0:
+   loop {farms::*}:
+    #send "%loop-value%"
+    if "%loop-value%" is equal to "%{farm.%uuid of player%}%":
+     send "&eThere was no one else left in your farm, so it has been deleted."   
+     remove loop-value from {farms::*}
+     loop {gens::%{farm.%uuid of player%}%::*}:
+      remove loop-value-2 from {gens::%{farm.%uuid of player%}%::*}
+  clear player's inventory
+  add player to {players::*}
+  add 1 to {joins}
+  broadcast "&e&lWelcome %player% to &6PixelizedFarms&e! &7&o(##%{joins}%)"
+  wait 1 tick
+  teleport player to {spawn}
+  set {referralused.%uuid of player%} to false
+  set {bits.%uuid of player%} to 0
+  set {balance.%uuid of player%} to 200
+  set {tetherblock.%uuid of player%} to {spawn}
+  set {daily.%uuid of player%} to 0
+  set {expert.%uuid of player%} to 0
+  set {pro.%uuid of player%} to 0
+  set {legend.%uuid of player%} to 0
+  set {god.%uuid of player%} to 0
+  set {farm.%uuid of player%} to 0
+  set {slevel.%uuid of player%} to 1
+  set {sxp.%uuid of player%} to 0
+  set {sloot.%uuid of player%} to 0
+  set {ssharp.%uuid of player%} to 0
+  set {scleave.%uuid of player%} to 0
+  set {strader.%uuid of player%} to false
+  set {slucky.%uuid of player%} to 0
+  set {seconomist.%uuid of player%} to 0
+  set {sgrinder.%uuid of player%} to 0
+  set {maxsxp.%uuid of player%} to 118
+  add player to {player::*}
+  set slot 0 of player's inventory to wooden sword with name "&5&lSword &7[Lv%{slevel.%uuid of player%}%] " with lore "&dProgress to next level: &e[%percentbar({sxp.%uuid of player%}/{maxsxp.%uuid of player%})%&e] [%{sxp.%uuid of player%}%&e/%{maxsxp.%uuid of player%}%&e] " and "&dKill mobs with your sword to level it up!" and "&dShift-right-click to open the Swords Menu." with nbt "{HideFlags:3}"
+  set {reset.%uuid of player%} to false
+  set {referralused.%uuid of player%} to false
+  stop
+
+on death:
+ teleport player to {spawn}
+
+on hunger meter change:
+ set the player's food level to 10 
+
+
+on damage:
+ if damage cause is fall:
+  cancel event
+
+on death:
+ cancel the drops of experience
+
+on death of skeleton:
+ remove bow from the drops
+
+command /mutechat:
+ permission: staff.mutechat
+ trigger:
+  if {mutedchat} is not true:
+   set {mutedchat} to true
+   broadcast "&6%player% &ehas muted the chat!"
+   play sound "entity.experience_orb.pickup" with volume 3 to all players
+  else: 
+   set {mutedchat} to false
+   broadcast "&6%player% &ehas unmuted the chat!"
+
+on chat:
+    player is not op
+    player does not have permission "pf.mutetalk"
+    if {mutedchat} is true:
+        cancel event
+        message "&cChat is muted!"
+
+
+on rightclick holding ender pearl:
+ cancel event
+
+on command "/plugins":
+ if player is not op:
+  cancel event 
+  send "Plugins (1): &aSkript"
+on command "/pl":
+ if player is not op:
+  cancel event 
+  send "Plugins (1): &aSkript"
+on command "/bukkit:plugins":
+ if player is not op:
+  cancel event 
+  send "Plugins (1): &aSkript"
+on command "/bukkit:pl":
+ if player is not op:
+  cancel event 
+  send "Plugins (1): &aSkript"
+
+command /discord:
+ trigger:
+  send "&8&l(&6&lPixelized&8&l) &7» &e<link:https://discord.gg/cMAWwwr>&8&l(&6&lPixelized&8&l) &7» &eJoin us on our discord! &7(Click on the text) <reset>"
+on target:
+ cancel event
+on inventory click:
+ if event-slot is a sword:
+  cancel event
+
+on drop:
+ if event-item is a sword:
+  cancel event
+on item damage:
+ cancel event
+
+on damage:
+    if damage is caused by drowning:
+        cancel event
+on entity teleport:
+ if event-entity is an enderman:
+  cancel event
+
+command /rules:
+ trigger:
+
+  message "&2Chat Rules -"
+  message " &a - Don't swear &7(warn then mute)"
+  message " &a - Don't advertise &7(perm ban)"
+  message " &a - Don't spam &7(warn then mute)"
+  message " &a - Don't use an excessive amount of caps &7(warn then mute)"
+  message " &a - Don't use any racial slurs &7(mute then ban)"
+  message " &a - Don't use any form of suicide encouragement &e(ex. kys) &7&7(mute then ban)"
+  message " &a - Don't circumvent the chat filter &7(warn)"
+  message " &a - Don't use special text &7(warn then mute)"
+  message " &a - Don't post links in chat &7(mute then ban)"
+  message " &a - Don't be toxic &7(warn then mute)"
+  message " &a - Don't spam referral links in chat, they belong in the lobby! &7(warn then mute)"
+
+  message "&5Game Rules -"
+  message " &d - Don't use any form of hacks: &7(Autoclicker is allowed if its under 10 cps)"
+  message "   &e - Nonmalicious (ex. derp) &7(3 hour ban)"
+  message "   &e - Malicious (ex. killaura or fly) &7(1 day ban)"
+  message " &d - Don't abuse glitches &eincluding block glitch) &7(perm ban)"
+  message "   &e - Report all glitches to the server's discord."
+  message " &d - No blacklisted modifications:"
+  message "   &e - Optifine, Badlion client, and replay mod are ok"
+  message "   &e - Clients like Wurst, Vape, or Impact are not ok"
+  message " &d - Insiding is not allowed &7(1 week ban and complete reset then perm ban)"
+  message " &d - Scamming is not allowed &7(3 day ban and complete reset then perm ban) "
+  message " &d - Alts are limited to 1 &7(3 day ip-ban then perm ip-ban) "
+  message "&cPunishments may be changed over time."
+  message "&c&lRepeat offenders will eventually be perm banned."
+
+
+on experience spawn:
+ #cancel event
+
+
+every 2 seconds:
+ loop all players:
+  
+  #set {_temp} to {xp.%{farm.%uuid of loop-player%}%}/{maxxp.%{farm.%uuid of loop-player%}%}
+  #set {_per} to floor({_temp}*100)
+  wipe loop-player's sidebar
+  set name of sidebar of loop-player to "&6&lPixelizedFarms &e&lBETA"
+  #set score "&f " in sidebar of loop-player to 18
+  set score "&e&l┏╸ &6&lPLAYER" in sidebar of loop-player to 17
+  set score "&e&l┣ &7Player: &f%loop-player%" in sidebar of loop-player to 16
+  set score "&e&l┣ &7Balance: &f$%notate({balance.%uuid of loop-player%})%" in sidebar of loop-player to 15
+  set score "&e&l┣ &7Bits: &f❖ %notate({bits.%uuid of loop-player%})%" in sidebar of loop-player to 14
+  set score "&e&l┣╸ &6&lFARM" in sidebar of loop-player to 13
+  if {farm.%uuid of loop-player%} is not 0:
+   set score "&e&l┣ &7Farm: &f%{farm.%uuid of loop-player%}%" in sidebar of loop-player to 12
+   set score "&e&l┣ &7Farm Level: &f%{level.%{farm.%uuid of loop-player%}%}%" in sidebar of loop-player to 11
+   set score "&e&l┣ &7Farm XP: &f%notate({xp.%{farm.%uuid of loop-player%}%})%&f/%notate({maxxp.%{farm.%uuid of loop-player%}%})%&f " in sidebar of loop-player to 10
+  if {farm.%uuid of loop-player%} is 0:
+   set score "&e&l┃ &fDo /farms create (name)" in sidebar of loop-player to 12
+   set score "&e&l┃ &fto create a farm!" in sidebar of loop-player to 11
+  set score "&e&l┣╸ &6&lSERVER" in sidebar of loop-player to 9
+  set score "&e&l┣ &7Player Count:&f %online player count%/35" in sidebar of loop-player to 8
+  set score "&e&l┣ &7TPS: &f%tps from the last minute%" in sidebar of loop-player to 7
+  set score "&e&l┣ &7Joins: &f%{joins}%" in sidebar of loop-player to 7
+  set score "&e&l┗╸ " in sidebar of loop-player to 6
+  set score "&6&lIP: &6&opixelized.minehut.gg" in sidebar of loop-player to 5
+
+
+
+
+function notate(n : number) :: text:
+ set {_m} to {_n} #parsed as an integer
+ #broadcast "%{m}%"
+ if {_m} /1000000000000 is greater than or equal to 1:
+  set {_thing} to {_m} /1000000000000 #parsed as text
+  return "%{_thing}%T"
+  stop
+ else:
+  if {_m} /1000000000 is greater than or equal to 1:
+   set {_thing} to {_m} /1000000000 #parsed as text
+   return "%{_thing}%B"
+   stop
+  else:  
+   if {_m} /1000000 is greater than or equal to 1:
+    set {_thing} to {_m} /1000000 #parsed as text
+    return "%{_thing}%M"
+    stop
+   else:
+    if {_m} /1000 is greater than or equal to 1:
+     set {_thing} to {_m} /1000# parsed as text
+     return "%{_thing}%k"
+     stop
+    else:
+
+     return "%{_m}%"
+     stop
+
+every 65 seconds:
+ execute console command "/minecraft:kill @e[type=minecraft:wither_skeleton]"
+
+command setabc <text> [<text>]:
+ permission: op
+ trigger:
+  if arg 1 is "reset":
+   set {abccounter} to 1
+   loop {abc::*}:
+    remove loop-value from {abc::*}
+  if arg 1 is "add":
+   add arg 2 to {abc::*}
+
+  if arg 1 is "remove":
+   remove {abc::%arg 2%} from {abc::*}
+
+  if arg 1 is "list":
+   send "%{abc::*}%"
+
+every 75 seconds:
+ broadcast ""
+ broadcast "&8&l(&6&lPixelized&8&l) &7» &e %{abc::%{abccounter}%}%"
+ broadcast ""#%{abccounter}%"
+ add 1 to {abccounter}
+ set {_c} to 0
+ loop {abc::*}:
+  add 1 to {_c}
+ if {abccounter} is greater than {_c}:
+  set {abccounter} to 1
+
+
+
+ 
+
+
+command /settutorial:
+ permission: op
+ trigger:
+  set {tutorial} to location at player
+
+command /tutorial:
+ trigger:
+  teleport player to {tutorial}
+
+command payouts:
+ trigger:
+  open virtual chest inventory with size 3 named "&c&lPayouts" to player
+  set {_c} to 0
+  loop 10 times:
+   format gui slot {_c} of player with gray glass pane named "&7"
+   format gui slot {_c}+17 of player with gray glass pane named "&7"
+   add 1 to {_c}
+  add 3 to {_c}
+  format gui slot {_c} of player with shiny paper named "&b&lFarm Level Top" with lore "&f1st place - $25 Paypal or 50$ Buycraft" and "&f2nd place - $15 Paypal or 30$ Buycraft" and "&f3rd place - $10 Paypal or 20$ Buycraft"
+  add 2 to {_c}  
+
+
+
+on join:
+ player does not have permission "pf.captcha"
+ set {captcha.%uuid of player%} to true
+ captcha(player)
+ wait 20 seconds
+ if {captcha.%uuid of player%} is true:
+  kick {_p} due to "&cFailed the captcha!"
+
+
+#on command:
+# if {captcha.%uuid of player%} is true:
+#  send "&cDo the captcha!"
+# cancel event
+on chat:
+ if {captcha.%uuid of player%} is true:
+  send "&cDo the captcha!"
+  cancel event
+
+on inventory close:
+ wait 1 tick
+ if {captcha.%uuid of player%} is true:
+  send "&cDo the captcha!"
+  captcha(player)
+ 
+
+
+function captcha(p: player):
+ set {_t} to uuid of {_p}
+ set {_rand1} to a random integer between 1 and 6 #size of inventory
+ set {_item} to random item out of all items
+ open virtual chest inventory with size {_rand1} named "&cclick on the %{_item}%" to {_p}
+
+ #broadcast "%{_rand3}%"
+ #broadcast "%{_rand3}%"
+ loop 10 times:
+  set {_rand2} to a random integer between 0 and (({_rand1}*9)-1) #the number is a random number that will be in the inventory
+  set {_rand4} to random item out of all items
+  format gui slot {_rand2} of {_p} with {_rand4} named "&cDont click me!" with lore "&cPress escape to reload the captcha!" to close: #wrong items
+   kick {_p} due to "&cFailed the captcha!"
+
+ set {_rand3} to a random integer between 0 and (({_rand1}*9)-1)
+ format gui slot {_rand3}-1 of {_p} with {_item} with name "&aClick me" to close: #this is the correct item
+  set {captcha.%{_t}%} to false
+  send "&aYou passed the captcha!"
+
+
+
+
+
+

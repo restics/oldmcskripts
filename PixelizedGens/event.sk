@@ -1,0 +1,28 @@
+command /event:
+ trigger:
+  if {event.%uuid of player%} is not set:
+   teleport player to {event}
+   set {event.%uuid of player%} to false
+command setevent:
+ permission: op
+ trigger:
+  set {event} to player's location
+
+command eventkick <player>:
+ permission: op
+ trigger:
+  teleport arg 1 to {spawn}
+  set {tetherblock.%uuid of arg 1%} to {spawn}
+  set {event.%uuid of arg 1%} to false
+
+command resetevent:
+ permission: op
+ trigger:
+  loop all players:
+   clear  {event.%uuid of player%} 
+
+on flight toggle:
+ player is not op
+ if "%region at player%" contains "temp":
+  cancel event
+   

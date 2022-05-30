@@ -1,0 +1,61 @@
+
+
+command bal [<player>]:
+ aliases: balance
+ trigger:
+  if arg 1 is not set:
+   send "&6&lBalance&e: $%{balance.%uuid of player%}%"
+  else:
+   send "&6%arg 1%&6's balance&e: $%{balance.%uuid of arg 1%}%"
+
+command pay [<player>] [<number>]:
+ trigger:
+  if arg 2 is less than 0:
+   send "&cYou can't pay people negative!"
+   stop
+  if arg 1 is set:
+   arg 1 is online
+   if arg 2 is less than or equal to {balance.%uuid of player%}:
+    send "&aPaid $%arg 2%&a to %arg 1%"
+    send "&aRecieved $%arg 2%&a from %player%" to arg 1
+    add arg 2 to {balance.%uuid of arg 1%}
+    remove arg 2 from {balance.%uuid of player%}
+    stop
+
+  else:
+   send "&cUsage: /pay (player) (amount)"
+
+
+command money [<text>] [<text>] [<text>]:
+ permission: op
+ permission message: &cBruh you tryin to cheat in money
+ trigger:
+  if arg 1 is "give":
+   set {_givenAmount} to arg 3 parsed as an integer
+   set {_player} to uuid of arg 2 parsed as offlineplayer
+   add {_givenAmount} to {balance.%{_player}%}
+   send "&eGiven $%{_givenAmount}%&e to %arg 2%"
+   send "&eYou got $%{_givenAmount}% " to arg 2 parsed as player
+  else if arg 1 is "set":
+   set {_givenAmount} to arg 3 parsed as an integer
+   set {_player} to uuid of arg 2 parsed as offlineplayer
+   set {balance.%{_player}%} to {_givenAmount} 
+   send "&eSet %arg 2% to $%{_givenAmount}%&e "
+   send "&eYour balance has been set to $%{_givenAmount}% " to arg 2 parsed as player
+  else if arg 1 is "reset":
+   set {_givenAmount} to arg 3 parsed as an integer
+   set {_player} to uuid of arg 2 parsed as offlineplayer
+   set {balance.%{_player}%} to 0
+   send "&eReset %arg 2%'s balance"
+   send "&eYour balance has been reset" to arg 2 parsed as player
+  else if arg 1 is "remove":
+   set {_givenAmount} to arg 3 parsed as an integer
+   set {_player} to uuid of arg 2 parsed as offlineplayer
+   remove {_givenAmount} from {balance.%{_player}%}
+   send "&eReset %arg 2%'s balance"
+   send "&eYour balance has been reset" to arg 2 parsed as player
+
+  else:
+   send "&cUsage: /money (give,set,reset,remove) (player) (amount)"
+
+

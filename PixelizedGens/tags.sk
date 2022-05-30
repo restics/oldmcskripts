@@ -1,0 +1,74 @@
+command /titles:
+ #permission: heaven.titles
+ trigger:
+  wait 1 tick
+  open virtual chest inventory with 4 rows named "&6Tags" to player
+  format gui slot 0 of player with gray glass pane named "&7"
+  format gui slot 1 of player with gray glass pane named "&7"
+  format gui slot 2 of player with gray glass pane named "&7"
+  format gui slot 3 of player with gray glass pane named "&7"
+  format gui slot 4 of player with gray glass pane named "&7"
+  format gui slot 5 of player with gray glass pane named "&7"
+  format gui slot 6 of player with gray glass pane named "&7"
+  format gui slot 7 of player with gray glass pane named "&7"
+  format gui slot 8 of player with gray glass pane named "&7"
+  if player has permission "heaven.titles.lol":
+   format gui slot 9 of player with shiny name tag named "&fTitle: lol" with lore "&eUnlocked!" to close:
+    send message "&aSuffix has been set to &8(&elol&8)&a!" to player
+    execute console command "pex user %player% suffix "" &8(&elol&8)"""
+  else:
+   format gui slot 9 of player with shiny orange glass pane named "&fTitle: lol" with lore "&eLocked!"  
+
+  if player has permission "heaven.titles.nice":
+   format gui slot 10 of player with shiny name tag named "&fTitle: nice" with lore "&eUnlocked!" to close:
+    send message "&aSuffix has been set to &8(&cNice.&8)&a!" to player
+    execute console command "pex user %player% suffix "" &8(&cNice.&8)"""
+  else:
+   format gui slot 10 of player with shiny orange glass pane named "&fTitle: nice" with lore "&eLocked!" 
+
+
+  if player has permission "heaven.titles.parkour":
+   format gui slot 11 of player with shiny name tag named "&fTitle: parkour" with lore "&eUnlocked!" to close:
+    send message "&aSuffix has been set to &8(&a&lParkour Legend&8)&a!" to player
+    execute console command "pex user %player% suffix "" &8(&a&lParkour Legend&8)"""
+  else:
+   format gui slot 11 of player with shiny orange glass pane named "&fTitle: parkour" with lore "&eLocked!"
+  if player has permission "heaven.titles.president":
+   format gui slot 12 of player with shiny name tag named "&fTitle: president" with lore "&eUnlocked!" to close:
+    send message "&aSuffix has been set to &8(&6&lMr. President&8)&a!" to player
+    execute console command "pex user %player% suffix "" &8(&6&lMr. President&8)"""
+  else if player has permission "heaven.titles.yoda":
+   format gui slot 12 of player with shiny name tag named "&fTitle: yoda" with lore "&eUnlocked!" to close:
+    send message "&aSuffix has been set to &8(&aLego Yoda&8)&a!" to player
+    execute console command "pex user %player% suffix "" &8(&aLego Yoda&8)"""
+  else:
+   format gui slot 12 of player with shiny orange glass pane named "&fTitle: secret" with lore "&eLocked!"
+  if player has permission "heaven.titles.gay":
+   format gui slot 13 of player with shiny name tag named "&fTitle: gay" with lore "&eUnlocked!" to close:
+    send message "&aSuffix has been set to &8(&cV&6e&er&ay&bG&9a&dy&8)&a!" to player
+    execute console command "pex user %player% suffix "" &8(&cV&6e&er&ay&bG&9a&dy&8)"""
+  else:
+   format gui slot 13 of player with shiny orange glass pane named "&fTitle: gay" with lore "&eLocked!"
+  if player has permission "heaven.titles.rich":
+   format gui slot 15 of player with shiny name tag named "&fTitle: richman" with lore "&eUnlocked!" to close:
+    send message "&aSuffix has been set to &8(&a$&2$&a$&8)&a!" to player
+    execute console command "pex user %player% suffix "" &8(&a$&2$&a$&8)"""
+  else:
+   format gui slot 15 of player with shiny orange glass pane named "&fTitle: richman" with lore "&eLocked!"
+  if player has permission "pf.expert":
+   format gui slot 16 of player with shiny name tag named "&fTitle: pay2win" with lore "&eUnlocked!" to close:
+    send message "&aSuffix has been set to &8(&e$&6$&e$&8)&a!" to player
+    execute console command "pex user %player% suffix "" &8(&e$&6$&e$&8)"""
+  else:
+   format gui slot 16 of player with shiny orange glass pane named "&fTitle: pay2win" with lore "&eLocked!"
+  format gui slot 27 of player with gray glass pane named "&7"
+  format gui slot 28 of player with gray glass pane named "&7"
+  format gui slot 29 of player with gray glass pane named "&7"
+  format gui slot 30 of player with gray glass pane named "&7"
+  format gui slot 31 of player with gray glass pane named "&7"
+  format gui slot 32 of player with gray glass pane named "&7"
+  format gui slot 33 of player with gray glass pane named "&7"
+  format gui slot 34 of player with gray glass pane named "&7"
+  format gui slot 35 of player with gray glass pane named "&7"
+
+

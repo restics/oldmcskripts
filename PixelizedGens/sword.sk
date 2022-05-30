@@ -1,0 +1,360 @@
+
+command renamesword [<text>]:
+ permission: pf.pro
+ trigger:
+  if arg 1 is set:
+   set {swordname.%uuid of player%} to colored arg 1
+   send "&aChanged your sword's name to %arg 1%!"
+   swordUpdate(player)
+  else:
+   send "&cYour sword can't be named that!"
+
+every 2 seconds:
+ loop all players:
+  if {sxp.%uuid of loop-player%} is greater than or equal to {maxsxp.%uuid of loop-player%}: # level up skript
+   set {_carry.%uuid of loop-player%} to {sxp.%uuid of loop-player%} - {maxsxp.%uuid of loop-player%}
+   set {sxp.%uuid of loop-player%} to {_carry.%uuid of loop-player%}
+   add 1 to {slevel.%uuid of loop-player%}
+   send "&5Your sword has leveled up to level %{slevel.%uuid of loop-player%}%&5!" to loop-player
+   send "&dShift right to see what you've unlocked!" to loop-player
+   swordUpdate(loop-player)
+  set {maxsxp.%uuid of loop-player%} to rounded 350 * (1.12^({slevel.%uuid of loop-player%}))
+  set {smaxloot.%uuid of loop-player%} to floor({slevel.%uuid of loop-player%}/5)
+  set {smaxsharp.%uuid of loop-player%} to floor({slevel.%uuid of loop-player%}/10)
+  set {smaxcleave.%uuid of loop-player%} to floor({slevel.%uuid of loop-player%}/25)
+  set {smaxlucky.%uuid of loop-player%} to floor({slevel.%uuid of loop-player%}/10)
+  set {smaxecon.%uuid of loop-player%} to floor({slevel.%uuid of loop-player%}/10)
+  set {smaxgrinder.%uuid of loop-player%} to floor({slevel.%uuid of loop-player%}/10)
+
+command sa <text> [<text>] [<text>] [<player>]:
+ permission: op
+ trigger:
+  if arg 1 is "reset":
+   loop items in player's inventory:
+    if loop-item is sword:
+     remove loop-item from player's inventory
+   set {slevel.%uuid of player%} to 1
+   set {sxp.%uuid of player%} to 0
+   set {sloot.%uuid of player%} to 0
+   set {ssharp.%uuid of player%} to 0
+   set {scleave.%uuid of player%} to 0
+   set {strader.%uuid of player%} to false
+   set {slucky.%uuid of player%} to 0
+   set {seconomist.%uuid of player%} to 0
+   set {sgrinder.%uuid of player%} to 0
+   set slot 0 of player's inventory to wooden sword with name "&5&lSword &7[Lv%{slevel.%uuid of player%}%] " with lore "&dProgress to next level: &e[%percentbar({sxp.%uuid of player%}/{maxsxp.%uuid of player%})%&e] [%{sxp.%uuid of player%}%&e/%{maxsxp.%uuid of player%}%&e] " and "&dKill mobs with your sword to level it up!" and "&dShift-right-click to open the Swords Menu." with nbt "{HideFlags:3}"
+   swordUpdate(player)
+  if arg 1 is "level":
+   set {_a} to arg 2 parsed as an integer
+   if arg 3 is set:
+    set {_b} to arg 3 parsed as an integer
+    set {slevel.%uuid of player%} to {_a}
+    set {sxp.%uuid of player%} to {_b}
+   else:
+    set {slevel.%uuid of player%} to {_a}
+   swordUpdate(player)
+  if arg 1 is "areset":
+   loop items in arg 4's inventory:
+    if loop-item is sword:
+     remove loop-item from arg 4's inventory
+   set slot 0 of arg 4's inventory to  wooden sword with name "&5&lSword &7[Lv%{slevel.%uuid of player%}%] " with lore "&dProgress to next level: &e[%percentbar({sxp.%uuid of player%}/{maxsxp.%uuid of player%})%&e] [%{sxp.%uuid of player%}%&e/%{maxsxp.%uuid of player%}%&e] " and "&dKill mobs with your sword to level it up!" and "&dShift-right-click to open the Swords Menu." with nbt "{HideFlags:3}"
+   swordUpdate(player)
+    
+
+on right click:
+ if player is sneaking:
+  if player's tool is a sword:
+   open virtual chest inventory with 3 rows named "&9&lSword Upgrades" to player
+   format gui slot 0 of player with gray glass pane named "&7"
+   format gui slot 1 of player with gray glass pane named "&7"
+   format gui slot 2 of player with gray glass pane named "&7"
+   format gui slot 3 of player with gray glass pane named "&7"
+   format gui slot 4 of player with gray glass pane named "&7"
+   format gui slot 5 of player with gray glass pane named "&7"
+   format gui slot 6 of player with gray glass pane named "&7"
+   format gui slot 7 of player with gray glass pane named "&7"
+   format gui slot 8 of player with gray glass pane named "&7" 
+   set {_d} to 10
+   loop 8 times:
+    format gui slot {_d} of player with red stained glass pane named "&cCOMING SOON" 
+    add 1 to {_d}
+   format gui slot 9 of player with gold nugget named "&5Looting" with lore "&dLooting will increase the drops of every mob you kill." and "&dLooting: %{sloot.%uuid of player%}% ⇨ %{sloot.%uuid of player%} + 1%" and  "&f" and  "&eCost: %rounded 5000 * (2.2^({sloot.%uuid of player%} + 1))%" and "&eClick to upgrade!" and "&eRequires ⚔ Level %({sloot.%uuid of player%}+1)*5%" to run:
+    looting(player)
+   format gui slot 10 of player with nether star named "&3Sharpness" with lore "&bSharpness increases the damage of your sword." and "&bSharpness: %{ssharp.%uuid of player%}% ⇨ %{ssharp.%uuid of player%} + 1%" and  "&f" and  "&eCost: %rounded 15000 * (2.2^({ssharp.%uuid of player%} + 1))%" and "&eClick to upgrade!" and "&eRequires ⚔ Level %({ssharp.%uuid of player%}+1)*10%" to run:
+    sharpness(player)
+   if {strader.%uuid of player%} is true:
+    format gui slot 12 of player with emerald named "&2Trader" with lore "&aLeft click chests to sell its contents!" and "&f" and  "&eAlready bought!" 
+   else: 
+    format gui slot 12 of player with emerald named "&2Trader" with lore "&aLeft click chests to sell its contents!" and "&f" and  "&eCost: 50,000,000" and "&eClick to upgrade!" and "&eRequires ⚔ Level 50" to run:
+     trader(player)
+   format gui slot 13 of player with chest named "&6Lucky" with lore "&eEvery kill gives you a chance to win a crate key." and  "&eLucky: %{slucky.%uuid of player%}% ⇨ %{slucky.%uuid of player%} + 1%" and  "&f" and  "&eCost: %rounded 25000 * (1.5^({slucky.%uuid of player%} + 1))%" and "&eClick to upgrade!" and "&eRequires ⚔ Level %({slucky.%uuid of player%}+1)*10%" to run:
+    luck(player)
+#5000 * (2.2^({slucky.%{_t}%}+1))
+   format gui slot 14 of player with shiny paper named "&2Economist" with lore "&aEach kill will have a chance of dropping bits." and  "&aEconomist: %{seconomist.%uuid of player%}% ⇨ %{seconomist.%uuid of player%} + 1%" and  "&f" and  "&eCost: %rounded 50000 * (2.2^({seconomist.%uuid of player%} + 1))%" and "&eClick to upgrade!" and "&eRequires ⚔ Level %({seconomist.%uuid of player%}+1)*10%" to run:
+    economist(player)
+   format gui slot 11 of player with experience bottle named "&4Grinder" with lore "&cGain more farm xp per kill." and  "&cGrinder: %{sgrinder.%uuid of player%}% ⇨ %{sgrinder.%uuid of player%} + 1%" and  "&f" and  "&eCost: %rounded 35000 * (2.2^({sgrinder.%uuid of player%} + 1))%" and "&eClick to upgrade!" and "&eRequires ⚔ Level %({sgrinder.%uuid of player%}+1)*10%" to run:
+    grinder(player)
+     
+   format gui slot 18 of player with gray glass pane named "&7"
+   format gui slot 19 of player with gray glass pane named "&7"
+   format gui slot 20 of player with gray glass pane named "&7"
+   format gui slot 21 of player with gray glass pane named "&7"
+   format gui slot 22 of player with gray glass pane named "&7"
+   format gui slot 23 of player with gray glass pane named "&7"
+   format gui slot 24 of player with gray glass pane named "&7"
+   format gui slot 25 of player with gray glass pane named "&7"
+   format gui slot 26 of player with gray glass pane named "&7"
+
+
+function looting(p: player):
+ set {_t} to uuid of {_p}
+ if {sloot.%{_t}%}  >=  {smaxloot.%{_t}%}:
+  format gui slot 9 of {_p} with barrier named "&cYou already have the maximum amount of looting upgrades for your level."
+  wait 2 seconds
+  format gui slot 9 of {_p} with gold nugget named "&6Looting" with lore "&5Looting will increase the drops of every mob you kill." and "&dLooting: %{sloot.%{_t}%}% ⇨ %{sloot.%{_t}%} + 1%" and  "&f" and  "&eCost: %rounded 2500 * (2.2^({sloot.%{_t}%} + 1))% " and "&eClick to upgrade!"  and "&eRequires ⚔ Level %({sloot.%{_t}%}+1)*5%" to run:
+   looting(player)
+  stop
+ if {sloot.%{_t}%}  >=  10:
+  format gui slot 9 of {_p} with barrier named "&cYou already have the maximum amount of looting upgrades possible."
+  wait 2 seconds
+  format gui slot 9 of {_p} with gold nugget named "&6Looting" with lore "&5Looting will increase the drops of every mob you kill." and "&dLooting: %{ssharp.%{_t}%}% ⇨ %{ssharp.%{_t}%} + 1%" and  "&f" and  "&eCost: %rounded 2500 * (2.2^({ssharp.%{_t}%} + 1))% " and "&eClick to upgrade!"  and "&eRequires ⚔ Level %({ssharp.%{_t}%}+1)*5%" to run:
+   looting(player)
+  stop
+ if {balance.%{_t}%} is less than rounded 2500 * (2.2^({sloot.%{_t}%}+1)):
+  close {_p}'s inventory
+  send "&cYou do not have enough money!" to {_p}
+  stop
+ remove rounded 2500 * (2.2^({sloot.%{_t}%} + 1)) from {balance.%{_t}%}
+ add 1 to {sloot.%{_t}%}
+ swordUpdate({_p})
+ format gui slot 9 of {_p} with gold nugget named "&6Looting" with lore "&5Looting will increase the drops of every mob you kill." and "&dLooting: %{sloot.%{_t}%}% ⇨ %{sloot.%{_t}%} + 1%" and  "&f" and  "&eCost: %rounded 2500 * (2.2^({sloot.%{_t}%} + 1))% " and "&eClick to upgrade!"  and "&eRequires ⚔ Level %({sloot.%{_t}%}+1)*5%"  to run:
+  looting(player)
+  
+
+function sharpness(p: player):
+ set {_t} to uuid of {_p}
+ if {ssharp.%{_t}%}  >=  {smaxsharp.%{_t}%}:
+  format gui slot 10 of {_p} with barrier named "&cYou already have the maximum amount of sharpness upgrades for your level."
+  wait 2 seconds
+  format gui slot 10 of {_p} with nether star named "&3Sharpness" with lore "&bSharpness increases the damage of your sword." and "&bSharpness: %{ssharp.%{_t}%}% ⇨ %{ssharp.%{_t}%} + 1%" and  "&f" and  "&eCost: %rounded 15000 * (2.2^({ssharp.%{_t}%} + 1))%" and "&eClick to upgrade!" and "&eRequires ⚔ Level %({ssharp.%{_t}%}+1)*10%" to run:
+   sharpness({_p})
+  stop
+ if {ssharp.%{_t}%}  >=  5:
+  format gui slot 10 of {_p} with barrier named "&cYou already have the maximum amount of sharpness upgrades possible."
+  wait 2 seconds
+  format gui slot 10 of {_p} with nether star named "&3Sharpness" with lore "&bSharpness increases the damage of your sword." and "&bSharpness: %{ssharp.%{_t}%}% ⇨ %{ssharp.%{_t}%} + 1%" and  "&f" and  "&eCost: %rounded 15000 * (2.2^({ssharp.%{_t}%} + 1))%" and "&eClick to upgrade!" and "&eRequires ⚔ Level %({ssharp.%{_t}%}+1)*10%" to run:
+   sharpness({_p})
+  stop
+ if {balance.%{_t}%} is less than rounded 15000 * (2.2^({ssharp.%{_t}%} + 1)):
+  close {_p}'s inventory
+  send "&cYou do not have enough money!" to {_p}
+  stop
+ remove rounded 15000 * (2.2^({ssharp.%{_t}%})) from {balance.%{_t}%}
+ add 1 to {ssharp.%{_t}%}
+ swordUpdate({_p})
+ format gui slot 10 of {_p} with nether star named "&3Sharpness" with lore "&bSharpness increases the damage of your sword." and "&bSharpness: %{ssharp.%{_t}%}% ⇨ %{ssharp.%{_t}%} + 1%" and  "&f" and  "&eCost: %rounded 15000 * (2.2^({ssharp.%{_t}%} + 1))%" and "&eClick to upgrade!" and "&eRequires ⚔ Level %({ssharp.%{_t}%}+1)*10%" to run:
+  sharpness({_p})
+
+
+
+on damage:
+ attacker's tool is a sword
+ if attacker's tool is a gold sword:
+  increase the damage by 2
+ if attacker's tool is a diamond sword:
+  increase the damage by 1
+
+on death:
+ swordUpdate(attacker)
+
+
+function cleave(p: player):
+ set {_t} to uuid of {_p}
+ if {scleave.%{_t}%}  >=  {smaxcleave.%{_t}%}:
+  format gui slot 11 of {_p} with barrier named "&cYou already have the maximum amount of cleave upgrades for your level."
+  wait 2 seconds
+  format gui slot 11 of {_p} with blaze powder named "&fCleave" with lore "&7Damages all mobs in a 3 block radius" and "&72 (hearts) damage per level." and "&7Cleave: %{scleave.%{_t}%}% ⇨ %{scleave.%{_t}%} + 1%" and  "&f" and  "&eCost: %rounded 125000 * (2.2^({scleave.%{_t}%} + 1))%" and "&eClick to upgrade!" and "&eRequires ⚔ Level %({scleave.%{_t}%}+1)*25%" with nbt "{HideFlags:3}" to run:
+   cleave(player)
+  stop
+ if {scleave.%{_t}%}  >=  5:
+  format gui slot 11 of {_p} with barrier named "&cYou already have the maximum amount of cleave upgrades possible."
+  wait 2 seconds
+  format gui slot 11 of {_p} with blaze powder named "&fCleave" with lore "&7Damages all mobs in a 3 block radius" and "&72 (hearts) damage per level." and "&7Cleave: %{scleave.%{_t}%}% ⇨ %{scleave.%{_t}%} + 1%" and  "&f" and  "&eCost: %rounded 125000 * (2.2^({scleave.%{_t}%} + 1))%" and "&eClick to upgrade!" and "&eRequires ⚔ Level %({scleave.%{_t}%}+1)*25%" with nbt "{HideFlags:3}" to run:
+   cleave(player)
+  stop
+ if {balance.%{_t}%} is less than rounded 125000 * (2.2^({scleave.%{_t}%} + 1)):
+  close {_p}'s inventory
+  send "&cYou do not have enough money!" to {_p}
+  stop
+ remove rounded 2500 * (1.175^({smaxcleave.%{_t}%})) from {balance.%{_t}%}
+ add 1 to {scleave.%{_t}%}
+ swordUpdate({_p})
+ format gui slot 11 of {_p} with blaze powder named "&fCleave" with lore "&7Damages all mobs in a 3 block radius" and "&72 (hearts) damage per level." and "&7Cleave: %{scleave.%{_t}%}% ⇨ %{scleave.%{_t}%} + 1%" and  "&f" and  "&eCost: %rounded 125000 * (2.2^({scleave.%{_t}%} + 1))%" and "&eClick to upgrade!" and "&eRequires ⚔ Level %({scleave.%{_t}%}+1)*25%" with nbt "{HideFlags:3}" to run:
+  cleave(player)
+
+
+function trader(p: player):
+ set {_t} to uuid of {_p}
+ if {slevel.%{_t}%} is less than 100:
+  format gui slot 12 of {_p} with barrier named "&cYou aren't high enough level!"
+  wait 2 seconds
+  format gui slot 12 of {_p} with emerald named "&2Trader" with lore "&aLeft click chests to sell its contents!" and "&f" and  "&eCost: 50,000,000" and "&eClick to upgrade!" and "&eRequires ⚔ Level 50" to run:
+   trader({_p})
+  stop
+ if {balance.%{_t}%} is less than 50000000:
+  format gui slot 12 of {_p} with barrier named "&cYou dont have enough money!"
+  wait 2 seconds
+  format gui slot 12 of {_p} with emerald named "&2Trader" with lore "&aLeft click chests to sell its contents!" and "&f" and  "&eCost: 50,000,000" and "&eClick to upgrade!" and "&eRequires ⚔ Level 50" to run:
+   trader({_p})
+  stop
+ set {strader.%{_t}%} to true
+ remove 50000000 from {balance.%{_t}%}
+ swordUpdate({_p})
+ format gui slot 12 of {_p} with emerald named "&2Trader" with lore "&aLeft click chests to sell its contents!" and "&f" and  "&eAlready bought!"
+
+function luck(p: player):
+ set {_t} to uuid of {_p}
+ if {slucky.%{_t}%}  >=  {smaxlucky.%{_t}%}:
+  format gui slot 13 of {_p} with barrier named "&cYou already have the maximum amount of luck upgrades for your level."
+  wait 2 seconds
+  format gui slot 13 of {_p} with chest named "&6Lucky" with lore "&eEvery kill gives you a chance to win a crate key." and  "&eLucky: %{slucky.%{_t}%}% ⇨ %{slucky.%{_t}%} + 1%" and  "&f" and  "&eCost: %rounded 25000 * (2.2^({slucky.%{_t}%} + 1))%" and "&eClick to upgrade!" and "&eRequires ⚔ Level %({slucky.%{_t}%}+1)*10%" to run:
+   luck({_p})
+  stop
+ if {slucky.%{_t}%}  >=  10:
+  format gui slot 13 of {_p} with barrier named "&cYou already have the maximum amount of luck upgrades possible."
+  wait 2 seconds
+  format gui slot 13 of {_p} with chest named "&6Lucky" with lore "&eEvery kill gives you a chance to win a crate key." and  "&eLucky: %{slucky.%{_t}%}% ⇨ %{slucky.%{_t}%} + 1%" and  "&f" and  "&eCost: %rounded 25000 * (1.5^({slucky.%{_t}%} + 1))%" and "&eClick to upgrade!" and "&eRequires ⚔ Level %({slucky.%{_t}%}+1)*10%" to run:
+   luck({_p})
+  stop
+ if {balance.%{_t}%} is less than rounded 25000 * (1.5^({slucky.%{_t}%}+1)):
+  close {_p}'s inventory
+  send "&cYou do not have enough money!" to {_p}
+  stop
+ remove rounded 25000 * (1.5^({slucky.%{_t}%} + 1)) from {balance.%{_t}%}
+ add 1 to {slucky.%{_t}%}
+ swordUpdate({_p})
+ format gui slot 13 of {_p} with chest named "&6Lucky" with lore "&eEvery kill gives you a chance to win a crate key." and  "&eLucky: %{slucky.%{_t}%}% ⇨ %{slucky.%{_t}%} + 1%" and  "&f" and  "&eCost: %rounded 25000 * (2.2^({slucky.%{_t}%} + 1))%" and "&eClick to upgrade!" and "&eRequires ⚔ Level %({slucky.%{_t}%}+1)*10%" to run:
+  luck({_p})
+
+function economist(p: player):
+ set {_t} to uuid of {_p}
+ if {seconomist.%{_t}%}  >=  {smaxecon.%{_t}%}:
+  format gui slot 14 of {_p} with barrier named "&cYou already have the maximum amount of economist upgrades for your level."
+  wait 2 seconds
+  format gui slot 14 of {_p} with shiny paper named "&2Economist" with lore "&aGet a chance to win bits" and  "&aEconomist: %{seconomist.%{_t}%}% ⇨ %{seconomist.%{_t}%} + 1%" and  "&f" and  "&eCost: %rounded 50000 * (1.5^({seconomist.%{_t}%} + 1))%" and "&eClick to upgrade!" and "&eRequires ⚔ Level %({seconomist.%{_t}%}+1)*10%" to run:
+   economist({_p})
+  stop
+ if {seconomist.%{_t}%}  >=  10:
+  format gui slot 14 of {_p} with barrier named "&cYou already have the maximum amount of economist upgrades possible."
+  wait 2 seconds
+  format gui slot 14 of {_p} with shiny paper named "&2Economist" with lore "&aGet a chance to win bits" and  "&aEconomist: %{seconomist.%{_t}%}% ⇨ %{seconomist.%{_t}%} + 1%" and  "&f" and  "&eCost: %rounded 50000 * (1.5^({seconomist.%{_t}%} + 1))%" and "&eClick to upgrade!" and "&eRequires ⚔ Level %({seconomist.%{_t}%}+1)*10%" to run:
+   economist({_p})
+  stop
+ if {balance.%{_t}%} is less than rounded 15000 * (2.2^({seconomist.%{_t}%} + 1)):
+  close {_p}'s inventory
+  send "&cYou do not have enough money!" to {_p}
+  stop
+ remove rounded 15000 * (2.2^({seconomist.%{_t}%} + 1)) from {balance.%{_t}%}
+ add 1 to {seconomist.%{_t}%}
+ swordUpdate({_p})
+ format gui slot 14 of {_p} with shiny paper named "&2Economist" with lore "&aGet a chance to win bits" and  "&aEconomist: %{seconomist.%{_t}%}% ⇨ %{seconomist.%{_t}%} + 1%" and  "&f" and  "&eCost: %rounded 35000 * (1.5^({seconomist.%{_t}%} + 1))%" and "&eClick to upgrade!" and "&eRequires ⚔ Level %({seconomist.%{_t}%}+1)*10%" to run:
+  economist({_p})
+
+function grinder(p: player):
+ set {_t} to uuid of {_p}
+ if {sgrinder.%{_t}%}  >=  {smaxgrinder.%{_t}%}:
+  format gui slot 11 of {_p} with barrier named "&cYou already have the maximum amount of grinder upgrades for your level."
+  wait 2 seconds
+  format gui slot 11 of {_p} with experience bottle named "&4Grinder" with lore "&cGain more farm xp per kill" and  "&cGrinder: %{sgrinder.%{_t}%}% ⇨ %{sgrinder.%{_t}%} + 1%" and  "&f" and  "&eCost: %rounded 35000 * (1.5^({sgrinder.%{_t}%} + 1))%" and "&eClick to upgrade!" and "&eRequires ⚔ Level %({sgrinder.%{_t}%}+1)*5%" to run:
+   grinder({_p})
+  stop
+ if {sgrinder.%{_t}%}  >=  10:
+  format gui slot 11 of {_p} with barrier named "&cYou already have the maximum amount of grinder upgrades possible."
+  wait 2 seconds
+  format gui slot 11 of {_p} with experience bottle named "&4Grinder" with lore "&cGain more farm xp per kill" and  "&cGrinder: %{sgrinder.%{_t}%}% ⇨ %{sgrinder.%{_t}%} + 1%" and  "&f" and  "&eCost: %rounded 35000 * (1.5^({sgrinder.%{_t}%} + 1))%" and "&eClick to upgrade!" and "&eRequires ⚔ Level %({sgrinder.%{_t}%}+1)*5%" to run:
+   grinder({_p})
+  stop
+ if {balance.%{_t}%} is less than rounded 35000 * (2.2^({sgrinder.%{_t}%}+1)):
+  close {_p}'s inventory
+  send "&cYou do not have enough money!" to {_p}
+  stop
+ remove rounded 35000 * (2.2^({sgrinder.%{_t}%} + 1)) from {balance.%{_t}%}
+ add 1 to {sgrinder.%{_t}%}
+ swordUpdate({_p})
+ format gui slot 11 of {_p} with experience bottle named "&4Grinder" with lore "&cGain more farm xp per kill" and  "&cGrinder: %{sgrinder.%{_t}%}% ⇨ %{sgrinder.%{_t}%} + 1%" and  "&f" and  "&eCost: %rounded 35000 * (1.5^({sgrinder.%{_t}%} + 1))%" and "&eClick to upgrade!" and "&eRequires ⚔ Level %({sgrinder.%{_t}%}+1)*5%" to run:
+  grinder({_p})
+
+
+
+
+
+
+function swordUpdate(p: player):
+ set {_t} to uuid of {_p}
+ if {_p}'s tool is a sword:
+
+  if {slevel.%{_t}%} is less than 10:
+   set slot 0 of {_p}'s inventory to wood sword with name "&5&l%{swordname.%{_t}%}% &7[Lv%{slevel.%{_t}%}%] " with nbt "{HideFlags:3}"
+   loreUpdate({_p})
+   stop
+  if {slevel.%{_t}%} is less than 20:
+   set slot 0 of {_p}'s inventory to stone sword with name "&5&l%{swordname.%{_t}%}% &7[Lv%{slevel.%{_t}%}%] " with nbt "{HideFlags:3}"
+   loreUpdate({_p})
+   stop 
+  if {slevel.%{_t}%} is less than 30:
+   set slot 0 of {_p}'s inventory to iron sword with name "&5&l%{swordname.%{_t}%}% &7[Lv%{slevel.%{_t}%}%] " with nbt "{HideFlags:3}"
+   loreUpdate({_p})
+ 
+   stop
+  if {slevel.%{_t}%} is less than 40:
+   set slot 0 of {_p}'s inventory to gold sword with name "&5&l%{swordname.%{_t}%}% &7[Lv%{slevel.%{_t}%}%] " with nbt "{HideFlags:3}"
+   loreUpdate({_p})
+   stop
+  if {slevel.%{_t}%} is less than 50:
+   set slot 0 of {_p}'s inventory to diamond sword with name "&5&l%{swordname.%{_t}%}% &7[Lv%{slevel.%{_t}%}%] " with nbt "{HideFlags:3}"
+   loreUpdate({_p})
+   stop
+  if {slevel.%{_t}%} is greater than or equal to 50:
+   set slot 0 of {_p}'s inventory to shiny diamond sword with name "&5&l%{swordname.%{_t}%}% &7[Lv%{slevel.%{_t}%}%] " with nbt "{HideFlags:3}"
+   loreUpdate({_p})
+
+   stop
+
+
+
+function loreUpdate(p: player):
+ set {_t} to uuid of {_p}
+ set line 1 of {_p}'s tool's lore to "&dProgress to next level: &e[%percentbar({sxp.%{_t}%}/{maxsxp.%{_t}%})%&e] [%notate({sxp.%{_t}%})%&e/%notate({maxsxp.%{_t}%})%&e]"
+ set line 2 of {_p}'s tool's lore to "&dKill mobs with your sword to level it up!"
+ set line 3 of {_p}'s tool's lore to "&d"
+
+ 
+ if {sloot.%{_t}%} > 0:
+  add colored " &eLooting: &f%{sloot.%{_t}%}%" to {_enchants::*}
+ if {ssharp.%{_t}%} > 0:
+  add colored " &eSharpness: &f%{ssharp.%{_t}%}%" to {_enchants::*}
+ if {scleave.%{_t}%} > 0:
+  add colored " &eCleave: &f%{scleave.%{_t}%}%" to {_enchants::*}
+ if {strader.%{_t}%} is true:
+  add colored " &eTrader: &f1" to {_enchants::*}
+ if {slucky.%{_t}%} > 0:
+  add colored " &eLucky: &f%{slucky.%{_t}%}%" to {_enchants::*}
+ if {seconomist.%{_t}%} > 0:
+  add colored " &eEconomist: &f%{seconomist.%{_t}%}%" to {_enchants::*}
+ if {sgrinder.%{_t}%} > 0:
+  add colored " &eGrinder: &f%{sgrinder.%{_t}%}%" to {_enchants::*}
+ set {_c} to 5
+ loop {_enchants::*}:
+  #set line {_c} of {_p}'s tool's lore to loop-value
+  add 1 to {_c}
+
+ if {_c} is greater than 5:
+  set {_c} to 5
+  set line 4 of {_p}'s tool's lore to "&fEnchantments:"
+  loop {_enchants::*}:
+   set line {_c} of {_p}'s tool's lore to loop-value
+   add 1 to {_c}
+  set line {_c} of {_p}'s tool's lore to "&d"
+  set line {_c}+1 of {_p}'s tool's lore to "&dShift-right-click to open the Swords Menu."
+ else:
+  set line 4 of {_p}'s tool's lore to "&dShift-right-click to open the Swords Menu."

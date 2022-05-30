@@ -1,0 +1,311 @@
+on craft of coal:
+ cancel event
+
+command /shop:
+ trigger:
+  open virtual chest inventory with size 3 named "&6&lShop" to player
+  set {_c} to 0
+  loop 9 times:
+   format gui slot {_c} of player with gray glass pane named "&7"
+   format gui slot {_c}+18 of player with gray glass pane named "&7"
+   add 1 to {_c}
+  format gui slot 10 of player with grass named "&a&lBlocks" to run:
+   blocks(player)
+  format gui slot 13 of player with pink glass named "&6&lGens" to run:
+   gens(player)
+  format gui slot 16 of player with hopper named "&e&lMisc" to run:
+   misc(player)
+
+
+function blocks(p: player):
+ open virtual chest inventory with size 6 named "&a&lBlocks" to {_p}
+ set {_c} to 0
+ loop 9 times:
+  format gui slot {_c} of {_p} with gray glass pane named "&7"
+  format gui slot {_c}+45 of {_p} with gray glass pane named "&7"
+  add 1 to {_c}
+ format gui slot {_c} of {_p} with dirt named "&fDirt x64" with lore "&eCost: 25$" to run:
+  buy(dirt, 64, {_p}, 25)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with grass named "&fGrass x64" with lore "&eCost: 25$" to run:
+  buy(grass block, 64, {_p}, 25)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with stone named "&fStone x64" with lore "&eCost: 50$" to run:
+  buy(stone, 64, {_p}, 50)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with cobblestone named "&fCobblestone x64" with lore "&eCost: 50$" to run:
+  buy(cobblestone, 64, {_p}, 50)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with stone bricks named "&fStone Bricks x64" with lore "&eCost: 50$" to run:
+  buy(stone bricks, 64, {_p}, 50)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with oak log named "&fOak Logs x64" with lore "&eCost: 100$" to run:
+  buy(oak log, 64, {_p}, 100)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with spruce log named "&fSpruce Logs x64" with lore "&eCost: 100$" to run:
+  buy(spruce log, 64, {_p}, 100)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with birch log named "&fBirch Logs x64" with lore "&eCost: 100$" to run:
+  buy(birch log, 64, {_p}, 100)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with glass named "&fGlass x64" with lore "&eCost: 200$" to run:
+  buy(glass, 64, {_p}, 200)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with granite named "&fGranite x64" with lore "&eCost: 50$" to run:
+  buy(granite, 64, {_p}, 50)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with diorite named "&fDiorite x64" with lore "&eCost: 50$" to run:
+  buy(diorite, 64, {_p}, 50)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with andesite named "&fAndesite x64" with lore "&eCost: 50$" to run:
+  buy(andesite, 64, {_p}, 50)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with sand named "&fSand x64" with lore "&eCost: 100$" to run:
+  buy(sand, 64, {_p}, 100)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with ice named "&fIce x64" with lore "&eCost: 500$" to run:
+  buy(ice, 64, {_p}, 500)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with glowstone named "&fGlowstone x64" with lore "&eCost: 500$" to run:
+  buy(glowstone, 64, {_p}, 500)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with quartz block named "&fQuartz x64" with lore "&eCost: 500$" to run:
+  buy(quartz block, 64, {_p}, 500)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with packed ice named "&fPacked Ice x64" with lore "&eCost: 1500$" to run:
+  buy(packed ice, 64, {_p}, 1500)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with gravel named "&fGravel x64" with lore "&eCost: 500$" to run:
+  buy(gravel, 64, {_p}, 500)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with white wool named "&fWool x64" with lore "&eCost: 500$" to run:
+  buy(white wool, 64, {_p}, 500)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with oak leaves named "&fOak Leaves x64" with lore "&eCost: 500$" to run:
+  buy(oak leaves, 64, {_p}, 500)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with prismarine named "&fPrismarine x64" with lore "&eCost: 1500$" to run:
+  buy(prismarine, 64, {_p}, 1500)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with prismarine bricks named "&fPrismarine Bricks x64" with lore "&eCost: 1500$" to run:
+  buy(prismarine bricks, 64, {_p}, 1500)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with dark prismarine named "&fDark Prismarine x64" with lore "&eCost: 1500$" to run:
+  buy(dark prismarine, 64, {_p}, 1500)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with sea lantern named "&fSea Lantern x64" with lore "&eCost: 1500$" to run:
+  buy(sea lantern, 64, {_p}, 1500)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with nether brick named "&fNether Brick x64" with lore "&eCost: 5000$" to run:
+  buy(nether brick, 64, {_p}, 5000)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with end stone named "&fEnd Stone x64" with lore "&eCost: 5000$" to run:
+  buy(end stone, 64, {_p}, 5000)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with white terracotta named "&fTerracotta x64" with lore "&eCost: 5000$" to run:
+  buy(white terracotta, 64, {_p}, 5000)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with slime block named "&fSlime Blocks x64" with lore "&eCost: 10000$" to run:
+  buy(slime block, 64, {_p}, 10000)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with coal block named "&fCoal Blocks x64" with lore "&eCost: 10000$" to run:
+  buy(coal block, 64, {_p}, 10000)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with iron block named "&fIron Blocks x64" with lore "&eCost: 25000$" to run:
+  buy(iron block, 64, {_p}, 25000)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with diamond block named "&fDiamond Blocks x64" with lore "&eCost: 50000$" to run:
+  buy(diamond block, 64, {_p}, 50000)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with lapis block named "&fLapis Blocks x64" with lore "&eCost: 50000$" to run:
+  buy(lapis block, 64, {_p}, 50000)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with soul sand named "&fSoul Sand x64" with lore "&eCost: 5000$" to run:
+  buy(soul sand, 64, {_p}, 5000)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with magma block named "&fMagma Blocks x64" with lore "&eCost: 50000$" to run:
+  buy(magma blocks, 64, {_p}, 50000)
+ add 1 to {_c}
+
+
+function gens(p: player):
+ open virtual chest inventory with size 3 named "&6&lGens" to {_p}
+ set {_c} to 0
+ loop 9 times:
+  format gui slot {_c} of {_p} with gray glass pane named "&7"
+  format gui slot {_c}+18 of {_p} with gray glass pane named "&7"
+  add 1 to {_c}
+ #add 1 to {_c}
+ format gui slot {_c} of {_p} with pink glass named "&fPig Generator" with lore "&eCost: 200$" to run:
+  buy(pink glass named "&dPig Generator" with lore "&7Place down to start spawning pigs!", 1, {_p}, 200)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with brown glass named "&fCow Generator" with lore "&eCost: 2500$" and "&eFarm Level 5 required" to run:
+  buy(brown glass named "&7Cow Generator" with lore "&7Place down to start spawning cows!" and "&7Farm Level 5 required", 1, {_p}, 2500)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with green glass named "&fZombie Generator" with lore "&eCost: 15000$" and "&eFarm Level 10 required"  to run:
+  buy(green glass named "&2Zombie Generator" with lore "&7Place down to start spawning zombies!" and "&7Farm Level 10 required", 1, {_p}, 15000)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with white glass named "&fSkeleton Generator" with lore "&eCost: 50000$" and "&eFarm Level 15 required" to run:
+  buy(white glass named "&fSkeleton Generator" with lore "&7Place down to start spawning skeletons!" and "&7Farm Level 15 required", 1, {_p}, 50000)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with lime glass named "&fCreeper Generator" with lore "&eCost: 150000$" and "&eFarm Level 20 required" to run:
+  buy(lime glass named "&aCreeper Generator" with lore "&7Place down to start spawning creepers!" and "&7Farm Level 20 required", 1, {_p}, 150000)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with orange glass named "&fBlaze Generator" with lore "&eCost: 500000$" and "&eFarm Level 30 required" to run:
+  buy(orange glass named "&6Blaze Generator" with lore "&7Place down to start spawning blazes!" and "&7Farm Level 30 required", 1, player, 500000)
+ add 1 to {_c}
+
+
+on damage:
+ if victim is player:
+  cancel event
+
+function misc(p: player):
+ open virtual chest inventory with size 6 named "&e&lMisc" to {_p}
+ set {_c} to 0
+ loop 9 times:
+  format gui slot {_c} of {_p} with gray glass pane named "&7"
+  format gui slot {_c}+45 of {_p} with gray glass pane named "&7"
+  add 1 to {_c}
+ set {_c} to 19
+ format gui slot {_c} of {_p} with hopper named "&fHopper" with lore "&eCost: 500$" to run:
+  buy(hopper, 1, {_p}, 500)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with white dye named "&fDyes" with lore "&eClick me to access the dyes!" to run: #ill add this to misc shop
+  dyes({_p})
+ add 1 to {_c} 
+ format gui slot {_c} of {_p} with water bucket named "&fWater Bucket" with lore "&eCost: 50$" to run:
+  buy(water bucket, 1, {_p}, 50)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with lava bucket named "&fLava Bucket" with lore "&eCost: 50$" to run:
+  buy(lava bucket, 1, {_p}, 50)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with experience bottle named "&fExp Bottle x64" with lore "&eCost: 25000$" to run:
+  buy(experience bottle, 64, {_p}, 25000)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with enchantment table named "&fEnchantment Table" with lore "&eCost: 5000$" to run:
+  buy(enchantment table, 1, {_p}, 5000)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with bookshelf named "&fBookshelf x16" with lore "&eCost: 10000$" to run:
+  buy(bookshelf, 64, {_p}, 10000)
+ add 5 to {_c}
+ format gui slot {_c} of {_p} with book named "&fBook x64" with lore "&eCost: 5000$" to run:
+  buy(book, 64, {_p}, 5000)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with jukebox named "&fJukebox" with lore "&eCost: 1000000$" to run:
+  buy(jukebox, 1, {_p}, 1000000)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with disc stal named "&fStal" with lore "&eCost: 1000000$" to run:
+  buy(disc stal, 1, {_p}, 1000000)
+
+
+function buy(i: item, a: number, p: player, c: number):# i: item, a: amount, p: player, c: cost
+ set {_t} to uuid of {_p}
+ if {balance.%{_t}%} is less than {_c}:
+  close {_p}'s inventory
+  send "&cYou don't have enough money!" to {_p}
+  stop
+ remove {_c} from {balance.%{_t}%}
+ give {_a} of {_i} to {_p}
+ send "&aBought x%{_a}%&a of %{_I}%&a!" to {_p}
+
+function dyes(p: player):
+ open virtual chest inventory with size 4 named "&f&lDyes" to {_p}
+ set {_c} to 0
+ loop 9 times:
+  format gui slot {_c} of {_p} with gray glass pane named "&7"
+  format gui slot {_c}+27 of {_p} with gray glass pane named "&7"
+  add 1 to {_c}
+ set {_c} to 10
+ format gui slot {_c} of {_p} with white dye named "&fWhite Dye x64" with lore "&eCost: 10000$" to run:
+  buy(white dye, 64, {_p}, 10000)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with black dye named "&fBlack Dye x64" with lore "&eCost: 10000$" to run:
+  buy(black dye, 64, {_p}, 10000)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with brown dye named "&fBrown Dye x64" with lore "&eCost: 10000$" to run:
+  buy(brown dye, 64, {_p}, 10000)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with blue dye named "&fBlue Dye x64" with lore "&eCost: 10000$" to run:
+  buy(blue dye, 64, {_p}, 10000)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with red dye named "&fRed Dye x64" with lore "&eCost: 10000$" to run:
+  buy(red dye, 64, {_p}, 10000)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with yellow dye named "&fYellow Dye x64" with lore "&eCost: 10000$" to run:
+  buy(yellow dye, 64, {_p}, 10000)
+ add 1 to {_c}
+ format gui slot {_c} of {_p} with green dye named "&fGreen Dye x64" with lore "&eCost: 10000$" to run:
+  buy(green dye, 64, {_p}, 10000)
+ add 1 to {_c}
+
+
+function bits(i: item, a: number, p: player, c: number):# i: item, a: amount, p: player, c: cost
+ set {_t} to uuid of {_p}
+ if {bits.%{_t}%} is less than {_c}:
+  close {_p}'s inventory
+  send "&cYou don't have enough bits!" to {_p}
+  stop
+ remove {_c} from {bits.%{_t}%}
+ give {_a} of {_i} to {_p}
+ send "&aBought x%{_a}%&a of %{_I}%&a!" to {_p}
+
+command bits:
+ trigger:
+  open virtual chest inventory with size 3 named "&dBits" to player
+  set {_c} to 0
+  loop 9 times:
+   format gui slot {_c} of player with gray glass pane named "&7"
+   format gui slot {_c}+18 of player with gray glass pane named "&7"
+   add 1 to {_c}
+  add 2 to {_c}
+  format gui slot {_c} of player with shiny feather named "&fFly Perk" with lore "&dCost: 20 bits" to run:
+   bits(feather with name "&f/Fly Command &7(Right Click)" with lore "&eRight click to redeem!", 1, player, 20)
+  add 1 to {_c}
+  format gui slot {_c} of player with shiny name tag named "&fNick Perk" with lore "&dCost: 20 bits" to run:
+   bits(name tag with name "&b/Nick Command &7(Right Click)" with lore "&eRight click to redeem!", 1, player, 20)
+  add 1 to {_c}
+  format gui slot {_c} of player with shiny firework named "&f3 hour 2x Personal Booster" with lore "&dCost: 5 bits" to run:
+   bits(firework with name "&e&l(3 Hour) &c&lPersonal Booster &7(Right Click)" with lore "&eRight click to use!" and "&eDoubles money and xp for 3 hours!", 1, player, 5)
+  add 1 to {_c}
+  format gui slot {_c} of player with shiny tnt named "&fMini Key Bomb" with lore "&dCost: 10 bits" to run:
+   bits(tnt with name "&e&l(Mini) &cKey &fBomb" with lore "&eRight click to throw!" and "&eExplodes, dropping keys all over an area!", 1, player, 10)
+  add 1 to {_c}
+  format gui slot {_c} of player with shiny paper named "&fExpert Rank Voucher" with lore "&dCost: 50 bits" to run:
+   bits(paper named "&7&l(&e&lRANK&7&l) &2&lExpert" with lore "&7(!) Right click to redeem your rank! (!)", 1, player, 50)
+  format gui slot 4 of player with shiny nether quartz named "&5Your Bits: %{bits.%uuid of player%}%" with lore "&dYou can obtain bits through keys and daily kits." and "&dThe economist sword enchant also has a chance of giving bits." 
+
+
+
+command bitsadmin [<text>] [<text>] [<text>]:
+ aliases: ba
+ permission: op
+ permission message: &cno cheating
+ trigger:
+  if arg 1 is "give":
+   set {_givenAmount} to arg 3 parsed as an integer
+   set {_player} to uuid of arg 2 parsed as player
+   add {_givenAmount} to {bits.%{_player}%}
+   send "&eGiven B%{_givenAmount}%&e to %arg 2%"
+   send "&eYou got B%{_givenAmount}% " to arg 2 parsed as player
+  else if arg 1 is "set":
+   set {_givenAmount} to arg 3 parsed as an integer
+   set {_player} to uuid of arg 2 parsed as player
+   set {bits.%{_player}%} to {_givenAmount} 
+   send "&eSet %arg 2% to $%{_givenAmount}%&e "
+   send "&eYour bits have been set to B%{_givenAmount}% " to arg 2 parsed as player
+  else if arg 1 is "reset":
+   set {_givenAmount} to arg 3 parsed as an integer
+   set {_player} to uuid of arg 2 parsed as player
+   set {bits.%{_player}%} to 0
+   send "&eReset %arg 2%'s bits"
+   send "&eYour bits have been reset" to arg 2 parsed as player
+  else if arg 1 is "remove":
+   set {_givenAmount} to arg 3 parsed as an integer
+   set {_player} to uuid of arg 2 parsed as player
+   remove {_givenAmount} from {bits.%{_player}%}
+   send "&eReset %arg 2%'s bits"
+   send "&eYour bits have been reset" to arg 2 parsed as player
+
+  else:
+   send "&cUsage: /ba (give,set,reset,remove) (player) (amount)"

@@ -1,0 +1,99 @@
+on chat:
+ if player has permission "heaven.colorchat":
+  replace every "[message]" in the chat format with "&f[message]"
+ if message contains "refer":
+  cancel event
+  send "&cDo that in /hub!"
+ 
+on command "me":
+ cancel event
+
+on command "minecraft:me":
+ cancel event
+
+command /survey <text>:
+ permission: op
+
+ trigger:
+  if {survey} is true:
+   stop
+  set {surveyyes} to 0
+  set {surveyno} to 0
+  set {survey} to true
+  set {argtext} to arg 1
+  loop all players:
+   set {voted.%uuid of loop-player%} to false
+  broadcast "&f"
+  broadcast "&5&l-=-=-=-=-=-&e&lSURVEY&5&l-=-=-=-=-=-"
+  broadcast "&f"
+  broadcast "&f"
+  broadcast "&d%arg 1%" 
+  broadcast "&f"
+  broadcast "&f"
+  broadcast "&5&l-=-=-=-=-=-&e&lSURVEY&5&l-=-=-=-=-=-"
+  broadcast "&f"
+  broadcast "&e1 minute left"
+  broadcast "&aYes: %{surveyyes}%"
+  broadcast "&cNo: %{surveyno}%"
+  broadcast "&eVote using /yes or /no!"
+  wait 20 seconds
+  broadcast "&f"
+  broadcast "&5&l-=-=-=-=-=-&e&lSURVEY&5&l-=-=-=-=-=-"
+  broadcast "&f"
+  broadcast "&f"
+  broadcast "&e%{argtext}%" 
+  broadcast "&f"
+  broadcast "&f"
+  broadcast "&5&l-=-=-=-=-=-&e&lSURVEY&5&l-=-=-=-=-=-"
+  broadcast "&f"
+  broadcast "&e40 seconds left"
+  broadcast "&aYes: %{surveyyes}%"
+  broadcast "&cNo: %{surveyno}%"
+  broadcast "&eVote using /yes or /no!"
+  wait 20 seconds
+  broadcast "&f"
+  broadcast "&5&l-=-=-=-=-=-&e&lSURVEY&5&l-=-=-=-=-=-"
+  broadcast "&f"
+  broadcast "&f"
+  broadcast "&e%{argtext}%" 
+  broadcast "&f"
+  broadcast "&f"
+  broadcast "&5&l-=-=-=-=-=-&e&lSURVEY&5&l-=-=-=-=-=-"
+  broadcast "&f"
+  broadcast "&e20 seconds left"
+  broadcast "&aYes: %{surveyyes}%"
+  broadcast "&cNo: %{surveyno}%"
+  broadcast "&eVote using /yes or /no!"
+  wait 20 seconds
+  broadcast "&f"
+  broadcast "&5&l-=-=-=-=-=-&e&lSURVEY&5&l-=-=-=-=-=-"
+  broadcast "&f"
+  broadcast "&f"
+  broadcast "&e%{argtext}%" 
+  broadcast "&f"
+  broadcast "&f"
+  broadcast "&5&l-=-=-=-=-=-&e&lSURVEY&5&l-=-=-=-=-=-"
+
+  broadcast "&f"
+  broadcast "&eFinal Results:"
+  broadcast "&aYes: %{surveyyes}%"
+  broadcast "&cNo: %{surveyno}%"
+
+  set {survey} to false
+
+command /yes:
+ trigger:
+  if {voted.%uuid of player%} is false:
+   message "&eVoted Yes!"
+   add 1 to {surveyyes}
+   set {voted.%uuid of player%} to true
+  else:
+   message "&cYou already voted!"
+command /no:
+ trigger:
+  if {voted.%uuid of player%} is false:
+   message "&eVoted No!"
+   add 1 to {surveyno}
+   set {voted.%uuid of player%} to true
+  else:
+   message "&cYou already voted!"

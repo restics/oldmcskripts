@@ -1,0 +1,120 @@
+
+
+
+on place:
+ if player's tool is tnt with name "&e&l(Mini) &cKey &fBomb" with lore "&eRight click to throw!" and "&eExplodes, dropping keys all over an area!":
+  cancel event
+  if "%region at player%" does not contain "spawn":
+   send "&cDon't be greedy! Use it at spawn!"
+ if player's tool is tnt with name "&e&l&c &fBomb" with lore "&eRight click to throw!" and "&eExplodes, dropping keys all over an area!":
+  cancel event
+  if "%region at player%" does not contain "spawn":
+   send "&cDon't be greedy! Use it at spawn!"
+
+
+on right click:
+ if player's tool is tnt with name "&e&l(Mini) &cKey &fBomb" with lore "&eRight click to throw!" and "&eExplodes, dropping keys all over an area!":
+  #cancel event
+  if "%region at player%" does not contain "spawn":
+   send "&cDon't be greedy! Use it at spawn!"
+   stop
+  remove 1 of tnt with name "&e&l(Mini) &cKey &fBomb" with lore "&eRight click to throw!" and "&eExplodes, dropping keys all over an area!" from player's inventory
+  summon primed tnt at player
+  set {_e} to last spawned primed tnt
+  set fuse time of {_e} to 50
+  push the last spawned primed tnt in the player's direction at speed 0.7
+  wait 2 seconds
+  set {_loc} to location of {_e}
+  wait 0.7 seconds
+  create a safe explosion of force 3 at {_loc}
+  loop blocks in radius 3 around {_loc}:
+   wait 1 tick
+   chance of 7%:
+    
+    drop 1 prismarine crystals named "&fCommon Key" with lore "&7Right click on the crates at spawn to open!" 3 meters above loop-block
+   chance of 4%:
+    
+    drop 1 prismarine shard named "&9Rare Key" with lore "&7Right click on the crates at spawn to open!"  3 meters above loop-block
+   chance of 2%:
+    
+    drop 1 prismarine shard named "&5&lEpic Key" with lore "&7Right click on the crates at spawn to open!"  3 meters above loop-block
+
+ if player's tool is tnt with name "&e&l&cKey &fBomb" with lore "&eRight click to throw!" and "&eExplodes, dropping keys all over an area!":
+  #cancel event
+  if "%region at player%" does not contain "spawn":
+   send "&cDon't be greedy! Use it at spawn!"
+
+   stop
+  remove 1 of tnt with name "&e&l&cKey &fBomb" with lore "&eRight click to throw!" and "&eExplodes, dropping keys all over an area!" from player's inventory
+  summon primed tnt at player
+  set {_e} to last spawned primed tnt
+  set fuse time of {_e} to 50
+  push the last spawned primed tnt in the player's direction at speed 0.7
+  wait 2 seconds
+  set {_loc} to location of {_e}
+  wait 0.7 seconds
+  create a safe explosion of force 5 at {_loc}
+  loop blocks in radius 5 around {_loc}:
+   wait 1 tick
+   chance of 7%:
+    
+    drop 1 prismarine crystals named "&fCommon Key" with lore "&7Right click on the crates at spawn to open!" 5 meters above loop-block
+   chance of 4%:
+    
+    drop 1 prismarine shard named "&9Rare Key" with lore "&7Right click on the crates at spawn to open!"  5 meters above loop-block
+   chance of 2%:
+    
+    drop 1 prismarine shard named "&5&lEpic Key" with lore "&7Right click on the crates at spawn to open!"  5 meters above loop-block
+   chance of 0.1%:
+    
+    drop 1 prismarine shard named "&6&k&l||&6&lLegendary Key&k||" with lore "&7Right click on the crates at spawn to open!"  5 meters above loop-block
+
+
+ if player's tool is feather with name "&f/Fly Command &7(Right Click)" with lore "&eRight click to redeem!":
+  remove 1 feather with name "&f/Fly Command &7(Right Click)" with lore "&eRight click to redeem!" from player's inventory
+  execute console command "/pex user %player's name% add essentials.fly"
+  send "&eRedeemed fly command!"
+ if player's tool is name tag with name "&b/Nick Command &7(Right Click)" with lore "&eRight click to redeem!":
+  remove 1 name tag with name "&b/Nick Command &7(Right Click)" with lore "&eRight click to redeem!" from player's inventory
+  execute console command "/pex user %player's name% add essentials.nick"
+  send "&eRedeemed nick command!"
+ if player's tool is firework with name "&e&l(3 Hour) &c&lPersonal Booster &7(Right Click)" with lore "&eRight click to use!" and "&eDoubles money and xp for 3 hours!":
+  wait 1 tick
+  cancel event
+  remove 1 firework with name "&e&l(3 Hour) &c&lPersonal Booster &7(Right Click)" with lore "&eRight click to use!" and "&eDoubles money and xp for 3 hours!" from player's inventory
+  add 3 to {xpbooster3.%uuid of player%} 
+  send "&5Personal Booster &dstarted! Enjoy your 2x multipliers!" to player
+
+ if player's tool is paper with name "&7&l(&e&lRANK&7&l) &2&lExpert" with lore "&7(!) Right click to redeem your rank! (!)":
+  if player has permission "pf.expert":
+   send "&cYou already have a rank!" 
+   stop
+  remove 1 paper named "&7&l(&e&lRANK&7&l) &2&lExpert" with lore "&7(!) Right click to redeem your rank! (!)" from player's inventory
+  execute console command "/pex user %player's name% group set expert"
+
+
+
+
+
+
+
+
+
+
+command /voucher [<text>] [<player>]:
+ permission: op
+ trigger:
+  if arg 1 is "fly":
+   give 1 feather with name "&f/Fly Command &7(Right Click)" with lore "&eRight click to redeem!" to arg 2
+  if arg 1 is "nick":
+   give 1 name tag with name "&b/Nick Command &7(Right Click)" with lore "&eRight click to redeem!" to arg 2
+  if arg 1 is "booster":
+   give 1 firework with name "&e&l(3 Hour) &c&lPersonal Booster &7(Right Click)" with lore "&eRight click to use!" and "&eDoubles money and xp for 3 hours!" to arg 2
+  if arg 1 is "minibomb":
+   give 1 tnt with name "&e&l(Mini) &cKey &fBomb" with lore "&eRight click to throw!" and "&eExplodes, dropping keys all over an area!" to arg 2
+  if arg 1 is "rank":
+   give 1 paper named "&7&l(&e&lRANK&7&l) &2&lExpert" with lore "&7(!) Right click to redeem your rank! (!)" to arg 2
+  if arg 1 is "bomb":
+   give 1 tnt with name "&e&l&cKey &fBomb" with lore "&eRight click to throw!" and "&eExplodes, dropping keys all over an area!" to arg 2
+
+ 

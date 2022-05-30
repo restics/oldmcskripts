@@ -1,0 +1,147 @@
+command /egay:
+ permission: op
+ trigger:
+  loop {farms::*}:
+   if {level.%loop-value-1%} is greater than 10:
+    add "%{level.%loop-value-1%}%;%loop-value-1%" to {_points::*}
+  set {_reversed::*} to least2greatest({_points::*})
+  #send "%{_reversed::*}%"
+  set {_counter2} to 0
+  loop 10 times:
+   wait 1 tick
+   add 1 to {_counter2}
+   execute console command "/hd setline leaderboard %{_counter2}+2% &7-"
+  set {_counter2} to 0
+  loop {_reversed::*}:
+   wait 1 tick
+   if {_counter2} is greater than or equal to 10:
+    stop
+   set {_sections::*} to loop-value split at ";"
+   #send "%{_sections::1}%.%{_sections::2}%" to the command sender
+   #send "%{_counter2}%"
+   add 1 to {_counter2}
+   execute console command "/hd setline leaderboard %{_counter2}+2% &7%{_counter2}%. &e%{_sections::2}% &e- Lv %{_sections::1}%"
+
+command /egay2:
+ permission: op
+ trigger:
+  loop {player::*}:
+   #send "%{slevel.%loop-value-1%}%"
+   if {slevel.%uuid of loop-value-1%} is greater than 80:
+    add "%{slevel.%uuid of loop-value-1%}%;%loop-value-1%" to {_points::*}
+    #broadcast "%{slevel.%loop-value-1%}%;%loop-value-1%"
+  set {_reversed::*} to least2greatest({_points::*})
+  #send "%{_reversed::*}%"
+  set {_counter2} to 0
+  loop 10 times:
+   wait 1 tick
+   #broadcast "this is gay"
+   add 1 to {_counter2}
+   #broadcast "%{_counter2}%"
+   execute console command "/hd setline leaderboard2 %{_counter2}+2% &7-"
+  set {_counter2} to 0
+  loop {_reversed::*}:
+   wait 1 tick
+   if {_counter2} is greater than or equal to 10:
+    stop
+   set {_sections::*} to loop-value split at ";"
+   #send "%{_sections::1}%.%{_sections::2}%" to the command sender
+   #send "%{_counter2}%"
+   add 1 to {_counter2}
+   execute console command "/hd setline leaderboard2 %{_counter2}+2% &7%{_counter2}%. &e%{_sections::2}% &e- Lv %{_sections::1}%"
+
+command /egay3:
+ permission: op
+ trigger:
+  loop all players:
+   set {top::balance::%{balance.%uuid of loop-player%} to loop-player
+  loop {top::balance::*}:
+   add 1 to {_size}
+   if {_low.to.high.list::%loop-value%} is not set:
+    set {_low.to.high.list::%loop-value%} to loop-index
+   else:
+    set {_n} to 0
+    loop {_size} times:
+     set {_n} to {_n}+1
+     {_low.to.high.list::%loop-value-1%.%{_n}%} is not set
+     set {_low.to.high.list::%loop-value-1%.%{_n}%} to loop-index
+     stop loop
+    wait 1 tick
+    set {_n} to size of {_low.to.high.list::*}
+    loop {_low.to.high.list::*}:
+     set {_high.to.low.list::%{_n}%} to loop-value
+     set {_n} to {_n}-1
+    wait 1 tick
+    set {_result} to 2
+    loop {_high.to.low.list::*}:
+     execute console command "/hd setline baltop %{_result}+1% &4##%{_result} - 1% &f%loop-value parsed as an offline player% &8- &a$%format({stats::%loop-value%::balance}, 1)%"
+     wait 1 tick
+     add 1 to {_result}
+     if {_result} is 5:
+      stop
+   #execute console command "/hd setline baltop %{_counter2}+2% &7%{_counter2}%. &e%{_sections::2}% &e- $%notate({_sections::1} parsed as an integer)%"
+
+every 20 minutes:
+ execute console command "/egay" 
+ broadcast "&eReloaded Farms Leaderboard!"
+
+ 
+
+
+
+function reversed(list: objects) :: objects:
+    loop size of {_list::*} times:
+        set {_index} to size of {_list::*} - loop-number - 1
+        add {_list::%{_index}%} to {_reversed::*}
+    return {_reversed::*}
+
+
+function least2greatest(list: objects) :: objects: #list has entries modeled like %number%.%text% like 232323.apples and 55423.bananas
+
+ set {_i} to 0
+ loop size of {_list::*} times:
+  add 1 to {_i}
+  set {_j} to {_i}
+  loop size of {_list::*} times:
+   add 1 to {_j}
+
+   if {_j} is less than size of {_list::*} + 1:
+    #broadcast "%{_list::*}%"
+    set {_tt1::*} to {_list::%{_i}%} split at ";" #this line turns text "%number%.%text%" into list {"%number%", "%text%"} 
+    set {_t1} to "%{_tt1::1}%" parsed as an integer
+    set {_tt2::*} to {_list::%{_j}%} split at ";"
+    set {_t2} to "%{_tt2::1}%" parsed as an integer
+    #broadcast "%{_tt1::1}% 0"
+    #broadcast "{_i} is %{_i}%, {_j} is %{_j}%" # this prints out %number% 
+    if {_t1} < {_t2}: 
+     set {_temp} to {_list::%{_i}%}
+     set {_list::%{_i}%} to {_list::%{_j}%}
+     set {_list::%{_j}%} to {_temp}
+     #broadcast "yee"
+     
+    
+   else: 
+    exit 1 section
+ return ({_list::*})
+
+
+
+function removeFirst(num: integer, msg: text) :: text:
+    return subtext of {_msg} from characters {_num} to (length of {_msg})
+command see:
+ permission: op
+ trigger:
+
+
+command cleanplayers:
+ permission: op
+ trigger:
+  loop {player::*}:
+   if {_list::*}  does not contain loop-value:  
+    add loop-value to {_list::*}
+  set {player::*} to {_list::*}
+
+command ts <offline player>:
+ trigger:
+  send "%arg 1's balance%"
+   

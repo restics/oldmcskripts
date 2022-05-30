@@ -1,0 +1,18 @@
+on break:
+ player does not have permission "op"
+ #send "%region at player%"
+ if "%region at player%" is "spawn in world farms":
+  cancel event
+ if "%region at player%" is "tutorial in world farms":
+  cancel event
+  
+on place:
+ player does not have permission "op"
+ #send "%region at player%"
+ if "%region at player%" is "spawn in world farms":
+  cancel event
+ if "%region at player%" is "tutorial in world farms":
+  cancel event
+
+on explode:
+ cancel event

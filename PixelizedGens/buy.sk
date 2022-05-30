@@ -1,0 +1,13 @@
+command /bought <player> <text>:
+ permission: op
+ trigger:
+  broadcast ""
+  broadcast "&8&m--------&8[&bpixelized.buycraft.net&8]&8&m--------"
+  broadcast ""
+  broadcast colored "&f%arg 1% HAS JUST PURCHASED A %arg 2% ON /BUY!"
+  broadcast ""
+  broadcast "&8&m--------&8[&bpixelized.buycraft.net&8]&8&m--------"
+  broadcast ""
+  broadcast "&eHey you. Yeah you! Want to be cool like this guy? Buy something on /buy and you'll be cool too!!"
+
+

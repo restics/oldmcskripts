@@ -1,0 +1,468 @@
+on left click on chest:
+ if {tetherblock.%uuid of player%} is equal to spawn:
+  stop
+ if {tetherblock.%uuid of player%} is not equal to {farmcenter.%{farm.%uuid of player%}%}:
+  cancel event
+  stop
+ if player has permission "pf.punch2sell":
+  if "%region at player%" does not contain "spawn":
+   set {_a} to amount of porkchops in event-block's inventory
+   set {_b} to amount of raw beef in event-block's inventory
+   set {_c} to amount of leather in event-block's inventory
+   set {_d} to amount of rotten flesh in event-block's inventory
+   set {_e} to amount of bone in event-block's inventory
+   set {_f} to amount of gunpowder in event-block's inventory
+   set {_g} to amount of coal in event-block's inventory
+   set {_h} to amount of blaze rod in event-block's inventory
+   set {_i} to amount of ender pearl in event-block's inventory
+   set {_total} to ({_a}*15) + ({_b}*15) + ({_c}*30) + ({_d}*50) + ({_e}*100) + ({_f}*200) + ({_g}*400) + ({_h}*300) + ({_i}* 500) + ({_j}* 100)
+   set {_totali} to {_a} + {_b} + {_c} +  {_d} + {_e} + {_f}  + {_g} + {_h} + {_i}
+   if {xpbooster2} is greater than 0:
+    set {_total} to {_total}*1.5
+   if {xpbooster3.%uuid of player%} is greater than 0:
+    set {_total} to {_total}*2
+   if player has permission "pf.expert":
+    if player  has permission "pf.pro":
+     if player  has permission "pf.legend":
+      if player  has permission "pf.god":
+       set {_total} to {_total}*2
+      else:
+       set {_total} to {_total}*1.5
+     else:
+      set {_total} to {_total}*1.2
+    else:
+     set {_total} to {_total}*1.1
+   add {_total} to {balance.%uuid of player%}
+   loop items in event-block's inventory:
+    if loop-item is porkchop:
+     remove loop-item from event-block's inventory
+    if loop-item is raw beef:
+     remove loop-item from event-block's inventory
+    if loop-item is leather:
+     remove loop-item from event-block's inventory
+    if loop-item is rotten flesh:
+     remove loop-item from event-block's inventory
+    if loop-item is bone:
+     remove loop-item from event-block's inventory
+    if loop-item is gunpowder:
+     remove loop-item from event-block's inventory
+    if loop-item is coal:
+     remove loop-item from event-block's inventory
+    if loop-item is blaze rod:
+     remove loop-item from event-block's inventory
+    if loop-item is ender pearl:
+     remove loop-item from event-block's inventory
+   send "&2&l($) &aSold %{_totali}%&a items for&a %{_total}%&a$"
+   stop
+ if player's tool is a sword:
+  if {strader.%uuid of player%} is true:
+   if "%region at player%" does not contain "spawn":
+    set {_a} to amount of porkchops in event-block's inventory
+    set {_b} to amount of raw beef in event-block's inventory
+    set {_c} to amount of leather in event-block's inventory
+    set {_d} to amount of rotten flesh in event-block's inventory
+    set {_e} to amount of bone in event-block's inventory
+    set {_f} to amount of gunpowder in event-block's inventory
+    set {_g} to amount of coal in event-block's inventory
+    set {_h} to amount of blaze rod in event-block's inventory
+    set {_i} to amount of ender pearl in event-block's inventory
+    set {_total} to ({_a}*15) + ({_b}*15) + ({_c}*30) + ({_d}*50) + ({_e}*100) + ({_f}*200) + ({_g}*400) + ({_h}*300) + ({_i}* 500) + ({_j}* 100)
+    set {_totali} to {_a} + {_b} + {_c} +  {_d} + {_e} + {_f}  + {_g} + {_h} + {_i}
+    if {xpbooster2} is greater than 0:
+     set {_total} to {_total}*1.5
+    if {xpbooster3.%uuid of player%} is greater than 0:
+     set {_total} to {_total}*2
+    if player  has permission "pf.expert":
+     if player  has permission "pf.pro":
+      if player has permission "pf.legend":
+       if player has permission "pf.god":
+        set {_total} to {_total}*2
+       else:
+        set {_total} to {_total}*1.5
+      else:
+       set {_total} to {_total}*1.2
+     else:
+      set {_total} to {_total}*1.1
+    add {_total} to {balance.%uuid of player%}
+    loop items in event-block's inventory:
+     if loop-item is porkchop:
+      remove loop-item from event-block's inventory
+     if loop-item is raw beef:
+      remove loop-item from event-block's inventory
+     if loop-item is leather:
+      remove loop-item from event-block's inventory
+     if loop-item is rotten flesh:
+      remove loop-item from event-block's inventory
+     if loop-item is bone:
+      remove loop-item from event-block's inventory
+     if loop-item is gunpowder:
+      remove loop-item from event-block's inventory
+     if loop-item is coal:
+      remove loop-item from event-block's inventory
+     if loop-item is blaze rod:
+      remove loop-item from event-block's inventory
+     if loop-item is ender pearl:
+      remove loop-item from event-block's inventory
+    send "&2&l($) &aSold %{_totali}%&a items for&a %{_total}%&a$"
+    stop
+
+
+
+command autosell:
+ permission: pf.god
+ trigger:
+  if {autosell.%uuid of player%} is not set:
+   set {autosell.%uuid of player%} to true
+   send "&cToggled autosell on!"
+   stop
+  if {autosell.%uuid of player%} is true: #test
+   set {autosell.%uuid of player%} to false # test2
+   send "&cToggled autosell off!"
+   stop
+  if {autosell.%uuid of player%} is false: #test22
+   set {autosell.%uuid of player%} to true #test222
+   send "&aToggled autosell on!"
+   stop
+
+every 10 seconds:
+ loop all players:
+  if {autosell.%uuid of loop-player%} is true:
+   set {_a} to amount of porkchops in loop-player's inventory
+   set {_b} to amount of raw beef in loop-player's inventory
+   set {_c} to amount of leather in loop-player's inventory
+   set {_d} to amount of rotten flesh in loop-player's inventory
+   set {_e} to amount of bone in loop-player's inventory
+   set {_f} to amount of gunpowder in loop-player's inventory
+   set {_g} to amount of coal in loop-player's inventory
+   set {_h} to amount of blaze rod in loop-player's inventory
+   set {_i} to amount of ender pearl in loop-player's inventory
+   set {_total} to ({_a}*15) + ({_b}*15) + ({_c}*30) + ({_d}*50) + ({_e}*100) + ({_f}*200) + ({_g}*400) + ({_h}*300) + ({_i}* 500) + ({_j}* 100)
+   set {_totali} to {_a} + {_b} + {_c} + {_d} + {_e} + {_f}  + {_g} + {_h} + {_i}
+   if {xpbooster2} is greater than 0:
+    set {_total} to {_total}*1.5
+   if {xpbooster3.%uuid of loop-player%} is greater than 0:
+    set {_total} to {_total}*2
+   if loop-player has permission "pf.expert":
+    if loop-player has permission "pf.pro":
+     if loop-player has permission "pf.legend":
+      if loop-player  has permission "pf.god":
+       set {_total} to {_total}*2
+      else:
+       set {_total} to {_total}*1.5
+     else:
+      set {_total} to {_total}*1.2
+    else:
+     set {_total} to {_total}*1.1
+   add {_total} to {balance.%uuid of loop-player%}
+   loop items in loop-player's inventory:
+    if loop-item is porkchop:
+     remove loop-item from loop-player's inventory
+    if loop-item is raw beef:
+     remove loop-item from loop-player's inventory
+    if loop-item is leather:
+     remove loop-item from loop-player's inventory
+    if loop-item is rotten flesh:
+     remove loop-item from loop-player's inventory
+    if loop-item is bone:
+     remove loop-item from loop-player's inventory
+    if loop-item is gunpowder:
+     remove loop-item from loop-player's inventory
+    if loop-item is coal:
+     remove loop-item from loop-player's inventory
+    if loop-item is blaze rod:
+     remove loop-item from loop-player's inventory
+    if loop-item is ender pearl:
+     remove loop-item from loop-player's inventory
+   send "&2&l($) &aSold %{_totali}%&a items for&a %{_total}%&a$" to loop-player
+   stop
+
+command /sell [<text>]:
+ aliases: sellall, s
+ trigger:
+  if true:
+   set {_a} to amount of porkchops in player's inventory
+   set {_b} to amount of raw beef in player's inventory
+   set {_c} to amount of leather in player's inventory
+   set {_d} to amount of rotten flesh in player's inventory
+   set {_e} to amount of bone in player's inventory
+   set {_f} to amount of gunpowder in player's inventory
+   set {_g} to amount of coal in player's inventory
+   set {_h} to amount of blaze rod in player's inventory
+   set {_i} to amount of ender pearl in player's inventory
+   set {_j} to amount of arrows in player's inventory
+   set {_total} to ({_a}*25) + ({_b}*25) + ({_c}*50) + ({_d}*125) + ({_e}*150) + ({_f}*200) + ({_g}*400) + ({_h}*300) + ({_i}* 500) + ({_j}* 100)
+   set {_totali} to {_a} + {_b} + {_c} + {_d} + {_e} + {_f}  + {_g} + {_h} + {_i} + {_j}
+   if {xpbooster2} is greater than 0:
+    set {_total} to {_total}*1.5
+   if {xpbooster3.%uuid of player%} is greater than 0:
+    set {_total} to {_total}*2
+   if player has permission "pf.expert":
+    if player has permission "pf.pro":
+     if player has permission "pf.legend":
+      if player has permission "pf.god":
+       set {_total} to {_total}*2
+      
+      else:
+       set {_total} to {_total}*1.5
+     else:
+      set {_total} to {_total}*1.2
+    else:
+     set {_total} to {_total}*1.1
+   add {_total} to {balance.%uuid of player%}
+   loop items in player's inventory:
+    if loop-item is porkchop:
+     remove loop-item from player's inventory
+    if loop-item is raw beef:
+     remove loop-item from player's inventory
+    if loop-item is leather:
+     remove loop-item from player's inventory
+    if loop-item is rotten flesh:
+     remove loop-item from player's inventory
+    if loop-item is bone:
+     remove loop-item from player's inventory
+    if loop-item is gunpowder:
+     remove loop-item from player's inventory
+    if loop-item is coal:
+     remove loop-item from player's inventory
+    if loop-item is blaze rod:
+     remove loop-item from player's inventory
+    if loop-item is ender pearl:
+     remove loop-item from player's inventory
+    if loop-item is arrow:
+     remove loop-item from player's inventory
+   send "&2&l($) &aSold %{_totali}%&a items for&a %{_total}%&a$"
+   stop
+
+  else:
+   send "&cUsage: /sell (all)"
+
+
+
+command kit:
+ aliases: kits, daily, rewards
+ trigger:
+  open virtual chest inventory with size 3 named "&6&lKits" to player
+  set {_c} to 0
+  loop 9 times:
+   format gui slot {_c} of player with gray glass pane named "&7"
+   format gui slot {_c}+18 of player with gray glass pane named "&7"
+   add 1 to {_c}
+  add 2 to {_c}
+  if {daily.%uuid of player%} is less than or equal to {servertime}:
+   format gui slot {_c} of player with lime glass pane named "&aDaily Kit"  with lore "&eClick to redeem!" to close:
+    kit(player, "daily")
+  else:
+   format gui slot {_c} of player with red glass pane named "&cDaily Kit"  with lore "&eRedeemed!" and "&e%{daily.%uuid of player%}-{servertime}% hours left remaining" to close:
+    kit(player, "daily")
+  add 1 to {_c}
+  if player has permission "pf.expert":
+   if {expert.%uuid of player%} is less than or equal to {servertime}:
+    format gui slot {_c} of player with lime glass pane named "&aExpert Kit"  with lore "&eClick to redeem!" to close:
+     kit(player, "expert")
+   else:
+    format gui slot {_c} of player with red glass pane named "&cExpert Kit"  with lore "&eRedeemed!" and "&e%{expert.%uuid of player%}-{servertime}% hours left remaining" to close:
+     kit(player, "expert")
+  else:
+   format gui slot {_c} of player with orange glass pane named "&6&lLOCKED"  with lore "&eUnlock this kit by purchasing Expert Rank on /buy!"
+  add 1 to {_c}
+  if player has permission "pf.pro":
+   if {pro.%uuid of player%} is less than or equal to {servertime}:
+    format gui slot {_c} of player with lime glass pane named "&aPro Kit"  with lore "&eClick to redeem!" to close:
+     kit(player, "pro")
+   else:
+    format gui slot {_c} of player with red glass pane named "&cPro Kit"  with lore "&eRedeemed!" and "&e%{pro.%uuid of player%}-{servertime}% hours left remaining" to close:
+     kit(player, "pro")
+  else:
+   format gui slot {_c} of player with orange glass pane named "&6&lLOCKED"  with lore "&eUnlock this kit by purchasing Pro Rank on /buy!"
+  add 1 to {_c}
+  if player has permission "pf.legend":
+   if {legend.%uuid of player%} is less than or equal to {servertime}:
+    format gui slot {_c} of player with lime glass pane named "&aLegend Kit"  with lore "&eClick to redeem!" to close:
+     kit(player, "legend")
+   else:
+    format gui slot {_c} of player with red glass pane named "&cLegend Kit"  with lore "&eRedeemed!" and "&e%{legend.%uuid of player%}-{servertime}% hours left remaining" to close:
+     kit(player, "legend")
+  else:
+   format gui slot {_c} of player with orange glass pane named "&6&lLOCKED"  with lore "&eUnlock this kit by purchasing Legend Rank on /buy!"
+  add 1 to {_c}
+  if player has permission "pf.god":
+   if {god.%uuid of player%} is less than or equal to {servertime}:
+    format gui slot {_c} of player with lime glass pane named "&aGod Kit"  with lore "&eClick to redeem!" to close:
+     kit(player, "god")
+   else:
+    format gui slot {_c} of player with red glass pane named "&cGod Kit"  with lore "&eRedeemed!" and "&e%{god.%uuid of player%}-{servertime}% hours left remaining" to close:
+     kit(player, "god")
+  else:
+   format gui slot {_c} of player with orange glass pane named "&6&lLOCKED"  with lore "&eUnlock this kit by purchasing God Rank on /buy!"
+
+
+on death of skeleton:
+ remove arrows from the drops
+every hour:
+ add 1 to {servertime}
+ #broadcast "%{servertime}%"
+
+function kit(p: player, d: text):
+ set {_t} to uuid of {_p}
+ if {_d} is "daily":
+  #send "%{daily.%{_t}%}% %{servertime}%" to {_p}
+  if {daily.%{_t}%} is less than or equal to {servertime}:
+
+   set {daily.%{_t}%} to {servertime} + 24  
+   send "&a" to {_p}
+   send "&6&lRecieved rewards!" to {_p}
+   send "&e - 1 Bit" to {_p}
+   add 1 to {bits.%{_t}%}
+   chance of 95%:
+    give 1 of stone axe named "&fDaily Kit" to {_p}
+    send "&e - 1 Stone Axe" to {_p}
+    give 1 of stone pickaxe named "&fDaily Kit"  to {_p}
+    send "&e - 1 Stone Pickaxe" to {_p}
+    give 1 of stone shovel named "&fDaily Kit"  to {_p}
+    send "&e - 1 Stone Shovel" to {_p}
+   chance of 5%:
+    give 1 of prismarine shard named "&9Rare Key" with lore "&7Right click on the crates at spawn to open!" to {_p}
+    send "&e - 1 Rare Key &e&l(LUCKY DROP)" to {_p}
+   send "&a" to {_p}
+   stop
+
+  else:
+   send "&cYou still need to wait to redeem that reward!" to {_p}
+
+
+ if {_d} is "expert":
+  #send "%{e.%{_t}%}% %{servertime}%" to {_p}
+  if {expert.%{_t}%} is less than or equal to {servertime}:
+   set {expert.%{_t}%} to {servertime} + 24  
+   send "&a" to {_p}
+   send "&6&lRecieved rewards!" to {_p}
+   give 1 of iron axe named "&aExpert Kit" to {_p}
+   send "&e - 1 Iron Axe" to {_p}
+   give 1 of iron pickaxe named "&aExpert Kit"  to {_p}
+   send "&e - 1 Iron Pickaxe" to {_p}
+   give 1 of iron shovel named "&aExpert Kit"  to {_p}
+   send "&e - 1 Iron Shovel" to {_p}
+   give 1 of iron helmet named "&aExpert Kit"  to {_p}
+   send "&e - 1 Iron Helmet" to {_p}
+   give 1 of iron chestplate named "&aExpert Kit"  to {_p}
+   send "&e - 1 Iron Chestplate" to {_p}
+   give 1 of iron leggings named "&aExpert Kit"  to {_p}
+   send "&e - 1 Iron Leggings" to {_p}
+   give 1 of iron boots named "&aExpert Kit"  to {_p}
+   send "&e - 1 Iron boots" to {_p}
+   send "&a" to {_p}
+   stop
+
+  else:
+   send "&cYou still need to wait to redeem that reward!" to {_p}
+
+ if {_d} is "pro":
+  send "%{daily.%{_t}%}% %{servertime}%" to {_p}
+  if {pro.%{_t}%} is less than or equal to {servertime}:
+   set {pro.%{_t}%} to {servertime} + 24  
+   send "&a" to {_p}
+   send "&6&lRecieved rewards!" to {_p}
+   send "&e - 1 Bit" to {_p}
+   add 1 to {bits.%{_t}%}
+   give 1 of diamond axe of efficiency 1 named "&9Pro Kit"  to {_p}
+   send "&e - 1 Diamond Axe" to {_p}
+   give 1 of diamond pickaxe of efficiency 1 named "&9Pro Kit" to {_p}
+   send "&e - 1 Diamond Pickaxe" to {_p}
+   give 1 of diamond shovel of efficiency 1 named "&9Pro Kit"  to {_p}
+   send "&e - 1 Diamond Shovel" to {_p}
+   give 1 of diamond helmet of protection 1 named "&9Pro Kit"   to {_p}
+   send "&e - 1 Diamond Helmet" to {_p}
+   give 1 of diamond chestplate of protection 1 named "&9Pro Kit"  to {_p}
+   send "&e - 1 Diamond Chestplate"  to {_p}
+   give 1 of diamond leggings of protection 1 named "&9Pro Kit"  to {_p}
+   send "&e - 1 Diamond Leggings" to {_p}
+   give 1 of diamond boots of protection 1 named  "&9Pro Kit" to {_p}
+   send "&e - 1 Diamond boots" to {_p}
+   send "&a" to {_p}
+   stop
+
+ if {_d} is "legend":
+  send "%{daily.%{_t}%}% %{servertime}%" to {_p}
+  if {legend.%{_t}%} is less than or equal to {servertime}:
+   set {legend.%{_t}%} to {servertime} + 24  
+   send "&a" to {_p}
+   send "&6&lRecieved rewards!" to {_p}
+   send "&e - 1 Bit" to {_p}
+   add 1 to {bits.%{_t}%}
+   give 1 of diamond axe of efficiency 3 named "&6Legend Kit"  to {_p}
+   send "&e - 1 Diamond Axe" to {_p}
+   give 1 of diamond pickaxe of efficiency 3 named "&6Legend Kit" to {_p}
+   send "&e - 1 Diamond Pickaxe" to {_p}
+   give 1 of diamond shovel of efficiency 3 named "&6Legend Kit" to {_p}
+   send "&e - 1 Diamond Shovel" to {_p}
+   give 1 of diamond helmet of protection 3 named "&6Legend Kit"  to {_p}
+   send "&e - 1 Diamond Helmet"  to {_p}
+   give 1 of diamond chestplate of protection 3  named "&6Legend Kit"  to {_p}
+   send "&e - 1 Diamond Chestplate" to {_p}
+   give 1 of diamond leggings of protection 3  named "&6Legend Kit"  to {_p}
+   send "&e - 1 Diamond Leggings" to {_p}
+   give 1 of diamond boots of protection 3  named "&6Legend Kit" to {_p}
+   send "&e - 1 Diamond boots" to {_p}
+   send "&a" to {_p}
+   stop
+
+  else:
+   send "&cYou still need to wait to redeem that reward!" to {_p}
+
+ if {_d} is "god":
+  send "%{daily.%{_t}%}% %{servertime}%" to {_p}
+  if {god.%{_t}%} is less than or equal to {servertime}:
+   set {god.%{_t}%} to {servertime} + 24  
+   send "&a" to {_p}
+   send "&6&lRecieved rewards!" to {_p}
+   send "&e - 1 Bit" to {_p}
+   add 1 to {bits.%{_t}%}
+   give 1 of diamond axe of efficiency 5 named "&5God Kit"  to {_p}
+   send "&e - 1 Diamond Axe" to {_p}
+   give 1 of diamond pickaxe of efficiency 5 named "&5God Kit"  to {_p}
+   send "&e - 1 Diamond Pickaxe" to {_p}
+   give 1 of diamond shovel of efficiency 5 named "&5God Kit"  to {_p}
+   send "&e - 1 Diamond Shovel" to {_p}
+   give 1 of diamond helmet of efficiency 5 named "&5God Kit"  to {_p}
+   send "&e - 1 Diamond Helmet"  to {_p}
+   give 1 of diamond chestplate of protection 5  named "&5God Kit"  to {_p}
+   send "&e - 1 Diamond Chestplate" to {_p}
+   give 1 of diamond leggings of protection 5  named "&5God  Kit" to {_p}
+   send "&e - 1 Diamond Leggings" to {_p}
+   give 1 of diamond boots of protection 5  named "&5God Kit"  to {_p}
+   send "&e - 1 Diamond boots" to {_p}
+   send "&a" to {_p}
+   stop
+
+  else:
+   send "&cYou still need to wait to redeem that reward!" to {_p}
+
+
+command resetdaily <text> <player>:
+ permission: op
+ trigger:
+  if arg 1 is "daily":
+   set {daily.%uuid of arg 2%} to {servertime}
+  if arg 1 is "expert":
+   set {expert.%uuid of arg 2%} to {servertime}
+  if arg 1 is "pro":
+   set {pro.%uuid of arg 2%} to {servertime}
+  if arg 1 is "legend":
+   set {legend.%uuid of arg 2%} to {servertime}
+  if arg 1 is "god":
+   set {god.%uuid of arg 2%} to {servertime}
+  if arg 1 is "all":
+   set {servertime} to 0
+   set {daily.%uuid of arg 2%} to {servertime}
+   set {pro.%uuid of arg 2%} to {servertime}
+   set {legend.%uuid of arg 2%} to {servertime}
+   set {expert.%uuid of arg 2%} to {servertime}
+   set {god.%uuid of arg 2%} to {servertime}
+
+
+on first join:
+ set {daily.%uuid of player%} to {servertime}
+ set {pro.%uuid of player%} to {servertime}
+ set {legend.%uuid of player%} to {servertime}
+ set {expert.%uuid of player%} to {servertime}
+ set {god.%uuid of player%} to {servertime}

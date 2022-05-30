@@ -1,0 +1,464 @@
+command fake:
+ permission: op
+ trigger:
+  loop all players:
+   send "&7You have been given a &6Legendary Key&7!" to loop-player
+on join:
+ if online player count >= 50:
+  if player does not have permission "pf.overflow":
+   kick player due to "&eThe server is full! Purchase a rank on pixelized.buycraft.net &eto bypass this!"
+on death:
+ attacker is a player
+ if {slucky.%uuid of attacker%} > 0:
+  chance of (0.0005*{slucky.%uuid of attacker%}/20)%:
+   drop 1 of prismarine shard named "&6&k&l||&6&lLegendary Key&k||" with lore "&7Right click on the crates at spawn to open!" at attacker
+   send "&8&l(&6&lPixelized&8&l) &7» &eYou got lucky and got a &6LEGENDARY &ekey from your lucky enchant!" to attacker
+  chance of (0.01*{slucky.%uuid of attacker%}/20)%:
+   drop 1 of prismarine shard named "&5&lEpic Key" with lore "&7Right click on the crates at spawn to open!" at attacker
+   send "&8&l(&6&lPixelized&8&l) &7» &eYou got lucky and got an &5EPIC &ekey from your lucky enchant!" to attacker
+  chance of (0.1*{slucky.%uuid of attacker%}/20)%:
+   drop 1 of prismarine shard named "&9Rare Key" with lore "&7Right click on the crates at spawn to open!" at attacker
+   send "&8&l(&6&lPixelized&8&l) &7» &eYou got lucky and got a &9RARE &ekey from your lucky enchant!" to attacker
+  chance of ({slucky.%uuid of attacker%}/20)%:
+   drop 1 of prismarine crystals named "&fCommon Key" with lore "&7Right click on the crates at spawn to open!" at attacker
+   send "&8&l(&6&lPixelized&8&l) &7» &eYou got lucky and got a &fCOMMON &ekey from your lucky enchant!" to attacker
+ if {seconomist.%uuid of attacker%} > 0:
+  chance of (0.001*{seconomist.%uuid of attacker%})%:
+   add 1 to {bits.%uuid of attacker%}
+   send "&8&l(&6&lPixelized&8&l) &7» &eYou got lucky and got &d1 Bit&e from your economist enchant!" to attacker
+
+command /key [<text>] [<text>] [<text>] [<text>]:
+ permission: op
+ trigger:
+  if arg 1 is "giveme":
+   set {_num} to arg 3 parsed as an integer
+   if arg 2 is "l":
+    give {_num} of prismarine shard named "&6&k&l||&6&lLegendary Key&k||" with lore "&7Right click on the crates at spawn to open!" to player
+   if arg 2 is "e":
+    give {_num} of prismarine shard named "&5&lEpic Key" with lore "&7Right click on the crates at spawn to open!" to player
+   if arg 2 is "r":
+    give {_num} of prismarine shard named "&9Rare Key" with lore "&7Right click on the crates at spawn to open!" to player
+   if arg 2 is "c":
+    give {_num} of  prismarine crystals named "&fCommon Key" with lore "&7Right click on the crates at spawn to open!" to player
+  if arg 1 is "giveall":
+   set {_num} to arg 3 parsed as an integer
+   if arg 2 is "l":
+    loop all players:
+     give {_num} of prismarine shard named "&6&k&l||&6&lLegendary Key&k||" with lore "&7Right click on the crates at spawn to open!" to loop-player
+     send "&7You have been given a &6Legendary Key&7!" to loop-player
+   if arg 2 is "e":
+    loop all players:
+     give {_num} of prismarine shard named "&5&lEpic Key" with lore "&7Right click on the crates at spawn to open!" to loop-player
+     send "&7You have been given a &5Epic Key&7!" to loop-player
+   if arg 2 is "r":
+    loop all players:
+     give {_num} of prismarine shard named "&9Rare Key" with lore "&7Right click on the crates at spawn to open!" to loop-player
+     send "&7You have been given a &9Rare Key&7!" to loop-player
+   if arg 2 is "c":
+    loop all players:
+     give {_num} of prismarine crystals named "&fCommon Key" with lore "&7Right click on the crates at spawn to open!" to loop-player
+     send "&7You have been given a &fCommon Key&7!" to loop-player
+  if arg 1 is "give":
+   set {_num} to arg 4 parsed as an integer
+   set {_player} to arg 2 parsed as a player
+   if arg 3 is "l":
+    give {_num} of prismarine shard named "&6&k&l||&6&lLegendary Key&k||" with lore "&7Right click on the crates at spawn to open!" to {_player}
+   if arg 3 is "e":
+    give {_num} of prismarine shard named "&5&lEpic Key" with lore "&7Right click on the crates at spawn to open!" to {_player}
+   if arg 3 is "r":
+    give {_num} of prismarine shard named "&9Rare Key" with lore "&7Right click on the crates at spawn to open!" to {_player}
+   if arg 3 is "c":
+    give {_num} of prismarine crystals named "&fCommon Key" with lore "&7Right click on the crates at spawn to open!" to {_player}
+
+
+
+
+on right click on chest:
+ send "&cCrates are disabled for now."
+ stop
+ if event-block is a chest: 
+  if "%region at player%" contains "spawn":
+   cancel event
+  
+   if player's tool is a prismarine shard named "&6&k&l||&6&lLegendary Key&k||" with lore "&7Right click on the crates at spawn to open!":
+    set {_rand} to a random integer between 1 and 100
+    remove 1 of prismarine shard named "&6&k&l||&6&lLegendary Key&k||" with lore "&7Right click on the crates at spawn to open!" from player's inventory
+    #broadcast "%{_rand}%"
+    if {_rand} is 100:
+     broadcast "&8&l(&6&lPixelized&8&l) &7» &e%player% has won an &2Expert Rank &e from a &6Legendary Crate&e!"
+     give player a paper named "&7&l(&e&lRANK&7&l) &2&lExpert" with lore "&7(!) Right click to redeem your rank! (!)"
+     stop
+    if {_rand} < 100:
+     if {_rand} >= 95:
+      broadcast "&8&l(&6&lPixelized&8&l) &7» &e%player% has won an &5&lEPIC KEY &efor everyone on the server!"
+      execute console command "/key giveall e 1"
+      stop 
+    if {_rand} < 95:
+     if {_rand} >= 93:
+      broadcast "&8&l(&6&lPixelized&8&l) &7» &e%player% has won &d30 Bits&e from a &6Legendary Crate&e!"
+      add 30 to {bits.%uuid of player%}
+      stop 
+    if {_rand} < 93:
+     if {_rand} >= 73:
+      broadcast "&8&l(&6&lPixelized&8&l) &7» &e%player% has won &a$5000000&e from a &6Legendary Crate&e!"
+      add 5000000 to {balance.%uuid of player%}
+      stop 
+    if {_rand} < 73:
+     if {_rand} >= 55:
+      broadcast "&8&l(&6&lPixelized&8&l) &7» &e%player% has won &b10 Enderman Generators&e from a &6Legendary Crate&e!"
+      give player 10 of black glass named "&bEnderman Generator" with lore "&7Place down to start spawning endermen!" and "&7Farm Level 50 required"
+      stop 
+    if {_rand} < 55:
+     if {_rand} >= 45:
+      broadcast "&8&l(&6&lPixelized&8&l) &7» &e%player% has won &ca Personal Booster&e from a &6Legendary Crate&e!"
+      give player firework with name "&e&l(3 Hour) &c&lPersonal Booster &7(Right Click)" with lore "&eRight click to use!" and "&eDoubles money and xp for 3 hours!"
+      stop 
+    if {_rand} < 45:
+     if {_rand} >= 40:
+      broadcast "&8&l(&6&lPixelized&8&l) &7» &e%player% has won &c2 Key &fBombs&e from a &6Legendary Crate&e!"
+      give player 2 of tnt with name "&e&l&cKey &fBomb" with lore "&eRight click to throw!" and "&eExplodes, dropping keys all over an area!"
+      stop 
+    if {_rand} < 40:
+     if {_rand} >= 35:
+      broadcast "&8&l(&6&lPixelized&8&l) &7» &e%player% has won &63 Legendary Keys&e from a &6Legendary Crate&e!"
+      give 3 of prismarine shard named "&6&k&l||&6&lLegendary Key&k||" with lore "&7Right click on the crates at spawn to open!" to player
+      stop 
+    if {_rand} < 35:
+     if {_rand} >= 15:
+      broadcast "&8&l(&6&lPixelized&8&l) &7» &e%player% has won &d3 Bits&e from a &6Legendary Crate&e!"
+      add 3 to {bits.%uuid of player%}
+      stop 
+    if {_rand} < 15:
+     if {_rand} >= 5:
+      broadcast "&8&l(&6&lPixelized&8&l) &7» &e%player% has won &d10 Bits&e from a &6Legendary Crate&e!"
+      add 10 to {bits.%uuid of player%}
+      stop 
+    if {_rand} < 5:
+     if {_rand} >= 1:
+      broadcast "&8&l(&6&lPixelized&8&l) &7» &e%player% has won &fa /Fly voucher&e from a &6Legendary Crate&e!"
+      give player feather with name "&f/Fly Command &7(Right Click)" with lore "&eRight click to redeem!"
+      stop 
+ 
+   else if player's tool is a prismarine shard named "&5&lEpic Key" with lore "&7Right click on the crates at spawn to open!":
+    set {_rand} to a random number between 1 and 100
+    remove 1 of prismarine shard named "&5&lEpic Key" with lore "&7Right click on the crates at spawn to open!" from player's inventory
+    #broadcast "%{_rand}%"
+    if {_rand} is 100:
+     send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &6a Legendary Key&e from an &5Epic Crate&e!"
+     give 1 of prismarine shard named "&6&k&l||&6&lLegendary Key&k||" with lore "&7Right click on the crates at spawn to open!" to player
+    if {_rand} < 100:
+     if {_rand} >= 80:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &a$50000&e from an &5Epic Crate&e!"
+      add 50000 to {balance.%uuid of player%}
+    if {_rand} < 80:
+     if {_rand} >= 65:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &a$150000&e from an &5Epic Crate&e!"
+      add 150000 to {balance.%uuid of player%}
+    if {_rand} < 65:
+     if {_rand} >= 60:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &a$500000&e from an &5Epic Crate&e!"
+      add 500000 to {balance.%uuid of player%}
+    if {_rand} < 60:
+     if {_rand} >= 59:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &a$2000000&e from an &5Epic Crate&e!"
+      add 2000000 to {balance.%uuid of player%}
+    if {_rand} < 59:
+     if {_rand} >= 39:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won a &6Blaze Generator&e from an &5Epic Crate&e!"
+      give player orange glass named "&6Blaze Generator" with lore "&7Place down to start spawning blazes!" and "&7Farm Level 30 required"
+    if {_rand} < 39:
+     if {_rand} >= 24:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won a &8Wither Skeleton Generator&e from an &5Epic Crate&e!"
+      give player gray glass named "&9Wither Skeleton Generator" with lore "&7Place down to start spawning wither skeletons!" and "&7Farm Level 40 required"
+    if {_rand} < 24:
+     if {_rand} >= 22:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won an &b20000 Farm XP&e from an &5Epic Crate&e!"
+      add 20000 to {xp.%{farms.%uuid of player%}%}
+    if {_rand} < 22:
+     if {_rand} >= 20:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won an &b20000 Sword XP&e from an &5Epic Crate&e!"
+      add 20000 to {sxp.%uuid of player%}
+    if {_rand} < 20:
+     if {_rand} >= 10:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won a &bEnderman Generator&e from an &5Epic Crate&e!"
+      give player black glass named "&bEnderman Generator" with lore "&7Place down to start spawning endermen!" and "&7Farm Level 50 required"
+    if {_rand} < 10:
+     if {_rand} >= 5:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &93 Rare Keys&e from an &5Epic Crate&e!"
+      give 3 of prismarine shard named "&9Rare Key" with lore "&7Right click on the crates at spawn to open!" to player
+    if {_rand} < 5:
+     if {_rand} >= 2:
+      broadcast "&8&l(&6&lPixelized&8&l) &7» &e%player% has won &d3 Bits&e from a &5Epic Crate&e!"
+      add 3 to {bits.%uuid of player%}
+    if {_rand} < 2:
+     if {_rand} >= 1:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &ca mini Key Bomb&e from an &5Epic Crate&e!"
+      give tnt with name "&e&l(Mini) &cKey &fBomb" with lore "&eRight click to throw!" and "&eExplodes, dropping keys all over an area!" to player
+
+   else if player's tool is a prismarine shard named "&9Rare Key" with lore "&7Right click on the crates at spawn to open!":
+    set {_rand} to a random number between 1 and 100
+    remove 1 of prismarine shard named "&9Rare Key" with lore "&7Right click on the crates at spawn to open!" from player's inventory
+   # broadcast "%{_rand}%"
+    if {_rand} is 100:
+     send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &5an Epic Key&e from an &9Rare Crate&e!"
+     give 1 of prismarine shard named "&5&lEpic Key" with lore "&7Right click on the crates at spawn to open!" to player
+    if {_rand} < 100:
+     if {_rand} >= 80:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &a$5000&e from an &9Rare Crate&e!"
+      add 5000 to {balance.%uuid of player%}
+    if {_rand} < 80:
+     if {_rand} >= 65:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &a$15000&e from an &9Rare Crate&e!"
+      add 15000 to {balance.%uuid of player%}
+    if {_rand} < 65:
+     if {_rand} >= 60:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &a$50000&e from an &9Rare Crate&e!"
+      add 50000 to {balance.%uuid of player%}
+    if {_rand} < 60:
+     if {_rand} >= 59:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &a$200000&e from an &9Rare Crate&e!"
+      add 200000 to {balance.%uuid of player%}
+    if {_rand} < 59:
+     if {_rand} >= 39:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &fa Skeleton Generator&e from an &9Rare Crate&e!"
+      give player white glass named "&fSkeleton Generator" with lore "&7Place down to start spawning skeletons!" and "&7Farm Level 15 required"
+    if {_rand} < 39:
+     if {_rand} >= 24:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &aa Creeper Generator&e from an &9Rare Crate&e!"
+      give player lime glass named "&aCreeper Generator" with lore "&7Place down to start spawning creepers!" and "&7Farm Level 20 required"
+    if {_rand} < 24:
+     if {_rand} >= 14:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &6Blaze Generator Generator&e from an &9Rare Crate&e!"
+      give player orange glass named "&6Blaze Generator" with lore "&7Place down to start spawning blazes!" and "&7Farm Level 30 required"
+    if {_rand} < 14:
+     if {_rand} >= 12:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &c5000 Farm XP &e from an &9Rare Crate&e!"
+      add 5000 to {xp.%{farm.%uuid of player%}%}
+    if {_rand} < 12:
+     if {_rand} >= 10:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &c5000 Sword XP &e from an &9Rare Crate&e!"
+      add 5000 to {sxp.%uuid of player%}
+    if {_rand} < 10:
+     if {_rand} >= 1:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &f5 Common Keys&e from an &9Rare Crate&e!"
+      give 5 of prismarine crystals named "&fCommon Key" with lore "&7Right click on the crates at spawn to open!" to player
+
+
+   else if player's tool is a prismarine crystals named "&fCommon Key" with lore "&7Right click on the crates at spawn to open!":
+    set {_rand} to a random number between 1 and 100
+    remove 1 of prismarine crystals named "&fCommon Key" with lore "&7Right click on the crates at spawn to open!" from player's inventory
+    #broadcast "%{_rand}%"
+    if {_rand} is 100:
+     send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &a$10000&e from a &fCommon Crate&e!"
+     add 10000 to {balance.%uuid of player%}
+    if {_rand} < 100:
+     if {_rand} >= 75:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &a$100&e from a &fCommon Crate&e!"
+      add 100 to {balance.%uuid of player%}
+    if {_rand} < 75:
+     if {_rand} >= 60:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &a$500&e from a &fCommon Crate&e!"
+      add 500 to {balance.%uuid of player%}
+    if {_rand} < 60:
+     if {_rand} >= 55:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &a$1500&e from a &fCommon Crate&e!"
+      add 1500 to {balance.%uuid of player%}
+    if {_rand} < 55:
+     if {_rand} >= 30:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &ea Pig Generator&e from a &fCommon Crate&e!"
+      give player pink glass named "&dPig Generator" with lore "&7Place down to start spawning pigs!"
+    if {_rand} < 30:
+     if {_rand} >= 15:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &8a Cow Generator&e from a &fCommon Crate&e!"
+      give player brown glass named "&7Cow Generator" with lore "&7Place down to start spawning cows!" and "&7Farm Level 5 required"
+    if {_rand} < 15:
+     if {_rand} >= 5:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &2a Zombie Generator&e from a &fCommon Crate&e!"
+      give player green glass named "&2Zombie Generator" with lore "&7Place down to start spawning zombies!" and "&7Farm Level 10 required"
+    if {_rand} < 5:
+     if {_rand} >= 4:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &a2000 Farm XP&e from a &fCommon Crate&e!"
+      add 2000 to {xp.%{farm.%uuid of player%}%}
+    if {_rand} < 4:
+     if {_rand} >= 3:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &a2000 Sword XP&e from a &fCommon Crate&e!"
+      add 2000 to {sxp.%uuid of player%}
+    if {_rand} < 3:
+     if {_rand} >= 1:
+      send "&8&l(&6&lPixelized&8&l) &7» &eYou have won &9a Rare Key&e from a &fCommon Crate&e!"
+      give player prismarine shard named "&9Rare Key" with lore "&7Right click on the crates at spawn to open!"
+
+
+   else:
+    send "&8&l(&6&lPixelized&8&l) &7» &eYou need to be holding a key to use this crate!"
+    push the player backwards at speed 1.25
+
+
+on left click:
+ event-block is chest
+ if the distance between location of target block and player is greater than 6:
+  stop
+ if "%region at player%" contains "spawn":
+  open virtual chest inventory with 3 rows named "&3&lCrates" to player
+  format gui slot 0 of player with gray glass pane named "&7"
+  format gui slot 1 of player with gray glass pane named "&7"
+  format gui slot 2 of player with gray glass pane named "&7"
+  format gui slot 3 of player with gray glass pane named "&7"
+  format gui slot 4 of player with gray glass pane named "&7"
+  format gui slot 5 of player with gray glass pane named "&7"
+  format gui slot 6 of player with gray glass pane named "&7"
+  format gui slot 7 of player with gray glass pane named "&7"
+  format gui slot 8 of player with gray glass pane named "&7"
+
+  format gui slot 10 of player with chest named "&fCommon Crate" with lore "&eClick me to see the drops!" to close:
+   common(player)
+  format gui slot 12 of player with chest named "&9Rare Crate" with lore "&eClick me to see the drops!" to close:
+   rare(player)
+  format gui slot 14 of player with chest named "&5Epic Crate" with lore "&eClick me to see the drops!" to close:
+   epic(player)
+  format gui slot 16 of player with chest named "&6Legendary Crate" with lore "&eClick me to see the drops!" to close:
+   legendary(player)
+  format gui slot 18 of player with gray glass pane named "&7"
+  format gui slot 19 of player with gray glass pane named "&7"
+  format gui slot 20 of player with gray glass pane named "&7"
+  format gui slot 21 of player with gray glass pane named "&7"
+  format gui slot 22 of player with gray glass pane named "&7"
+  format gui slot 23 of player with gray glass pane named "&7"
+  format gui slot 24 of player with gray glass pane named "&7"
+  format gui slot 25 of player with gray glass pane named "&7"
+  format gui slot 26 of player with gray glass pane named "&7"
+
+function common(p: player):
+ set {_t} to uuid of {_p}
+ open virtual chest inventory with 4 rows named "&7&lCommon" to {_p}
+ format gui slot 0 of {_p} with gray glass pane named "&7"
+ format gui slot 1 of {_p} with gray glass pane named "&7"
+ format gui slot 2 of {_p} with gray glass pane named "&7"
+ format gui slot 3 of {_p} with gray glass pane named "&7"
+ format gui slot 4 of {_p} with gray glass pane named "&7"
+ format gui slot 5 of {_p} with gray glass pane named "&7"
+ format gui slot 6 of {_p} with gray glass pane named "&7"
+ format gui slot 7 of {_p} with gray glass pane named "&7"
+ format gui slot 8 of {_p} with gray glass pane named "&7"
+ format gui slot 9 of {_p} with paper named "&f$100" with lore "&7Chance: 25%%"
+ format gui slot 10 of {_p} with paper named "&a$500" with lore "&7Chance: 15%%"
+ format gui slot 11 of {_p} with paper named "&9$1500" with lore "&7Chance: 5%%"
+ format gui slot 12 of {_p} with shiny paper named "&5$10000" with lore "&7Chance: 1%%"
+ format gui slot 13 of {_p} with pink glass named "&fPig Generator" with lore "&7Chance: 25%%"
+ format gui slot 14 of {_p} with brown glass named "&aCow Generator" with lore "&7Chance: 15%%"
+ format gui slot 15 of {_p} with green glass named "&9Zombie Generator " with lore "&7Chance: 10%%"
+ format gui slot 16 of {_p} with experience bottle named "&62000 Sword XP" with lore "&7Chance: 1%%"
+ format gui slot 17 of {_p} with experience bottle named "&62000 Farm XP" with lore "&7Chance: 1%%"
+ format gui slot 18 of {_p} with prismarine shard named "&6Rare Crate Key" with lore "&7Chance: 2%%"
+ format gui slot 27 of {_p} with gray glass pane named "&7"
+ format gui slot 28 of {_p} with gray glass pane named "&7"
+ format gui slot 29 of {_p} with gray glass pane named "&7"
+ format gui slot 30 of {_p} with gray glass pane named "&7"
+ format gui slot 31 of {_p} with gray glass pane named "&7"
+ format gui slot 32 of {_p} with gray glass pane named "&7"
+ format gui slot 33 of {_p} with gray glass pane named "&7"
+ format gui slot 34 of {_p} with gray glass pane named "&7"
+ format gui slot 35 of {_p} with gray glass pane named "&7"
+
+
+function rare(p: player):
+ set {_t} to uuid of {_p}
+ open virtual chest inventory with 4 rows named "&9&lRare" to {_p}
+ format gui slot 0 of {_p} with gray glass pane named "&7"
+ format gui slot 1 of {_p} with gray glass pane named "&7"
+ format gui slot 2 of {_p} with gray glass pane named "&7"
+ format gui slot 3 of {_p} with gray glass pane named "&7"
+ format gui slot 4 of {_p} with gray glass pane named "&7"
+ format gui slot 5 of {_p} with gray glass pane named "&7"
+ format gui slot 6 of {_p} with gray glass pane named "&7"
+ format gui slot 7 of {_p} with gray glass pane named "&7"
+ format gui slot 8 of {_p} with gray glass pane named "&7"
+ format gui slot 9 of {_p} with paper named "&f$5000" with lore "&7Chance: 20%%" #
+ format gui slot 10 of {_p} with paper named "&a$15000" with lore "&7Chance: 15%%"  #
+ format gui slot 11 of {_p} with paper named "&9$50000" with lore "&7Chance: 5%%"# 
+ format gui slot 12 of {_p} with shiny paper named "&5$200000" with lore "&7Chance: 1%%" #
+ format gui slot 13 of {_p} with white glass named "&fSkeleton Generator" with lore "&7Chance: 20%%" #
+ format gui slot 14 of {_p} with lime glass named "&aCreeper Generator" with lore "&7Chance: 15%%" # 
+ format gui slot 15 of {_p} with orange glass named "&9Blaze Generator " with lore "&7Chance: 10%%" #
+ format gui slot 16 of {_p} with experience bottle named "&65000 Sword XP" with lore "&7Chance: 2%%" #
+ format gui slot 17 of {_p} with experience bottle named "&65000 Farm XP" with lore "&7Chance: 2%%" # 
+ format gui slot 18 of {_p} with prismarine crystals named "&f5 Common Keys" with lore "&7Chance: 10%%" #
+ format gui slot 19 of {_p} with prismarine shard named "&6Epic Crate Key" with lore "&7Chance: 1%%" #
+ format gui slot 27 of {_p} with gray glass pane named "&7"
+ format gui slot 28 of {_p} with gray glass pane named "&7"
+ format gui slot 29 of {_p} with gray glass pane named "&7"
+ format gui slot 30 of {_p} with gray glass pane named "&7"
+ format gui slot 31 of {_p} with gray glass pane named "&7"
+ format gui slot 32 of {_p} with gray glass pane named "&7"
+ format gui slot 33 of {_p} with gray glass pane named "&7"
+ format gui slot 34 of {_p} with gray glass pane named "&7"
+ format gui slot 35 of {_p} with gray glass pane named "&7"
+
+
+function epic(p: player):
+ set {_t} to uuid of {_p}
+ open virtual chest inventory with 4 rows named "&5&lEpic" to {_p}
+ format gui slot 0 of {_p} with gray glass pane named "&7"
+ format gui slot 1 of {_p} with gray glass pane named "&7"
+ format gui slot 2 of {_p} with gray glass pane named "&7"
+ format gui slot 3 of {_p} with gray glass pane named "&7"
+ format gui slot 4 of {_p} with gray glass pane named "&7"
+ format gui slot 5 of {_p} with gray glass pane named "&7"
+ format gui slot 6 of {_p} with gray glass pane named "&7"
+ format gui slot 7 of {_p} with gray glass pane named "&7"
+ format gui slot 8 of {_p} with gray glass pane named "&7"
+ format gui slot 9 of {_p} with paper named "&a$50000" with lore "&7Chance: 20%%" #
+ format gui slot 10 of {_p} with paper named "&9$150000" with lore "&7Chance: 15%%" #
+ format gui slot 11 of {_p} with paper named "&5$500000" with lore "&7Chance: 5%%" #
+ format gui slot 12 of {_p} with shiny paper named "&6$2000000" with lore "&7Chance: 1%%" #
+ format gui slot 13 of {_p} with orange glass named "&aBlaze Generator" with lore "&7Chance: 20%%" #
+ format gui slot 14 of {_p} with gray glass named "&9Wither Skeleton Generator" with lore "&7Chance: 15%%" #
+ format gui slot 15 of {_p} with black glass named "&5Enderman Generator " with lore "&7Chance: 10%%" #
+ format gui slot 16 of {_p} with experience bottle named "&620000 Sword XP" with lore "&7Chance: 2%%" #
+ format gui slot 17 of {_p} with experience bottle named "&620000 Farm XP" with lore "&7Chance: 2%%" #
+ format gui slot 18 of {_p} with prismarine shard named "&93 Rare Keys" with lore "&7Chance: 5%%" 
+ format gui slot 19 of {_p} with shiny tnt named "&6Mini Key Bomb" with lore "&7Chance: 1%%"
+ format gui slot 20 of {_p} with shiny nether quartz named "&d5 Bits" with lore "&7Chance: 3%%"
+ format gui slot 21 of {_p} with prismarine shard named "&6Legendary Crate Key" with lore "&7Chance: 1%%" #
+ format gui slot 27 of {_p} with gray glass pane named "&7"
+ format gui slot 28 of {_p} with gray glass pane named "&7"
+ format gui slot 29 of {_p} with gray glass pane named "&7"
+ format gui slot 30 of {_p} with gray glass pane named "&7"
+ format gui slot 31 of {_p} with gray glass pane named "&7"
+ format gui slot 32 of {_p} with gray glass pane named "&7"
+ format gui slot 33 of {_p} with gray glass pane named "&7"
+ format gui slot 34 of {_p} with gray glass pane named "&7"
+ format gui slot 35 of {_p} with gray glass pane named "&7"
+
+function legendary(p: player):
+ set {_t} to uuid of {_p}
+ open virtual chest inventory with 4 rows named "&6&k&l||&6&lLegendary&k||" to {_p}
+ format gui slot 0 of {_p} with gray glass pane named "&7"
+ format gui slot 1 of {_p} with gray glass pane named "&7"
+ format gui slot 2 of {_p} with gray glass pane named "&7"
+ format gui slot 3 of {_p} with gray glass pane named "&7"
+ format gui slot 4 of {_p} with gray glass pane named "&7"
+ format gui slot 5 of {_p} with gray glass pane named "&7"
+ format gui slot 6 of {_p} with gray glass pane named "&7"
+ format gui slot 7 of {_p} with gray glass pane named "&7"
+ format gui slot 8 of {_p} with gray glass pane named "&7"
+ format gui slot 9 of {_p} with shiny paper named "&6$5000000" with lore "&7Chance: 20%%"
+ format gui slot 10 of {_p} with black glass named "&510 Enderman Generators" with lore "&7Chance: 20%%"
+ format gui slot 11 of {_p} with shiny firework named "&62x Personal Booster &7(3 Days)" with lore "&7Chance: 10%%"
+ format gui slot 12 of {_p} with prismarine shard named "&6Epic Key All" with lore "&7Chance: 5%%"
+ format gui slot 13 of {_p} with shiny tnt named "&62 Key Bombs" with lore "&7Chance: 5%%"
+ format gui slot 14 of {_p} with prismarine shard named "&63 Legendary Crate Keys" with lore "&7Chance: 1%%"
+ format gui slot 15 of {_p} with shiny name tag named "&6Expert Rank &7(Voucher)" with lore "&7Chance: 1%%"
+ format gui slot 16 of {_p} with shiny nether quartz named "&63 Bits" with lore "&7Chance: 25%%"
+ format gui slot 17 of {_p} with shiny nether quartz named "&610 Bits" with lore "&7Chance: 10%%"
+ format gui slot 18 of {_p} with shiny nether quartz named "&630 Bits" with lore "&7Chance: 2%%"
+ format gui slot 19 of {_p} with feather named "&6Fly Perms" with lore "&7Chance: 1%%"
+ format gui slot 27 of {_p} with gray glass pane named "&7"
+ format gui slot 28 of {_p} with gray glass pane named "&7"
+ format gui slot 29 of {_p} with gray glass pane named "&7"
+ format gui slot 30 of {_p} with gray glass pane named "&7"
+ format gui slot 31 of {_p} with gray glass pane named "&7"
+ format gui slot 32 of {_p} with gray glass pane named "&7"
+ format gui slot 33 of {_p} with gray glass pane named "&7"
+ format gui slot 34 of {_p} with gray glass pane named "&7"
+ format gui slot 35 of {_p} with gray glass pane named "&7"

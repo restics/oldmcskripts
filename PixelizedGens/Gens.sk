@@ -1,0 +1,655 @@
+on craft:
+ if event-item is pink glass:
+  cancel event
+ if event-item is white glass:
+  cancel event
+ if event-item is brown glass:
+  cancel event
+ if event-item is lime glass:
+  cancel event
+ if event-item is green glass:
+  cancel event
+ if event-item is yellow glass:
+  cancel event
+ if event-item is orange glass:
+  cancel event
+ if event-item is black glass:
+  cancel event
+ if event-item is gray glass:
+  cancel event
+ if event-item is sword:
+  cancel event
+
+on spawn of zombie:
+ set last spawned zombie's tool to air
+
+on damage:
+ attacker is a player
+ if attacker's tool is not a sword:
+  cancel event
+  send "&cYou cannot attack mobs without a sword!"
+on death:
+ attacker is a player
+ if attacker's tool is not a sword:
+  cancel event
+  send "&cYou cannot attack mobs without a sword!"
+on spawn:
+ 
+ if event-entity is not a player:
+ # set event-entity's health to 0.1
+on combust:
+ cancel event
+
+on left click:
+ if player is sneaking:
+  if "%region at player%" contains "tutorial":
+   stop
+   send "&cDon't do that!"
+  if {pigloc::*} contains event-location:
+   if event-block is pink glass:
+    if {tetherblock.%uuid of player%} is not equal to {farmcenter.%{farm.%uuid of player%}%}:
+     player is not op
+     cancel event
+     send "&cYou can't break blocks here!"
+     stop
+    set {counter} to 0
+    loop {gens::%{farm.%uuid of player%}%::*}:
+     add 1 to {counter}
+    remove event-location from {pigloc::*}
+    remove event-location from {gens::%{farm.%uuid of player%}%::*}
+    set event- block to air
+    give player pink glass named "&dPig Generator" with lore "&7Place down to start spawning pigs!"
+    send "&eRemoved a Pig Generator! [%{counter}-1%&e/%{maxgens.%{farm.%uuid of player%}%}%&e]"
+    stop
+  if {cowloc::*} contains event-location:
+   if event-block is brown glass:
+    if {tetherblock.%uuid of player%} is not equal to {farmcenter.%{farm.%uuid of player%}%}:
+     player is not op
+     cancel event
+     send "&cYou can't break blocks here!"
+     stop
+    set {counter} to 0
+    loop {gens::%{farm.%uuid of player%}%::*}:
+     add 1 to {counter}
+    remove event-location from {cowloc::*}
+    remove event-location from {gens::%{farm.%uuid of player%}%::*}
+    set event- block to air
+    give player brown glass named "&7Cow Generator" with lore "&7Place down to start spawning cows!" and "&7Farm Level 5 required"
+    send "&eRemoved a Cow Generator! [%{counter}-1%&e/%{maxgens.%{farm.%uuid of player%}%}%&e]"
+    stop
+  if {zomloc::*} contains event-location:
+   if event-block is green glass:
+    if {tetherblock.%uuid of player%} is not equal to {farmcenter.%{farm.%uuid of player%}%}:
+     player is not op
+     cancel event
+     send "&cYou can't break blocks here!"
+     stop
+    set {counter} to 0
+    loop {gens::%{farm.%uuid of player%}%::*}:
+     add 1 to {counter}
+    remove event-location from {zomloc::*}
+    remove event-location from {gens::%{farm.%uuid of player%}%::*}
+    set event- block to air
+    give player green glass named "&2Zombie Generator" with lore "&7Place down to start spawning zombies!" and "&7Farm Level 10 required"
+    send "&eRemoved a Zombie Generator! [%{counter}-1%&e/%{maxgens.%{farm.%uuid of player%}%}%&e]"
+    stop
+  if {skeloc::*} contains event-location:
+   if event-block is white glass:
+    if {tetherblock.%uuid of player%} is not equal to {farmcenter.%{farm.%uuid of player%}%}:
+     player is not op
+     cancel event
+     send "&cYou can't break blocks here!"
+     stop
+    set {counter} to 0
+    loop {gens::%{farm.%uuid of player%}%::*}:
+     add 1 to {counter}
+    remove event-location from {skeloc::*}
+    remove event-location from {gens::%{farm.%uuid of player%}%::*}
+    set event- block to air
+    give player white glass named "&fSkeleton Generator" with lore "&7Place down to start spawning skeletons!" and "&7Farm Level 15 required"
+    send "&eRemoved a Skeleton Generator! [%{counter}-1%&e/%{maxgens.%{farm.%uuid of player%}%}%&e]"
+    stop
+  if {creloc::*} contains event-location:
+   if event-block is lime glass:
+    if {tetherblock.%uuid of player%} is not equal to {farmcenter.%{farm.%uuid of player%}%}:
+     player is not op
+     cancel event
+     send "&cYou can't break blocks here!"
+     stop
+    set {counter} to 0
+    loop {gens::%{farm.%uuid of player%}%::*}:
+     add 1 to {counter}
+    remove event-location from {creloc::*}
+    remove event-location from {gens::%{farm.%uuid of player%}%::*}
+    set event- block to air
+    give player lime glass named "&aCreeper Generator" with lore "&7Place down to start spawning creepers!" and "&7Farm Level 20 required"
+    send "&eRemoved a Creeper Generator! [%{counter}-1%&e/%{maxgens.%{farm.%uuid of player%}%}%&e]"
+    stop
+  if {blaloc::*} contains event-location:
+   if event-block is orange glass:
+    if {tetherblock.%uuid of player%} is not equal to {farmcenter.%{farm.%uuid of player%}%}:
+     player is not op
+     cancel event
+     send "&cYou can't break blocks here!"
+     stop
+    set {counter} to 0
+    loop {gens::%{farm.%uuid of player%}%::*}:
+     add 1 to {counter}
+    remove event-location from {blaloc::*}
+    remove event-location from {gens::%{farm.%uuid of player%}%::*}
+    set event- block to air
+    give player orange glass named "&6Blaze Generator" with lore "&7Place down to start spawning blazes!" and "&7Farm Level 30 required"
+    send "&eRemoved a Blaze Generator! [%{counter}-1%&e/%{maxgens.%{farm.%uuid of player%}%}%&e]"
+    stop
+  if {endloc::*} contains event-location:
+   if event-block is black glass:
+    if {tetherblock.%uuid of player%} is not equal to {farmcenter.%{farm.%uuid of player%}%}:
+     player is not op
+     cancel event
+     send "&cYou can't break blocks here!"
+     stop
+    set {counter} to 0
+    loop {gens::%{farm.%uuid of player%}%::*}:
+     add 1 to {counter}
+    remove event-location from {endloc::*}
+    remove event-location from {gens::%{farm.%uuid of player%}%::*}
+    set event- block to air
+    give player black glass named "&bEnderman Generator" with lore "&7Place down to start spawning endermen!" and "&7Farm Level 50 required"
+    send "&eRemoved an Enderman Generator! [%{counter}-1%&e/%{maxgens.%{farm.%uuid of player%}%}%&e]"
+    stop
+  if {wsloc::*} contains event-location:
+   if event-block is gray glass:
+    if {tetherblock.%uuid of player%} is not equal to {farmcenter.%{farm.%uuid of player%}%}:
+     player is not op
+     cancel event
+     send "&cYou can't break blocks here!"
+     stop
+    set {counter} to 0
+    loop {gens::%{farm.%uuid of player%}%::*}:
+     add 1 to {counter}
+    remove event-location from {wsloc::*}
+    remove event-location from {gens::%{farm.%uuid of player%}%::*}
+    set event- block to air
+    give player gray glass named "&9Wither Skeleton Generator" with lore "&7Place down to start spawning wither skeletons!" and "&7Farm Level 40 required"
+    send "&eRemoved a Wither Skeleton Generator! [%{counter}-1%&e/%{maxgens.%{farm.%uuid of player%}%}%&e]"
+    stop
+   
+on block break:
+ if event-block is pink glass:
+  player is not op
+  cancel event
+  send "&cShift left click to break!"
+ if event-block is brown glass:
+  player is not op
+  cancel event
+  send "&cShift left click to break!"
+ if event-block is green glass:
+  player is not op
+  cancel event
+  send "&cShift left click to break!"
+ if event-block is white glass:
+  player is not op
+  cancel event
+  send "&cShift left click to break!"
+ if event-block is lime glass:
+  player is not op
+  cancel event
+  send "&cShift left click to break!"
+ if event-block is orange glass:
+  player is not op
+  cancel event
+  send "&cShift left click to break!"
+ if event-block is gray glass:
+  player is not op
+  cancel event
+  send "&cShift left click to break!"
+ if event-block is black glass:
+  player is not op
+  cancel event
+  send "&cShift left click to break!"
+ if event-block is yellow glass:
+  player is not op
+  cancel event
+  send "&cShift left click to break!"
+ 
+on place:
+ if player's tool is pink glass named "&dPig Generator" with lore "&7Place down to start spawning pigs!":
+  if {tetherblock.%uuid of player%} is not equal to {farmcenter.%{farm.%uuid of player%}%}:
+   player is not op
+   cancel event
+   #send "&cYou can't place blocks here!"
+   stop
+  set {counter} to 0
+  loop {gens::%{farm.%uuid of player%}%::*}:
+   add 1 to {counter}
+  if {counter} is greater than or equal to {maxgens.%{farm.%uuid of player%}%}:
+   send "&eYou have placed down too many gens! Break one or upgrade gen size in your farm menu!" 
+   cancel event
+   stop
+  add event-location to {pigloc::*}
+  add event-location to {gens::%{farm.%uuid of player%}%::*}
+  send "&ePlaced down a Pig Generator! [%{counter}+1%&e/%{maxgens.%{farm.%uuid of player%}%}%&e]"
+ if player's tool is brown glass named "&7Cow Generator" with lore "&7Place down to start spawning cows!" and "&7Farm Level 5 required":
+  if {tetherblock.%uuid of player%} is not equal to {farmcenter.%{farm.%uuid of player%}%}:
+   player is not op
+   cancel event
+   #send "&cYou can't place blocks here!"
+   stop
+  if {level.%{farm.%uuid of player%}%} is less than 5:
+   cancel event
+   send "&cYour farm isn't high enough level!"
+   stop
+  set {counter} to 0
+  loop {gens::%{farm.%uuid of player%}%::*}:
+   add 1 to {counter}
+  if {counter} is greater than or equal to {maxgens.%{farm.%uuid of player%}%}:
+   send "&eYou have placed down too many gens! Break one or upgrade or gen size in /farm perks!" 
+   cancel event
+   stop
+  add event-location to {cowloc::*}
+  add event-location to {gens::%{farm.%uuid of player%}%::*}
+  send "&ePlaced down a Cow Generator! [%{counter}+1%&e/%{maxgens.%{farm.%uuid of player%}%}%&e]"
+ if player's tool is green glass named "&2Zombie Generator" with lore "&7Place down to start spawning zombies!"  and "&7Farm Level 10 required":
+  if {tetherblock.%uuid of player%} is not equal to {farmcenter.%{farm.%uuid of player%}%}:
+   player is not op
+   cancel event
+   #send "&cYou can't place blocks here!"
+   stop
+  if {level.%{farm.%uuid of player%}%} is less than 10:
+   cancel event
+   send "&cYour farm isn't high enough level!"
+   stop
+  set {counter} to 0
+  loop {gens::%{farm.%uuid of player%}%::*}:
+   add 1 to {counter}
+  if {counter} is greater than or equal to {maxgens.%{farm.%uuid of player%}%}:
+   send "&eYou have placed down too many gens! Break one or upgrade or gen size in /farm perks!" 
+   cancel event
+   stop
+  add event-location to {zomloc::*}
+  add event-location to {gens::%{farm.%uuid of player%}%::*}
+  send "&ePlaced down a Zombie Generator! [%{counter}+1%&e/%{maxgens.%{farm.%uuid of player%}%}%&e]"
+ if player's tool is white glass named "&fSkeleton Generator" with lore "&7Place down to start spawning skeletons!"  and "&7Farm Level 15 required":
+  if {tetherblock.%uuid of player%} is not equal to {farmcenter.%{farm.%uuid of player%}%}:
+   player is not op
+   cancel event
+   #send "&cYou can't place blocks here!"
+   stop
+  if {level.%{farm.%uuid of player%}%} is less than 15:
+   cancel event
+   send "&cYour farm isn't high enough level!"
+   stop
+  set {counter} to 0
+  loop {gens::%{farm.%uuid of player%}%::*}:
+   add 1 to {counter}
+  if {counter} is greater than or equal to {maxgens.%{farm.%uuid of player%}%}:
+   send "&eYou have placed down too many gens! Break one or upgrade or gen size in /farm perks!" 
+   cancel event
+   stop
+  add event-location to {skeloc::*}
+  add event-location to {gens::%{farm.%uuid of player%}%::*}
+  send "&ePlaced down a Skeleton Generator! [%{counter}+1%&e/%{maxgens.%{farm.%uuid of player%}%}%&e]"
+ if player's tool is lime glass named "&aCreeper Generator" with lore "&7Place down to start spawning creepers!"  and "&7Farm Level 20 required":
+  if {tetherblock.%uuid of player%} is not equal to {farmcenter.%{farm.%uuid of player%}%}:
+   player is not op
+   cancel event
+   #send "&cYou can't place blocks here!"
+   stop
+  if {level.%{farm.%uuid of player%}%} is less than 20:
+   cancel event
+   send "&cYour farm isn't high enough level!"
+   stop
+  set {counter} to 0
+  loop {gens::%{farm.%uuid of player%}%::*}:
+   add 1 to {counter}
+  if {counter} is greater than or equal to {maxgens.%{farm.%uuid of player%}%}:
+   send "&eYou have placed down too many gens! Break one or upgrade or gen size in /farm perks!" 
+   cancel event
+   stop
+  add event-location to {creloc::*}
+  add event-location to {gens::%{farm.%uuid of player%}%::*}
+  send "&ePlaced down a Creeper Generator! [%{counter}+1%&e/%{maxgens.%{farm.%uuid of player%}%}%&e]"
+ if player's tool is orange glass named "&6Blaze Generator" with lore "&7Place down to start spawning blazes!"  and "&7Farm Level 30 required":
+  if {tetherblock.%uuid of player%} is not equal to {farmcenter.%{farm.%uuid of player%}%}:
+   player is not op
+   cancel event
+   #send "&cYou can't place blocks here!"
+   stop
+  if {level.%{farm.%uuid of player%}%} is less than 30:
+   cancel event
+   send "&cYour farm isn't high enough level!"
+   stop
+  set {counter} to 0
+  loop {gens::%{farm.%uuid of player%}%::*}:
+   add 1 to {counter}
+  if {counter} is greater than or equal to {maxgens.%{farm.%uuid of player%}%}:
+   send "&eYou have placed down too many gens! Break one or upgrade or gen size in /farm perks!" 
+   cancel event
+   stop
+  add event-location to {blaloc::*}
+  add event-location to {gens::%{farm.%uuid of player%}%::*}
+  send "&ePlaced down a Blaze Generator! [%{counter}+1%&e/%{maxgens.%{farm.%uuid of player%}%}%&e]"
+ if player's tool is black glass named "&bEnderman Generator" with lore "&7Place down to start spawning endermen!"  and "&7Farm Level 50 required":
+  if {tetherblock.%uuid of player%} is not equal to {farmcenter.%{farm.%uuid of player%}%}:
+   player is not op
+   cancel event
+   #send "&cYou can't place blocks here!"
+   stop
+  if {level.%{farm.%uuid of player%}%} is less than 50:
+   cancel event
+   send "&cYour farm isn't high enough level!"
+   stop
+  set {counter} to 0
+  loop {gens::%{farm.%uuid of player%}%::*}:
+   add 1 to {counter}
+  if {counter} is greater than or equal to {maxgens.%{farm.%uuid of player%}%}:
+   send "&eYou have placed down too many gens! Break one or upgrade or gen size in /farm perks!" 
+   cancel event
+   stop
+  add event-location to {endloc::*}
+  add event-location to {gens::%{farm.%uuid of player%}%::*}
+  send "&ePlaced down an Enderman Generator! [%{counter}+1%&e/%{maxgens.%{farm.%uuid of player%}%}%&e]"
+
+ if player's tool is gray glass named "&9Wither Skeleton Generator" with lore "&7Place down to start spawning wither skeletons!"  and "&7Farm Level 40 required":
+  if {tetherblock.%uuid of player%} is not equal to {farmcenter.%{farm.%uuid of player%}%}:
+   player is not op
+   cancel event
+   #send "&cYou can't place blocks here!"
+   stop
+  if {level.%{farm.%uuid of player%}%} is less than 40:
+   cancel event
+   send "&cYour farm isn't high enough level!"
+   stop
+  set {counter} to 0
+  loop {gens::%{farm.%uuid of player%}%::*}:
+   add 1 to {counter}
+  if {counter} is greater than or equal to {maxgens.%{farm.%uuid of player%}%}:
+   send "&eYou have placed down too many gens! Break one or upgrade or gen size in /farm perks!" 
+   cancel event
+   stop
+  add event-location to {wsloc::*}
+  add event-location to {gens::%{farm.%uuid of player%}%::*}
+  send "&ePlaced down a Wither Skeleton Generator! [%{counter}+1%&e/%{maxgens.%{farm.%uuid of player%}%}%&e]"
+ 
+every 18 seconds:
+ loop {pigloc::*}:
+  loop all players:
+   if distance between loop-player and loop-value-1 is less than 15:
+    spawn a pig 1 meter above loop-value-1
+    exit 2 sections
+ loop {cowloc::*}:
+  loop all players:
+   if distance between loop-player and loop-value-1 is less than 15:
+    spawn a cow 1 meter above loop-value-1
+    exit 2 sections
+ loop {zomloc::*}:
+  loop all players:
+   if distance between loop-player and loop-value-1 is less than 15:
+    spawn a zombie 1 meter above loop-value-1
+    exit 2 sections
+ loop {skeloc::*}:
+  loop all players:
+   if distance between loop-player and loop-value-1 is less than 15:
+    spawn a skeleton 1 meter above loop-value-1
+    exit 2 sections
+ loop {creloc::*}:
+  loop all players:
+   if distance between loop-player and loop-value-1 is less than 15:
+    spawn a creeper 1 meter above loop-value-1
+    exit 2 sections
+ loop {blaloc::*}:
+  loop all players:
+   if distance between loop-player and loop-value-1 is less than 15:
+    spawn a blaze 1 meter above loop-value-1
+    exit 2 sections
+ loop {endloc::*}:
+  loop all players:
+   if distance between loop-player and loop-value-1 is less than 15:
+    spawn a enderman 1 meter above loop-value-1
+    exit 2 sections
+ loop {wsloc::*}:
+  loop all players:
+   if distance between loop-player and loop-value-1 is less than 15:
+    spawn a wither skeleton 1 meter above loop-value-1
+    exit 2 sections
+
+command /gen <text> [<text>] [<text>] [<text>]:
+ permission: op
+ trigger:
+  if arg 1 is "giveme":
+   if arg 2 is "pig":
+    give player pink glass named "&dPig Generator" with lore "&7Place down to start spawning pigs!"
+   if arg 2 is "cow":
+    give player brown glass named "&7Cow Generator" with lore "&7Place down to start spawning cows!" and "&7Farm Level 5 required"
+   if arg 2 is "zombie":
+    give player green glass named "&2Zombie Generator" with lore "&7Place down to start spawning zombies!" and "&7Farm Level 10 required"
+   if arg 2 is "skeleton":
+    give player white glass named "&fSkeleton Generator" with lore "&7Place down to start spawning skeletons!" and "&7Farm Level 15 required"
+   if arg 2 is "creeper":
+    give player lime glass named "&aCreeper Generator" with lore "&7Place down to start spawning creepers!" and "&7Farm Level 20 required"
+   if arg 2 is "blaze":
+    give player orange glass named "&6Blaze Generator" with lore "&7Place down to start spawning blazes!" and "&7Farm Level 30 required"
+   if arg 2 is "ender":
+    give player black glass named "&bEnderman Generator" with lore "&7Place down to start spawning endermen!" and "&7Farm Level 50 required"
+   if arg 2 is "ws":
+    give player gray glass named "&9Wither Skeleton Generator" with lore "&7Place down to start spawning wither skeletons!" and "&7Farm Level 40 required"
+  if arg 1 is "reset":
+   if arg 2 is "pig":
+    loop {pigloc::*}:
+     remove loop-value from {pigloc::*}
+    loop {gens::%{farm.%uuid of player%}%::*}:
+     remove loop-value from {gens::%{farm.%uuid of player%}%::*}
+   if arg 2 is "cow":
+    loop {cowloc::*}:
+     remove loop-value from {cowloc::*}
+    loop {gens::%{farm.%uuid of player%}%::*}:
+     remove loop-value from {gens::%{farm.%uuid of player%}%::*}
+   if arg 2 is "zombie":
+    loop {zomloc::*}:
+     remove loop-value from {zomloc::*}
+    loop {gens::%{farm.%uuid of player%}%::*}:
+     remove loop-value from {gens::%{farm.%uuid of player%}%::*}
+   if arg 2 is "skeleton":
+    loop {skeloc::*}:
+     remove loop-value from {skeloc::*}
+    loop {gens::%{farm.%uuid of player%}%::*}:
+     remove loop-value from {gens::%{farm.%uuid of player%}%::*}
+   if arg 2 is "creeper":
+    loop {creloc::*}:
+     remove loop-value from {creloc::*}
+    loop {gens::%{farm.%uuid of player%}%::*}:
+     remove loop-value from {gens::%{farm.%uuid of player%}%::*}
+   if arg 2 is "blaze":
+    loop {blaloc::*}:
+     remove loop-value from {blaloc::*}
+    loop {gens::%{farm.%uuid of player%}%::*}:
+     remove loop-value from {gens::%{farm.%uuid of player%}%::*}
+   if arg 2 is "ender":
+    loop {endloc::*}:
+     remove loop-value from {endloc::*}
+    loop {gens::%{farm.%uuid of player%}%::*}:
+     remove loop-value from {gens::%{farm.%uuid of player%}%::*}
+   if arg 2 is "ws":
+    loop {wsloc::*}:
+     remove loop-value from {wsloc::*}
+    loop {gens::%{farm.%uuid of player%}%::*}:
+     remove loop-value from {gens::%{farm.%uuid of player%}%::*}
+
+   if arg 2 is "all":
+    
+  if arg 1 is "number":
+   send "%{gens::%{farm.%uuid of player%}%::*}% is equal to %{maxgens.%{farm.%uuid of player%}%}%"
+
+on death:
+ if victim is pig:
+  xp(3, attacker)#send "gay"
+ if victim is cow:
+  #send "gay"
+  xp(5, attacker)
+ if victim is zombie:
+  #send "gay"
+  xp(10, attacker)
+ if victim is skeleton:
+  #send "gay"
+  xp(25, attacker)
+ if victim is creeper:
+  #send "gay"
+  xp(50, attacker)
+ if victim is blaze:
+  #send "gay"
+  xp(100, attacker)
+ if victim is wither skeleton:
+  #send "gay"
+  xp(200, attacker)
+ if victim is enderman:
+  #send "gay"
+  xp(500, attacker)
+
+on damage:
+ if damage cause is suffocation:
+  cancel event
+
+
+function xp(n: number, p: player):
+ set {_t} to uuid of {_p}
+ set {_multiplier1} to 1 # farm xp
+ set {_multiplier2} to 1 # swords xp
+ if {level.%{farm.%{_t}%}%} is greater than or equal to 25:
+  add 0.5 to {_multiplier2} 
+ if {level.%{farm.%{_t}%}%} is greater than or equal to 50:
+  add 0.25 to {_multiplier2} 
+ add 0.1*{sgrinder.%{_t}%} to {_multiplier1} 
+
+
+ 
+ if {xpbooster1} is greater than 0:
+  set {_multiplier1} to {_multiplier1}*1.5
+  set {_multiplier2} to {_multiplier2}*1.5 
+ if {xpbooster3.%{_t}%} is greater than 0:
+  set {_multiplier1} to {_multiplier1}*2
+  set {_multiplier2} to {_multiplier2}*2
+ if {_p} has permission "pf.expert":
+  if {_p} has permission "pf.pro":
+   if {_p} has permission "pf.legend":
+    if {_p} has permission "pf.god":
+     set {_multiplier1} to {_multiplier1}*2
+    else:
+     set {_multiplier1} to {_multiplier1}*1.5
+   else:
+    set {_multiplier1} to {_multiplier1}*1.2
+  else:
+   set {_multiplier1} to {_multiplier1}*1.1
+ 
+ add {_n}*{_multiplier1} to {xp.%{farm.%{_t}%}%}
+ add {_n}*{_multiplier2} to {sxp.%{_t}%}
+ 
+
+command /startbooster <text>  [<player>]: # arg 1 is type arg 2 is player (personal boosters) (or credit)
+
+ permission: op
+ aliases: sb
+ trigger:
+  #set {_dur} to arg 2
+  if arg 1 is "xp":
+
+   broadcast "&5%arg 2% &dstarted a global xp booster for the next 2 hours!"
+   add 2 to {xpbooster1} #xpbooster1 is global xp booster
+  if arg 1 is "money":
+   broadcast "&2%arg 2% &astarted a global money booster for the next 2 hours!"
+   add 2 to {xpbooster2} #xpbooster2 is global money booster
+  if arg 1 is "personal": 
+   add 3 to {xpbooster3.%uuid of arg 2%}
+
+every hour:
+ if {xpbooster1} is greater than 0:
+  remove 1 from {xpbooster1}
+  if {xpbooster1} is equal to 0:
+   broadcast "&aThe Global XP booster has run out. To buy more, do /buy!"
+  else:
+   broadcast "&aTo view active boosters, do /boosters."
+ if {xpbooster2} is greater than 0:
+  remove 1 from {xpbooster2}
+  if {xpbooster2} is equal to 0:
+   broadcast "&aThe Global Money booster has run out. To buy more, do /buy!"
+  else:
+   broadcast "&aTo view active boosters, do /boosters."
+ loop all players:
+  if {xpbooster3.%uuid of loop-player%} is greater than 0:
+   remove 1 from {xpbooster3.%uuid of loop-player%}
+   if {xpbooster3.%uuid of loop-player%} is equal to 0:
+    send "&aYour Personal Booster has run out. To buy more, do /buy!" to loop-player
+   else:
+    broadcast "&aTo view active boosters, do /boosters."
+command /boosters:
+ trigger:
+  send "&5&lCurrently Active Boosters:"
+  if {xpbooster1} is greater than 0:
+   send " - &dGlobal XP Booster is active for %{xpbooster1}% &dhours left"
+  if {xpbooster2} is greater than 0:
+   send " - &dGlobal Money Booster is active for %{xpbooster2}% &dhours left"
+  if {xpbooster3.%uuid of player%} is greater than 0:
+   send " - &dPersonal Booster is active for %{xpbooster3.%uuid of player%}% &dhours left"
+
+on death:
+ clear drops
+
+ if victim is pig:
+  drop 1 porkchop at attacker
+  loop {sloot.%uuid of attacker%} times:
+   chance of 96%:
+    drop 1 porkchop at attacker
+
+ if victim is cow:
+  drop 1 raw beef at attacker
+  chance of 50%:
+   drop 1 leather at attacker
+  loop {sloot.%uuid of attacker%} times:
+   chance of 96%:
+    drop 1 raw beef at attacker
+   chance of 48%:
+    drop 1 leather at attacker
+
+ if victim is zombie:
+  drop 1 rotten flesh at attacker
+  loop {sloot.%uuid of attacker%} times:
+   chance of 96%:
+    drop 1 rotten flesh at attacker 
+
+ if victim is wither skeleton:
+  drop 1 coal at attacker
+  loop {sloot.%uuid of attacker%} times:
+   chance of 96%:
+    drop 1 coal at attacker
+  stop
+
+ if victim is skeleton:
+  drop 1 bone at attacker
+  loop {sloot.%uuid of attacker%} times:
+   chance of 96%:
+    drop 1 bone at attacker
+
+ if victim is creeper:
+  drop 1 gunpowder at attacker
+  loop {sloot.%uuid of attacker%} times:
+   chance of 96%:
+    drop 1 gunpowder at attacker
+
+ if victim is blaze:
+  drop  1 blaze rod at attacker
+  loop {sloot.%uuid of attacker%} times:
+   chance of 96%:
+    drop  1 blaze rod at attacker
+
+
+ if victim is enderman:
+  drop 1 ender pearl at attacker
+  loop {sloot.%uuid of attacker%} times:
+   chance of 96%:
+    drop 1 ender pearl at attacker
+
+
+on damage:
+ increase the damage by 1.5*{ssharp.%uuid of attacker%}
+
+
+
