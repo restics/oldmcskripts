@@ -11,3 +11,5 @@ Don't ask. Literally just looked up "sorting algorithms" on google and implement
 # How to install
 look up "minecraft spigot server tutorial" on youtube and then get skript, skrayfall, skdragon, Morkazsk, SkNbeet, skellett, sklib, tablisknu, Tuske, copy the skripts into your skripts folder
 sorry for the lackluster explanation, really forgot how to do most of this
+# Final Note
+Don't write in skript please. This thing doesn't have any sort of object or inheritance system, so my code is unnecessarily long. Unless they fixed that in the 2 years I stopped using it
